@@ -1,5 +1,8 @@
 package edu.osu.cse.misc.graph.wrappers.graph;
 
+/**
+ * Represents a point in a two dimensional coordinate system.
+ */
 public class Coordinate2D {
 
     private double x, y;
@@ -9,10 +12,16 @@ public class Coordinate2D {
 	this.y = y;
     }
     
+    /**
+     * The x-value of this Coordinate.
+     */
     public double getX() {
 	return this.x;
     }
     
+    /**
+     * The y-value of this Coordinate 
+     */
     public double getY() {
 	return this.y;
     }

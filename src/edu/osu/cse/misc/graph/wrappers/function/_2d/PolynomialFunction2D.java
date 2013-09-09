@@ -6,6 +6,9 @@ import de.congrace.exp4j.UnparsableExpressionException;
 import edu.osu.cse.misc.graph.util.Strings;
 import edu.osu.cse.misc.graph.wrappers.graph.Coordinate2D;
 
+/**
+ * A two dimensional function in terms of "x".
+ */
 public class PolynomialFunction2D extends AbstractFunction2D {
 
     protected String function;
@@ -29,6 +32,13 @@ public class PolynomialFunction2D extends AbstractFunction2D {
 	}
     }
     
+    /**
+     * Changes the parameter in which this function uses.
+     * <br />Typically used in Parametric Functions to switch to "t".
+     * 
+     * @param parameter The new parameter to use.
+     * @return This function for easy instantiation.
+     */
     public PolynomialFunction2D overrideParameter(String parameter) {
 	this.parameter = parameter;
 	return this;
