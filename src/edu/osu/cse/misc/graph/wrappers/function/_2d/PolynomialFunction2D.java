@@ -9,6 +9,7 @@ import edu.osu.cse.misc.graph.wrappers.graph.Coordinate2D;
 public class PolynomialFunction2D extends AbstractFunction2D {
 
     protected String function;
+    protected String parameter = "x";
     
     public PolynomialFunction2D(String function) {
 	this.function = Strings.checkFormula(function);
@@ -27,10 +28,15 @@ public class PolynomialFunction2D extends AbstractFunction2D {
 	    return null;
 	}
     }
+    
+    public PolynomialFunction2D overrideParameter(String parameter) {
+	this.parameter = parameter;
+	return this;
+    }
 
     @Override
     public String getParameter() {
-        return "x";
+        return this.parameter;
     }
     
 }

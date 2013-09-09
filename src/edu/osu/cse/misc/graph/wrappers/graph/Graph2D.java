@@ -18,7 +18,7 @@ public final class Graph2D extends JPanel {
 	Color.red, Color.blue, Color.green, Color.cyan, Color.magenta,
 	Color.pink, Color.pink, Color.orange
     };
-    
+
     private double xMin, xMax;
     private double yMin, yMax;
 
@@ -79,14 +79,13 @@ public final class Graph2D extends JPanel {
     protected void paintComponent(Graphics g1) {
 	super.paintComponent(g1);
 	Graphics2D g = (Graphics2D) g1;
-	//abc
+
 	drawGrid(g);
 	drawFunctions(g);
     }
 
     private void drawGrid(Graphics2D g) {
 	for (double y = 0; y <= this.getPreferredSize().height; y += this.getYInterval()) {
-	    System.out.println("y: " + y + "(max: " + this.yMax + ")");
 	    g.drawLine(0, (int) y, this.getPreferredSize().width, (int) y);
 	}
 	for (double x = 0; x <= this.getPreferredSize().width; x += this.getXInterval()) {
@@ -96,24 +95,26 @@ public final class Graph2D extends JPanel {
 	g.setStroke(new BasicStroke(3));
 	g.drawLine(0, center.y, this.getPreferredSize().width, center.y);
 	g.drawLine(center.x, 0, center.x, this.getPreferredSize().height);
+	g.setStroke(new BasicStroke(1.5f));
     }
 
     private void drawFunctions(Graphics2D g) {
 	for (int i = 0; i < this.functions.size(); i++) {
 	    g.setColor(COLORS[i % COLORS.length]);
-	    if (i < this.functions.size()-1) {
-		AbstractFunction2D function = this.functions.get(i);
-		if (function.isValid()) {
-		    Coordinate2D[] points = function.evaluateFrom(this.xMin, this.xMax);
-		    for (Coordinate2D coord : points) {
-			if (this.contains(coord)) {
-			    g.drawOval((int) (coord.getX() - 1), (int) (coord.getY() - 1), 3, 3);
-			}
+	    AbstractFunction2D function = this.functions.get(i);
+	    if (function.isValid()) {
+		Coordinate2D[] points = function.evaluateFrom(this.xMin, this.xMax, 0.05D);
+		for (int p = 0; p < points.length; p++) {
+		    if (p < points.length - 1) {
+			Point cur = this.convertToScreen(points[p]);
+			Point next = this.convertToScreen(points[p+1]);
+			if (this.contains(cur))
+			    g.drawLine((int) cur.getX(), (int) cur.getY(), (int) next.getX(), (int) next.getY());
 		    }
 		}
-		else {
-		    this.functions.remove(function);
-		}
+	    }
+	    else {
+		this.functions.remove(function);
 	    }
 	}
     }

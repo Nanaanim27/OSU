@@ -98,9 +98,7 @@ public class Strings {
 		    int index = m.start();
 		    String subLeft = formula.substring(0, index + 1);
 		    String subRight = formula.substring(index + 1, formula.length());
-		    System.out.println("subLeft: " + subLeft + " | subRight: " + subRight);
 		    formula = subLeft + "*" + subRight;
-		    System.out.println("rebuild: " + formula);
 		    m.reset(formula);
 		}
 		failsafe = 0;
