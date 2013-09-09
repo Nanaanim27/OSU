@@ -13,7 +13,7 @@ import edu.osu.cse.misc.graph.wrappers.graph.Graph2D;
 public class Testing {
 
 	public static void main(String[] args) {
-	    testGraph(new PolarFunction2D("5*sin(3*(h+5))"));
+	    
 	}
 	
 	private static void testGraph(AbstractFunction2D...functions) {

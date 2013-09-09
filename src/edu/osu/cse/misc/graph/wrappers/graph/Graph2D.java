@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 
 import edu.osu.cse.misc.graph.wrappers.function._2d.AbstractFunction2D;
+import edu.osu.cse.misc.graph.wrappers.vector.Vector;
+import edu.osu.cse.misc.graph.wrappers.vector.VectorChain;
 
 public final class Graph2D extends JPanel {
 
@@ -100,10 +102,10 @@ public final class Graph2D extends JPanel {
 
     private void drawFunctions(Graphics2D g) {
 	for (int i = 0; i < this.functions.size(); i++) {
-	    g.setColor(COLORS[i % COLORS.length]);
+	    //g.setColor(COLORS[i % COLORS.length]);
 	    AbstractFunction2D function = this.functions.get(i);
 	    if (function.isValid()) {
-		Coordinate2D[] points = function.evaluateFrom(this.xMin, this.xMax, 0.05D);
+		Coordinate2D[] points = function.evaluateFrom(0, 360, 0.05D);
 		for (int p = 0; p < points.length; p++) {
 		    if (p < points.length - 1) {
 			Point cur = this.convertToScreen(points[p]);

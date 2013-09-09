@@ -1,6 +1,6 @@
 package edu.osu.cse.misc.graph.methods;
 
-import edu.osu.cse.misc.graph.wrappers.Vector;
+import edu.osu.cse.misc.graph.wrappers.vector.Vector;
 
 public abstract class Vectors {
 

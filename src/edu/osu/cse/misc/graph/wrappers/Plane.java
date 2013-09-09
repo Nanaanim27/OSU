@@ -2,6 +2,7 @@ package edu.osu.cse.misc.graph.wrappers;
 
 
 import edu.osu.cse.misc.graph.methods.Vectors;
+import edu.osu.cse.misc.graph.wrappers.vector.Vector;
 
 /**
  * The standard equation for a plane is:
@@ -14,7 +15,7 @@ import edu.osu.cse.misc.graph.methods.Vectors;
 public class Plane {
 
 	private boolean valid;
-	private Point p; 
+	private Point3D p; 
 	private Vector normalDirectionVector;
 	private double xIntercept, yIntercept, zIntercept;
 	
@@ -23,7 +24,7 @@ public class Plane {
 	 * @param n A Vector that is normal (perpendicular) to the provided Point.]
 	 * <br />Inherently, this vector will be normal to all points on this Plane.
 	 */
-	public Plane(Point p, Vector n) {
+	public Plane(Point3D p, Vector n) {
 		this.p = p;
 		this.normalDirectionVector = n;
 	}
@@ -35,7 +36,7 @@ public class Plane {
 	 * @param p2 A Point in 3D space
 	 * @param p3 A Point in 3D space
 	 */
-	public Plane(Point p1, Point p2, Point p3) {
+	public Plane(Point3D p1, Point3D p2, Point3D p3) {
 		if (p1.equals(p2) || p1.equals(p3) || p2.equals(p3)) {
 			System.err.println("Invalid set of points. Two or more are the same.");
 			valid = false;
