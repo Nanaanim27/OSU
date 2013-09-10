@@ -140,7 +140,7 @@ public final class Graph2D extends JPanel {
 			//g.setColor(COLORS[i % COLORS.length]);
 			AbstractFunction2D function = this.functions.get(i);
 			if (function.isValid()) {
-				Coordinate2D[] points = function.evaluateFrom(0, 360, 0.05D);
+				Coordinate2D[] points = function.evaluateFrom(this.xMin, this.xMax, 0.05D);
 				for (int p = 0; p < points.length; p++) {
 					if (p < points.length - 1) {
 						Point cur = this.convertToScreen(points[p]);
