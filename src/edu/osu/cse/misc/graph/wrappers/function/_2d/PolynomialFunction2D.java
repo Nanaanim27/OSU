@@ -52,5 +52,10 @@ public class PolynomialFunction2D extends AbstractFunction2D {
 	public PolynomialFunction2D restrict(double valueMin, double valueMax) {
 		return (PolynomialFunction2D) super.restrict(valueMin, valueMax);
 	}
+	
+	@Override
+	public String toString() {
+		return this.function;
+	}
 
 }
