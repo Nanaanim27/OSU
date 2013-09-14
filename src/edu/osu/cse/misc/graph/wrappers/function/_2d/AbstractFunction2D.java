@@ -12,6 +12,7 @@ public abstract class AbstractFunction2D {
 	public abstract Coordinate2D evaluateAt(double value);
 	public abstract String getParameter();
 	protected boolean isValid = true;
+	protected double valueMin = Double.NEGATIVE_INFINITY, valueMax = Double.POSITIVE_INFINITY;
 
 	/**
 	 * Evaluates this function between the given range inclusively respective to its respective variable.
@@ -24,7 +25,10 @@ public abstract class AbstractFunction2D {
 	public Coordinate2D[] evaluateFrom(double valueMin, double valueMax, double accuracy) {
 		LinkedList<Coordinate2D> coords = new LinkedList<>();
 		for (double d = valueMin; d <= valueMax; d += accuracy) {
-			coords.add(this.evaluateAt(d));
+			Coordinate2D coord = this.evaluateAt(d);
+			if (coord.getX() <= this.valueMax && coord.getX() >= this.valueMin) {
+				coords.add(this.evaluateAt(d));
+			}
 		}
 		return coords.toArray(new Coordinate2D[coords.size()]);
 	}
@@ -39,11 +43,20 @@ public abstract class AbstractFunction2D {
 	}
 
 	/**
-	 * Whether or not this Function is valid or not.
-	 * An invalid function will not be drawn and be removed from its respective Graph.
+	 * Restricts this function to only be evaluated within the given range.
+	 * <br />For example, f(x)=x^2 while restricted from 0 to Double.POSITIVE_INFINITY would show only 
+	 * the right half of its parabola.
 	 * 
-	 * @return <tt>true</tt> or <tt>false</tt> whether this Function is valid or not.
+	 * @param valueMin The min variable value to use
+	 * @param valueMax The max variable value to use
+	 * @return This function
 	 */
+	public AbstractFunction2D restrict(double valueMin, double valueMax) {
+		this.valueMin = valueMin;
+		this.valueMax = valueMax;
+		return this;
+	}
+
 	public boolean isValid() {
 		return this.isValid;
 	}

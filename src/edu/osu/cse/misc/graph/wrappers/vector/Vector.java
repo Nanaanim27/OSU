@@ -6,7 +6,7 @@ import java.awt.Point;
 import edu.osu.cse.misc.graph.methods.Vectors;
 import edu.osu.cse.misc.graph.wrappers.Point3D;
 import edu.osu.cse.misc.graph.wrappers.graph.Coordinate2D;
-import edu.osu.cse.misc.graph.wrappers.graph.Graph2D;
+import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
 /**
  * Represents a magnitude and direction in Three-Dimensional space.
@@ -90,11 +90,11 @@ public class Vector {
 	return result;
     }
 
-    public void draw2D(Graphics2D g, Graph2D graph) {
+    public void draw2D(Graphics2D g, GraphPanel2D graph) {
 	draw2D(g, Vector.ZERO_VECTOR, graph);
     }
     
-    public void draw2D(Graphics2D g, Vector from, Graph2D graph) {
+    public void draw2D(Graphics2D g, Vector from, GraphPanel2D graph) {
 	if (this.z != 0D || from.z != 0D) {
 	    System.err.println("Unable to draw a vector with three dimensions in a two dimensional coordinate system.");
 	    return;

@@ -11,22 +11,25 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 
 import edu.osu.cse.misc.graph.wrappers.function._2d.AbstractFunction2D;
+import edu.osu.cse.misc.graph.wrappers.vector.Vector;
+import edu.osu.cse.misc.graph.wrappers.vector.VectorChain;
 
-public final class Graph2D extends JPanel {
+public final class GraphPanel2D extends JPanel {
 
 	private static final Color[] COLORS = {
 		Color.red, Color.blue, Color.green, Color.cyan, Color.magenta,
 		Color.pink, Color.pink, Color.orange
 	};
 
-	private int xMin, xMax;
-	private int yMin, yMax;
+	private double xMin, xMax;
+	private double yMin, yMax;
+	private double xInterval = 1D, yInterval = 1D;
 
 	private Dimension size;
 
 	private LinkedList<AbstractFunction2D> functions = new LinkedList<>();
 
-	public Graph2D(int xMin, int xMax, int yMin, int yMax) {
+	public GraphPanel2D(double xMin, double xMax, double yMin, double yMax) {
 		this.xMin = xMin;
 		this.xMax = xMax;
 		this.yMin = yMin;
@@ -36,19 +39,18 @@ public final class Graph2D extends JPanel {
 	@Override
 	public Dimension getPreferredSize() {
 		if (this.size == null) {
-			this.size = new Dimension((int) (this.getXLength() * this.getXInterval()), (int) (this.getYLength() * this.getYInterval()));
+			this.size = new Dimension(500, 500);
 		}
 		return this.size;
 	}
 
 	/**
-	 * The "center" point of the graph relative to the panel holding it.
-	 * The center is marked by the origin (0, 0)
+	 * The center point relative to the panel holding this Graph
 	 * 
-	 * @return A Point marking the origin of the graph.
+	 * @return A Point marking the center point.
 	 */
 	public Point getCenterPoint() {
-		return new Point((int) (Math.abs(this.xMin) * this.getXInterval()), (int) (Math.abs(this.yMin) * this.getYInterval())); 
+		return new Point((int) (this.getPreferredSize().width / 2D), (int) (this.getPreferredSize().height / 2D));
 	}
 
 	/**
@@ -83,13 +85,21 @@ public final class Graph2D extends JPanel {
 		return Math.abs(this.yMin) + Math.abs(this.yMax);
 	}
 
+	public void setXInterval(double xInterval) {
+		this.xInterval = xInterval;
+	}
+
+	public void setYInterval(double yInterval) {
+		this.yInterval = yInterval;
+	}
+
 	/**
 	 * The ratio of the pixel width of the Graph and the x-axis length.
 	 * 
 	 * @return (width/length) respectively based on the aforementioned description.
 	 */
 	public double getXInterval() {
-		return 20D;
+		return this.getPreferredSize().width / this.getXLength();
 	}
 
 	/**
@@ -98,7 +108,7 @@ public final class Graph2D extends JPanel {
 	 * @return (height/length) respectively based on the aforementioned description.
 	 */
 	public double getYInterval() {
-		return 20D;
+		return this.getPreferredSize().height / this.getYLength();
 	}
 
 	/**
@@ -120,38 +130,23 @@ public final class Graph2D extends JPanel {
 		drawFunctions(g);
 	}
 
+	/** Draws the grid lines for this graph */
 	private void drawGrid(Graphics2D g) {
-		BasicStroke normal = new BasicStroke(1);
-		BasicStroke axis = new BasicStroke(3);
-		
-		int xDraw = 0;
-		for (int xValue = this.xMin; xValue <= xMax; xValue++) {
-			if (xValue == 0) {
-				g.setStroke(axis);
-			}
-			else {
-				g.setStroke(normal);
-			}
-			g.drawLine(xDraw, 0, xDraw, this.getPreferredSize().height);
-			xDraw += this.getXInterval();
+		for (double y = 0; y <= this.getPreferredSize().height; y += (this.getYInterval() * this.yInterval)) {
+			g.drawLine(0, (int) y, this.getPreferredSize().width, (int) y);
 		}
-
-		int yDraw = 0;
-		for (int yValue = this.yMin; yValue <= yMax; yValue++) {
-			if (yValue == 0) {
-				g.setStroke(axis);
-			}
-			else {
-				g.setStroke(normal);
-			}
-			g.drawLine(0, yDraw, this.getPreferredSize().width, yDraw);
-			yDraw += this.getYInterval();
+		for (double x = 0; x <= this.getPreferredSize().width; x += (this.getXInterval() * this.xInterval)) {
+			g.drawLine((int) x, 0, (int) x, this.getPreferredSize().height);
 		}
-
+		Point center = this.getCenterPoint();
+		g.setStroke(new BasicStroke(3));
+		g.drawLine(0, center.y, this.getPreferredSize().width, center.y);
+		g.drawLine(center.x, 0, center.x, this.getPreferredSize().height);
+		g.setStroke(new BasicStroke(1.5f));
 	}
 
+	/** Draws the functions that are valid on this graph */
 	private void drawFunctions(Graphics2D g) {
-		g.setStroke(new BasicStroke(1.5f));
 		for (int i = 0; i < this.functions.size(); i++) {
 			g.setColor(COLORS[i % COLORS.length]);
 			AbstractFunction2D function = this.functions.get(i);
