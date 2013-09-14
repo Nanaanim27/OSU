@@ -53,7 +53,7 @@ public abstract class AbstractEquationForm2D extends JPanel {
 		return new JLabel("Variable: " + this.getVariable());
 	}
 
-	protected class EquationField2D<K extends AbstractFunction2D> extends JPanel {
+	protected class EquationField2D extends JPanel {
 
 		protected JTextField formulaField = new JTextField(15);
 
