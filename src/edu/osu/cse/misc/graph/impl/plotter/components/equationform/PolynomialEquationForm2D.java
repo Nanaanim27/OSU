@@ -4,16 +4,21 @@ import javax.swing.JLabel;
 
 public class PolynomialEquationForm2D extends AbstractEquationForm2D {
 
-	@Override
-	protected JLabel getVariableLabel() {
-		return new JLabel("Variable: x");
+	public PolynomialEquationForm2D() {
+		this.build();
 	}
+	
+	private EquationField2D field = new EquationField2D("x") {{
+		setListener(this.submitEquation(graphPanel));
+	}};
+	
+	protected String getVariable() {
+		return "x";
+	};
 
 	@Override
-	protected EquationField[] getEquationFields() {
-		return new EquationField[] {
-				new EquationField("x")
-		};
+	protected EquationField2D[] getEquationFields() {
+		return new EquationField2D[] { this.field };
 	}
 
 }

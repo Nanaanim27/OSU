@@ -56,6 +56,15 @@ public abstract class AbstractFunction2D {
 		this.valueMax = valueMax;
 		return this;
 	}
+	
+	public boolean ensureValidity() {
+		try {
+			this.evaluateAt(0D);
+		} catch (Exception e) {
+			//isValid is triggered false up higher in the event of an exception
+		}
+		return isValid;
+	}
 
 	public boolean isValid() {
 		return this.isValid;

@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import edu.osu.cse.misc.graph.impl.plotter.components.EquationSelecter;
 import edu.osu.cse.misc.graph.wrappers.function._2d.AbstractFunction2D;
+import edu.osu.cse.misc.graph.wrappers.function._2d.ParametricFunction2D;
 import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
 
@@ -15,7 +16,6 @@ import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 public class Testing {
 
 	public static void main(String[] args) {
-		testPlotter();
 		/*testGraph(
 				new ParametricFunction2D("t", "2t"),
 				new ParametricFunction2D("2t^2", "t^2")

@@ -27,7 +27,6 @@ public class PolynomialFunction2D extends AbstractFunction2D {
 			if (err instanceof UnparsableExpressionException) {
 				this.isValid = false;
 			}
-			err.printStackTrace();
 			return null;
 		}
 	}

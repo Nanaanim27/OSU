@@ -26,6 +26,11 @@ public class ParametricFunction2D extends AbstractFunction2D {
 	public String getParameter() {
 		return "t";
 	}
+	
+	@Override
+	public boolean ensureValidity() {
+		return xT.ensureValidity() && yT.ensureValidity();
+	}
 
 	@Override
 	public ParametricFunction2D restrict(double valueMin, double valueMax) {

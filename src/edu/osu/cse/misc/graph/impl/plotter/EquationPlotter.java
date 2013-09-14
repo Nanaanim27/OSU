@@ -1,10 +1,8 @@
 package edu.osu.cse.misc.graph.impl.plotter;
 
-import java.awt.FlowLayout;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
+import edu.osu.cse.misc.graph.impl.plotter.components.equationform.PolynomialEquationForm2D;
 import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
 public class EquationPlotter {
@@ -13,11 +11,11 @@ public class EquationPlotter {
 	static GraphPanel2D graph = new GraphPanel2D(-50, 50, -50, 50);
 	
 	public static void main(String[] args) {
-		JPanel container = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-		
-		
-		frame.add(graph);
-		
+		frame.add(new PolynomialEquationForm2D());
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 		
 	}
 	

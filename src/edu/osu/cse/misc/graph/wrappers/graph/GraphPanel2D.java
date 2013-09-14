@@ -11,10 +11,8 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 
 import edu.osu.cse.misc.graph.wrappers.function._2d.AbstractFunction2D;
-import edu.osu.cse.misc.graph.wrappers.vector.Vector;
-import edu.osu.cse.misc.graph.wrappers.vector.VectorChain;
 
-public final class GraphPanel2D extends JPanel {
+public class GraphPanel2D extends JPanel {
 
 	private static final Color[] COLORS = {
 		Color.red, Color.blue, Color.green, Color.cyan, Color.magenta,
