@@ -30,7 +30,7 @@ public class EquationSelecter extends JPanel {
 	}
 	
 	public Equation getSelectedEquation() {
-		return Equation.valueOf(list.getSelectedValue().toUpperCase());
+		return Equation.valueOf(list.getSelectedValue().toUpperCase().replaceAll("[ ]+", "_"));
 	}
 
 	private void setEquationForm(AbstractEquationForm<? extends AbstractFunction2D> form) {

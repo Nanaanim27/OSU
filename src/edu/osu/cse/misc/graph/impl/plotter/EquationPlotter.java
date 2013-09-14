@@ -1,9 +1,10 @@
 package edu.osu.cse.misc.graph.impl.plotter;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
-import edu.osu.cse.misc.graph.impl.plotter.components.equationform.PolynomialEquationForm;
-import edu.osu.cse.misc.graph.wrappers.function._2d.PolynomialFunction2D;
+import edu.osu.cse.misc.graph.impl.plotter.components.EquationSelecter;
 import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
 public class EquationPlotter {
@@ -15,8 +16,9 @@ public class EquationPlotter {
 	}};
 	
 	public static void main(String[] args) {
-		graph.addFunction(new PolynomialFunction2D("sin(x)"));
-		frame.add(new PolynomialEquationForm(graph));
+		frame.add(new EquationSelecter());
+		
+		frame.setPreferredSize(new Dimension(750, 500));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

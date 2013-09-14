@@ -32,7 +32,7 @@ public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunct
 		return new JLabel("Evaluate with respect to: x");
 	}
 
-	protected class PolynomialEquationField extends AbstractEquationField {
+	private class PolynomialEquationField extends AbstractEquationField {
 
 		private JTextField functionField;
 		

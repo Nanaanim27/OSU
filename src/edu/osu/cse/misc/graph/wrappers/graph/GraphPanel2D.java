@@ -24,6 +24,7 @@ public class GraphPanel2D extends JPanel {
 	private double xInterval = 1D, yInterval = 1D;
 
 	private Dimension size;
+	private Graphics2D g;
 
 	private LinkedList<AbstractFunction2D> functions = new LinkedList<>();
 
@@ -122,7 +123,8 @@ public class GraphPanel2D extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g1) {
 		super.paintComponent(g1);
-		Graphics2D g = (Graphics2D) g1;
+		if (g == null)
+			g = (Graphics2D) g1;
 
 		drawGrid(g);
 		drawFunctions(g);
@@ -173,7 +175,7 @@ public class GraphPanel2D extends JPanel {
 	public void addFunction(AbstractFunction2D function) {
 		this.functions.add(function);
 		this.repaint();
-		}
+	}
 
 	/**
 	 * Removes a function from this graph.
