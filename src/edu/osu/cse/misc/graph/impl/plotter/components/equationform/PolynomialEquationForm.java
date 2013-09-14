@@ -10,21 +10,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import edu.osu.cse.misc.graph.wrappers.function._2d.PolynomialFunction2D;
-import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
 public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunction2D> {
 
-	public PolynomialEquationForm(GraphPanel2D graph) {
-		super(graph);
-		
+	public PolynomialEquationForm() {
 		JPanel formContainer = new JPanel();
 		formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
-		formContainer.add(new JLabel("Evaluate with respect to: x"));
+		formContainer.add(this.getVariableDescriptionLabel());
 		formContainer.add(new PolynomialEquationField());
 
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 0));
 		this.add(formContainer);
-		this.add(this.getGraph());
 	}
 
 	@Override
@@ -32,7 +28,7 @@ public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunct
 		return new JLabel("Evaluate with respect to: x");
 	}
 
-	private class PolynomialEquationField extends AbstractEquationField {
+	class PolynomialEquationField extends AbstractEquationField {
 
 		private JTextField functionField;
 		
@@ -64,16 +60,12 @@ public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunct
 					if (e.getKeyChar() == '\n') {
 						PolynomialFunction2D eq = new PolynomialFunction2D(getRightSideField().getText());
 						if (eq.ensureValidity()) {
-							System.out.println("Adding function to graph");
-							getGraph().addFunction(eq);
+							getGraphPanel().addFunction(eq);
+							System.out.println("Added poly eq to graph");
 						}
 					}
 				}
 			};
 		}
-		
-		
 	}
-	
-	
 }

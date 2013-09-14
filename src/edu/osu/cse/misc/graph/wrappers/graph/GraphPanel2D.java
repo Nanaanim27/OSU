@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -122,6 +123,7 @@ public class GraphPanel2D extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g1) {
+		System.out.println("Painting Graph");
 		super.paintComponent(g1);
 		if (g == null)
 			g = (Graphics2D) g1;
@@ -156,8 +158,9 @@ public class GraphPanel2D extends JPanel {
 					if (p < points.length - 1) {
 						Point cur = this.convertToScreen(points[p]);
 						Point next = this.convertToScreen(points[p+1]);
-						if (this.contains(cur))
+						if (this.contains(cur)) {
 							g.drawLine((int) cur.getX(), (int) cur.getY(), (int) next.getX(), (int) next.getY());
+						}
 					}
 				}
 			}

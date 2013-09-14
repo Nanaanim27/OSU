@@ -16,14 +16,10 @@ import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
 public abstract class AbstractEquationForm<K extends AbstractFunction2D> extends JPanel {
 	
-	protected GraphPanel2D graph;
 	protected ArrayList<K> functions = new ArrayList<>();
 	
+	protected GraphPanel2D graphPanel;
 	protected abstract JLabel getVariableDescriptionLabel();
-	
-	public AbstractEquationForm(GraphPanel2D graph) {
-		this.graph = graph;
-	}
 	
 	protected JButton submitButton() {
 		
@@ -41,8 +37,16 @@ public abstract class AbstractEquationForm<K extends AbstractFunction2D> extends
 		return submit;
 	}
 	
-	public GraphPanel2D getGraph() {
-		return this.graph;
+	public void linkTo(GraphPanel2D graphPanel) {
+		this.graphPanel = graphPanel;
+	}
+	
+	public GraphPanel2D getGraphPanel() {
+		return this.graphPanel;
+	}
+	
+	public boolean isLinked() {
+		return this.graphPanel != null;
 	}
 	
 	public void submitFunction(K function) {
