@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -25,7 +24,6 @@ public class GraphPanel2D extends JPanel {
 	private double xInterval = 1D, yInterval = 1D;
 
 	private Dimension size;
-	private Graphics2D g;
 
 	private LinkedList<AbstractFunction2D> functions = new LinkedList<>();
 
@@ -125,8 +123,7 @@ public class GraphPanel2D extends JPanel {
 	protected void paintComponent(Graphics g1) {
 		System.out.println("Painting Graph");
 		super.paintComponent(g1);
-		if (g == null)
-			g = (Graphics2D) g1;
+		Graphics2D g = (Graphics2D) g1;
 
 		drawGrid(g);
 		drawFunctions(g);

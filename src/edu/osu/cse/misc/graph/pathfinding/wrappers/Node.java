@@ -54,7 +54,6 @@ public class Node {
 				}
 			}
 		}
-		
 		return nodes.toArray(new Node[nodes.size()]);
 	}
 	
@@ -97,6 +96,10 @@ public class Node {
 		return result;
 	}
 
+	/**
+	 * Compares an arbitrary object to this Node object for equality.
+	 * <br />Checks for equality among the x/y coordinates of each Node.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Node) {

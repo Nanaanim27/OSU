@@ -2,6 +2,7 @@ package edu.osu.cse.misc.graph.plotting.impl.plotter.components;
 
 import edu.osu.cse.misc.graph.plotting.impl.plotter.components.equationform.AbstractEquationForm;
 import edu.osu.cse.misc.graph.plotting.impl.plotter.components.equationform.ParametricEquationForm;
+import edu.osu.cse.misc.graph.plotting.impl.plotter.components.equationform.PolarEquationForm;
 import edu.osu.cse.misc.graph.plotting.impl.plotter.components.equationform.PolynomialEquationForm;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
 
@@ -12,7 +13,7 @@ public enum Equation {
 	
 	POLYNOMIAL(new PolynomialEquationForm()),
 	PARAMETRIC(new ParametricEquationForm()),
-	POLAR(null);
+	POLAR(new PolarEquationForm());
 	
 	private AbstractEquationForm<? extends AbstractFunction2D> form;
 	

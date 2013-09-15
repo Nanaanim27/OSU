@@ -1,10 +1,12 @@
 package edu.osu.cse.misc.graph.plotting.impl.plotter.components.tabs;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -18,11 +20,10 @@ public class AddFunction extends JPanel {
 
 	private AbstractEquationForm<? extends AbstractFunction2D> functionForm;
 	private GridBagConstraints gbc = new GridBagConstraints();
-	private JPanel filler = new JPanel();
 	private EquationPlotter plotInstance;
 
-	private JRadioButton 
-	polynomial = new JRadioButton("Polynomial") {{ 
+	private JRadioButton polynomial = new JRadioButton("Polynomial") {{
+		setSelected(true);
 		setFocusPainted(false); 
 		addActionListener(new ActionListener() {
 			@Override
@@ -32,8 +33,8 @@ public class AddFunction extends JPanel {
 				}
 			}
 		});
-	}},
-	parametric = new JRadioButton("Parametric") {{ 
+	}};
+	private JRadioButton parametric = new JRadioButton("Parametric") {{ 
 		setFocusPainted(false); 
 		addActionListener(new ActionListener() {
 			@Override
@@ -43,8 +44,8 @@ public class AddFunction extends JPanel {
 				}
 			}
 		});
-	}},
-	polar = new JRadioButton("Polar") {{ 
+	}};
+	private JRadioButton polar = new JRadioButton("Polar") {{ 
 		setFocusPainted(false); 
 		addActionListener(new ActionListener() {
 			@Override
@@ -71,15 +72,15 @@ public class AddFunction extends JPanel {
 
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.NONE;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
+
 		gbc.weighty = 0D;
-		gbc.weightx = 0D;
+		gbc.weightx = 1D;
 		gbc.gridy = 0;
 		gbc.gridx = 0;
-		gbc.anchor = GridBagConstraints.NORTHWEST;
-		
 		this.add(buildButtonContainer(), gbc);
+		
 		this.setForm(Equation.POLYNOMIAL.getForm());
-		instance.operationsPane.setMinimumSize(instance.operationsPane.getPreferredSize());
 	}
 
 	private JPanel buildButtonContainer() {
@@ -88,13 +89,15 @@ public class AddFunction extends JPanel {
 		GridBagConstraints gbc2 = new GridBagConstraints();
 		gbc2.fill = GridBagConstraints.NONE;
 		gbc2.anchor = GridBagConstraints.NORTHWEST;
+		
 		gbc2.weightx = 0D;
 		gbc2.weighty = 0D;
 		gbc2.gridy = 0;
-
 		buttonContainer.add(polynomial, gbc2);
+		
 		gbc2.gridy++;
 		buttonContainer.add(parametric, gbc2);
+		
 		gbc2.gridy++;
 		buttonContainer.add(polar, gbc2);
 
@@ -105,13 +108,21 @@ public class AddFunction extends JPanel {
 		if (this.functionForm != null) {
 			this.remove(this.functionForm);
 		}
-		this.remove(this.filler);
+		
 		gbc.gridy = 1;
-		gbc.gridy++;
-		this.add((this.functionForm = form), gbc);
+		gbc.gridx = 0;
 		gbc.gridy++;
 		gbc.weighty = 1D;
-		this.add(this.filler, gbc); //Filler
+		gbc.weightx = 1D;
+		this.functionForm = form;
+		if (!form.isLinked()) {
+			form.linkTo(this.plotInstance.getGraphPanel(), plotInstance);
+		}
+		this.add(form, gbc);
+		
 		this.repaint();
+		this.revalidate();
+		this.plotInstance.operationsPane.revalidate();
+		form.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 	}
 }

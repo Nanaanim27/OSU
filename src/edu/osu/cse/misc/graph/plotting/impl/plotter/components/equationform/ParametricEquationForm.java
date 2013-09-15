@@ -7,26 +7,26 @@ import java.awt.event.KeyEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import edu.osu.cse.misc.graph.plotting.impl.plotter.components.equationform.PolynomialEquationForm.PolynomialEquationField;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.ParametricFunction2D;
 
 public class ParametricEquationForm extends AbstractEquationForm<ParametricFunction2D> {
 
 	private ParametricEquationField xT, yT;
-	
+
 	public ParametricEquationForm() {
 		JPanel formContainer = new JPanel();
 		formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
 		formContainer.add(this.getVariableDescriptionLabel());
-		
+
 		yT = new ParametricEquationField() {
-			
+
 			@Override
 			protected JLabel getLeftSideLabel() {
 				return new JLabel("y(t)=");
 			}
-			
+
 			@Override
 			protected KeyAdapter getOnKeyEvent() {
 				return new KeyAdapter() {
@@ -34,28 +34,32 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 					public void keyTyped(KeyEvent e) {
 						if (xT == null || !ParametricEquationForm.this.isLinked())
 							return;
-						if (e.getKeyChar() == '\n') {
-							ParametricFunction2D eq = new ParametricFunction2D(
-									xT.getRightSideField().getText(),
-									yT.getRightSideField().getText());
-							if (eq.ensureValidity()) {
-								System.out.println("Adding parametric equation to graph");
-								ParametricEquationForm.this.getGraphPanel().addFunction(eq);
+						String xTSubmission = xT.getRightSideField().getText();
+						String yTSubmission = yT.getRightSideField().getText();
+						if (!xTSubmission.trim().equals("") && !yTSubmission.trim().equals("")) {
+							if (e.getKeyChar() == '\n') {
+								ParametricFunction2D eq = new ParametricFunction2D(
+										xTSubmission,
+										yTSubmission);
+								if (eq.ensureValidity()) {
+									ParametricEquationForm.this.getGraphPanelLink().addFunction(eq);
+									yT.getRightSideField().setText("");
+									xT.getRightSideField().setText("");
+									getPlotterLink().overview.addFunction("x(t)=" + xTSubmission + "; " + "y(t)=" + yTSubmission);
+								}
 							}
 						}
 					}
 				};
 			}
-			
 		};
-		
 		xT = new ParametricEquationField() {
-			
+
 			@Override
 			protected JLabel getLeftSideLabel() {
 				return new JLabel("x(t)=");
 			}
-			
+
 			@Override
 			protected KeyAdapter getOnKeyEvent() {
 				return new KeyAdapter() {
@@ -71,21 +75,25 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 					}
 				};
 			}
-			
 		};
 
-		this.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 0));
+		formContainer.add(xT);
+		formContainer.add(yT);
 		this.add(formContainer);
-		
-		System.out.println("New para EQ");
 	}
 
 	@Override
 	protected JLabel getVariableDescriptionLabel() {
 		return new JLabel("Variable: t");
 	}
-	
+
 	class ParametricEquationField extends AbstractEquationField {
+
+		public ParametricEquationField() {
+			this.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 0));
+			this.add(this.getLeftSideLabel());
+			this.add(this.getRightSideField());
+		}
 
 		@Override
 		/** Must be overridden when implemented */
@@ -94,16 +102,11 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 		}
 
 		@Override
-		protected final JTextField getRightSideField() {
-			return new JTextField(15);
-		}
-
-		@Override
 		/** Must be overridden when implemented */
 		protected KeyAdapter getOnKeyEvent() {
 			return null;
 		}
-		
+
 	}
 
 }

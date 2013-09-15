@@ -1,6 +1,7 @@
 package edu.osu.cse.misc.graph.plotting.impl.plotter;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -16,18 +17,23 @@ import edu.osu.cse.misc.graph.plotting.wrappers.graph.GraphPanel2D;
 
 public class EquationPlotter extends JFrame {
 
-	public JTabbedPane operationsPane = new JTabbedPane();
+	public JTabbedPane operationsPane = new JTabbedPane() {{
+		setPreferredSize(new Dimension(300, this.getPreferredSize().height));
+	}};
 	
 	private GraphPanel2D graphPanel = new GraphPanel2D(-20, 20, -20, 20) {{
 		setXInterval(2D);
 		setYInterval(2D);
 	}};
 	
+	public Overview overview;
+	public AddFunction addFunction;
+	
 	public EquationPlotter() {
 		JPanel container = new JPanel(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.VERTICAL;
+		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 0D;
 		gbc.weighty = 0D;
 		gbc.gridx = 0;
@@ -36,14 +42,16 @@ public class EquationPlotter extends JFrame {
 		buildTabbedPane();
 		container.add(operationsPane, gbc);
 		gbc.gridx++;
+		gbc.weightx = 1D;
+		gbc.weighty = 1D;
+		this.graphPanel.setBorder(BorderFactory.createLineBorder(Color.red));
 		container.add(this.graphPanel, gbc);
-		
 		def(container);
 	}
 	
 	private void buildTabbedPane() {
-		operationsPane.addTab("Overview", new Overview(this));
-		operationsPane.add("Add", new AddFunction(this));
+		operationsPane.addTab("Overview", (overview = new Overview(this)));
+		operationsPane.add("Add", (addFunction = new AddFunction(this)));
 		operationsPane.setBorder(BorderFactory.createLineBorder(Color.blue));
 	}
 	
@@ -59,6 +67,10 @@ public class EquationPlotter extends JFrame {
 		this.setVisible(true);
 	}
 
+	public GraphPanel2D getGraphPanel() {
+		return this.graphPanel;
+	}
+	
 	public static void main(String[] args) {
 		new EquationPlotter();
 	}

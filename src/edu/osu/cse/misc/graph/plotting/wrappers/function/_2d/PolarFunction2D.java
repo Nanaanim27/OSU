@@ -27,7 +27,7 @@ public class PolarFunction2D extends PolynomialFunction2D {
 
 	@Override
 	public String getParameter() {
-		return "h";
+		return "theta";
 	}
 
 	public void setAngleType(AngleType type) {

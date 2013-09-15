@@ -13,15 +13,13 @@ public class Overview extends JPanel {
 	private EquationPlotter plotInstance;
 	
 	private JList<String> list = new JList<String>() {{
+		
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setModel(model);
 	}};
 	
 	public Overview(EquationPlotter instance) {
 		this.plotInstance = instance;
-		addFunction("f(x)=sin(x)");
-		addFunction("x(t)=3t");
-		addFunction("y(t)=t");
 		this.add(list);
 	}
 	

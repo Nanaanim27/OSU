@@ -8,27 +8,27 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.PolynomialFunction2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.PolarFunction2D;
 
-public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunction2D> {
+public class PolarEquationForm extends AbstractEquationForm<PolarFunction2D> {
 
-	public PolynomialEquationForm() {
+	public PolarEquationForm() {
 		JPanel formContainer = new JPanel();
 		formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
 		formContainer.add(this.getVariableDescriptionLabel());
-		formContainer.add(new PolynomialEquationField());
+		formContainer.add(new PolarEquationField());
 
 		this.add(formContainer);
 	}
 
 	@Override
 	protected JLabel getVariableDescriptionLabel() {
-		return new JLabel("Variable: x");
+		return new JLabel("Variable: theta");
 	}
 
-	class PolynomialEquationField extends AbstractEquationField {
+	class PolarEquationField extends AbstractEquationField {
 
-		public PolynomialEquationField() {
+		public PolarEquationField() {
 			this.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 0));
 			this.add(this.getLeftSideLabel());
 			this.add(this.getRightSideField());
@@ -36,7 +36,7 @@ public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunct
 
 		@Override
 		protected JLabel getLeftSideLabel() {
-			return new JLabel("f(x)=");
+			return new JLabel("r=");
 		}
 
 		@Override
@@ -44,19 +44,21 @@ public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunct
 			return new KeyAdapter() {
 				@Override
 				public void keyTyped(KeyEvent e) {
-					if (e.getKeyChar() == '\n') {
-						String submission = getRightSideField().getText();
-						if (!submission.trim().equals("")) {
-							PolynomialFunction2D eq = new PolynomialFunction2D(submission);
+					String submission = getRightSideField().getText();
+					if (!submission.trim().equals("")) {
+						if (e.getKeyChar() == '\n') {
+							PolarFunction2D eq = new PolarFunction2D(getRightSideField().getText());
 							if (eq.ensureValidity()) {
 								getGraphPanelLink().addFunction(eq);
 								getRightSideField().setText("");
-								getPlotterLink().overview.addFunction("f(x)=" + submission);
+								getPlotterLink().overview.addFunction("r=" + submission);
 							}
 						}
 					}
 				}
 			};
 		}
+
 	}
+
 }
