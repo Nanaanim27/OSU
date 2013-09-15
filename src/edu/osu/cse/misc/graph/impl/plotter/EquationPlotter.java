@@ -16,7 +16,7 @@ import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 public class EquationPlotter extends JFrame {
 
 	private JTabbedPane operationsPane = new JTabbedPane() {{
-		setPreferredSize(new Dimension(150, 400));
+		setPreferredSize(new Dimension(200, 400));
 	}};
 	
 	private GraphPanel2D graphPanel = new GraphPanel2D(-20, 20, -20, 20) {{
@@ -28,12 +28,15 @@ public class EquationPlotter extends JFrame {
 		JPanel container = new JPanel(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.VERTICAL;
 		gbc.weightx = 0D;
 		gbc.weighty = 0D;
 		
 		buildTabbedPane();
 		container.add(operationsPane, gbc);
+		gbc.gridx++;
+		container.add(this.graphPanel);
+		
 		
 		def(container);
 	}

@@ -25,7 +25,7 @@ public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunct
 
 	@Override
 	protected JLabel getVariableDescriptionLabel() {
-		return new JLabel("Evaluate with respect to: x");
+		return new JLabel("Variable: x");
 	}
 
 	class PolynomialEquationField extends AbstractEquationField {

@@ -82,7 +82,7 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 
 	@Override
 	protected JLabel getVariableDescriptionLabel() {
-		return new JLabel("Evaluate with respect to: t");
+		return new JLabel("Variable: t");
 	}
 	
 	class ParametricEquationField extends AbstractEquationField {

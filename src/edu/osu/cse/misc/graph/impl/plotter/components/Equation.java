@@ -4,12 +4,11 @@ import edu.osu.cse.misc.graph.impl.plotter.components.equationform.AbstractEquat
 import edu.osu.cse.misc.graph.impl.plotter.components.equationform.ParametricEquationForm;
 import edu.osu.cse.misc.graph.impl.plotter.components.equationform.PolynomialEquationForm;
 import edu.osu.cse.misc.graph.wrappers.function._2d.AbstractFunction2D;
-import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
 /**
  * 
  */
-enum Equation {
+public enum Equation {
 	
 	POLYNOMIAL(new PolynomialEquationForm()),
 	PARAMETRIC(new ParametricEquationForm()),

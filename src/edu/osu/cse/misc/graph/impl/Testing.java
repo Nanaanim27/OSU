@@ -1,11 +1,7 @@
 package edu.osu.cse.misc.graph.impl;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import edu.osu.cse.misc.graph.impl.plotter.components.equationform.PolynomialEquationForm;
 import edu.osu.cse.misc.graph.wrappers.function._2d.AbstractFunction2D;
 import edu.osu.cse.misc.graph.wrappers.graph.GraphPanel2D;
 
@@ -41,9 +37,9 @@ public class Testing {
 
 	private static void testPlotter() {
 		JFrame frame = new JFrame();
-		JPanel container = new JPanel(new BorderLayout());
-		container.add(new PolynomialEquationForm(new GraphPanel2D(-10, 10, -10, 10)), BorderLayout.NORTH);
-		frame.add(container);
+		
+		
+		
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
