@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.IOException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +20,8 @@ import edu.osu.cse.misc.graph.plotting.wrappers.graph.GraphPanel2D;
 
 public class EquationPlotter extends JFrame {
 
+	private static final String LOGO_PATH = "http://puu.sh/4scVA.png";
+	
 	public JTabbedPane operationsPane = new JTabbedPane() {{
 		setPreferredSize(new Dimension(300, this.getPreferredSize().height));
 	}};
@@ -59,6 +64,11 @@ public class EquationPlotter extends JFrame {
 	/** Default JFrame operations */
 	private void def(JPanel container) {
 		this.setTitle("Equation Plotter");
+		try {
+			this.setIconImage(ImageIO.read(new URL(LOGO_PATH)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.add(container);
 		this.pack();
 		this.setLocationRelativeTo(null);

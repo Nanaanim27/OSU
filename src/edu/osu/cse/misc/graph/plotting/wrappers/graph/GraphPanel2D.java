@@ -175,6 +175,7 @@ public class GraphPanel2D extends JPanel {
 	public void addFunction(AbstractFunction2D function) {
 		this.functions.add(function);
 		this.repaint();
+		System.out.println("New size: " + this.functions.size());
 	}
 
 	/**
@@ -184,6 +185,11 @@ public class GraphPanel2D extends JPanel {
 	 */
 	public void removeFunction(AbstractFunction2D function) {
 		this.functions.remove(function);
+		this.repaint();
+	}
+	
+	public void removeFunction(int index) {
+		this.functions.remove(index);
 		this.repaint();
 	}
 

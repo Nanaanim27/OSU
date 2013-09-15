@@ -56,7 +56,7 @@ public class AddFunction extends JPanel {
 			}
 		});
 	}};
-
+	
 	private ButtonGroup buttons = new ButtonGroup() {{
 		add(polynomial);
 		add(parametric);
