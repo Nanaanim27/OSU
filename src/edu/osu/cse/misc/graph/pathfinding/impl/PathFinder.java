@@ -1,9 +1,11 @@
 package edu.osu.cse.misc.graph.pathfinding.impl;
 
 import java.awt.BorderLayout;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import edu.osu.cse.misc.graph.pathfinding.impl.components.Controller;
 import edu.osu.cse.misc.graph.pathfinding.impl.components.GridPanel;
@@ -13,7 +15,7 @@ public class PathFinder extends JFrame {
 
 	public PathFinder() {
 		JPanel container = new JPanel();
-		final Grid grid = new Grid(50, 50);
+		final Grid grid = new Grid(20, 20);
 
 		GridPanel gridPanel = new GridPanel(grid);
 		container.add(gridPanel, BorderLayout.CENTER);
@@ -33,6 +35,14 @@ public class PathFinder extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new PathFinder();
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					new PathFinder();
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

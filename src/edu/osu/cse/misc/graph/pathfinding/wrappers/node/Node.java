@@ -1,9 +1,12 @@
 package edu.osu.cse.misc.graph.pathfinding.wrappers.node;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import edu.osu.cse.misc.graph.pathfinding.astar.AStarProperties;
+import edu.osu.cse.misc.graph.pathfinding.dijkstra.DijkstraPath;
+import edu.osu.cse.misc.graph.pathfinding.dijkstra.DijkstraProperties;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.grid.Grid;
 
 
@@ -19,34 +22,43 @@ public class Node {
 	private int id;
 
 	public AStarProperties aStarProperties;
+	private DijkstraProperties dijkstraProperties;
 
 	static int count = 0;
-	
+
 	public Node(Grid grid, int x, int y) {
 		this.id = count++;
 		this.x = x;
 		this.y = y;
 		this.grid = grid;
 		this.type = NodeType.UNBLOCKED;
-		this.aStarProperties = new AStarProperties(this, grid.start, grid.finish);
+		this.aStarProperties = new AStarProperties(this, grid);
+		this.dijkstraProperties = new DijkstraProperties(this, grid);
+	}
+	
+	public DijkstraProperties dijkstraProperties(DijkstraPath pathInstance) {
+		return DijkstraProperties.getInstanceForPath(pathInstance, this);
 	}
 
 	public Node translate(int dX, int dY) {
 		return this.grid.getNode(this.x + dX, this.y + dY);
 	}
-	
+
 	public int getId() {
 		return this.id;
 	}
 
 	public Node[] getNeighbors(boolean includeDiagonals) {
 		ArrayList<Node> nodes = new ArrayList<>(8);
-		for (Node side : new Node[] { this.translate(0, 1), this.translate(0, -1), this.translate(-1, 0), this.translate(1, 0) }) {
-			if (side != null) {
-				nodes.add(side);
+		try {
+			for (Node side : new Node[] { this.translate(0, 1), this.translate(0, -1), this.translate(-1, 0), this.translate(1, 0) }) {
+				if (side != null) {
+					nodes.add(side);
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 		if (includeDiagonals) {
 			for (Node diag : new Node[] { this.translate(1, 1), this.translate(-1, -1), this.translate(-1, 1), this.translate(1, -1) }) {
 				if (diag != null) {
@@ -56,12 +68,15 @@ public class Node {
 		}
 		return nodes.toArray(new Node[nodes.size()]);
 	}
-	
+
 	public void draw(Graphics2D g) {
-		g.setColor(this.type.getColor());
-		g.fillRect(x * Node.SIZE, y * Node.SIZE, Node.SIZE, Node.SIZE);
+		draw(g, this.type.getColor());
 	}
 
+	public void draw(Graphics2D g, Color colorOverride) {
+		g.setColor(colorOverride);
+		g.fillRect(x * Node.SIZE, y * Node.SIZE, Node.SIZE, Node.SIZE);
+	}
 
 
 	/**

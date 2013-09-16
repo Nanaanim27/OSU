@@ -9,7 +9,8 @@ public enum NodeType {
 	FINISH(Color.red),
 	UNBLOCKED(Color.white),
 	BLOCKED(Color.black),
-	PATH(Color.blue);
+	PATH(Color.blue),
+	CHECKPOINT(Color.cyan);
 	
 	private Color color;
 	

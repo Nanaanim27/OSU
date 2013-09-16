@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import edu.osu.cse.misc.graph.pathfinding.wrappers.grid.Grid;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
@@ -25,7 +26,7 @@ public class GridPanel extends JPanel {
 		addMouseListener(ma);
 		addMouseMotionListener(ma);
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics gfx) {
 		super.paintComponent(gfx);
@@ -37,40 +38,27 @@ public class GridPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	private MouseAdapter listener(final Grid grid) {
 		return new MouseAdapter() {
 
 			private Node dragTarget;
-
+			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				dragTarget = grid.getNode(e.getPoint());
-			};
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (dragTarget != null) {
-					Node nodeAtMouse = grid.getNode(e.getPoint());
-					if (nodeAtMouse != null && nodeAtMouse != dragTarget) {
-						if ((dragTarget.type == NodeType.START || dragTarget.type == NodeType.FINISH) && (nodeAtMouse.type != NodeType.FINISH && nodeAtMouse.type != NodeType.START)) {
-							nodeAtMouse.type = dragTarget.type;
-							dragTarget.type = NodeType.UNBLOCKED;
-							dragTarget = nodeAtMouse;
-							if (dragTarget.type == NodeType.START) {
-								grid.start = nodeAtMouse.aStarProperties.start = nodeAtMouse;
-							}
-							else if (dragTarget.type == NodeType.FINISH) {
-								grid.finish = nodeAtMouse.aStarProperties.finish = nodeAtMouse;
-							}
-						}
-						else if (nodeAtMouse.type == NodeType.UNBLOCKED) {
-							nodeAtMouse.type = NodeType.BLOCKED;
-							dragTarget = nodeAtMouse;
-						}
-						else if (nodeAtMouse.type == NodeType.BLOCKED) {
-							nodeAtMouse.type = NodeType.UNBLOCKED;
-							dragTarget = nodeAtMouse;
+				if (SwingUtilities.isLeftMouseButton(e)) {
+					dragTarget = grid.getNode(e.getPoint());
+					if (dragTarget.type == NodeType.UNBLOCKED) {
+						dragTarget.type = NodeType.BLOCKED;
+					}
+					else if (dragTarget.type == NodeType.BLOCKED) {
+						dragTarget.type = NodeType.UNBLOCKED;
+					}
+					if (dragTarget != null) {
+						drawPath = null;
+						for (Node n : grid.getNodes()) {
+							if (n.type == NodeType.PATH)
+								n.type = NodeType.UNBLOCKED;
 						}
 						repaint();
 					}
@@ -78,18 +66,48 @@ public class GridPanel extends JPanel {
 			};
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				Node target = grid.getNode(e.getPoint());
-				if (target.type == NodeType.UNBLOCKED) {
-					target.type = NodeType.BLOCKED;
+			public void mouseDragged(MouseEvent e) {
+				if (SwingUtilities.isLeftMouseButton(e)) {
+					if (dragTarget != null) {
+						Node nodeAtMouse = grid.getNode(e.getPoint());
+						if (nodeAtMouse != null && nodeAtMouse != dragTarget) {
+							if ((dragTarget.type == NodeType.START || dragTarget.type == NodeType.FINISH) && (nodeAtMouse.type != NodeType.FINISH && nodeAtMouse.type != NodeType.START)) {
+								nodeAtMouse.type = dragTarget.type;
+								dragTarget.type = NodeType.UNBLOCKED;
+								dragTarget = nodeAtMouse;
+								if (dragTarget.type == NodeType.START) {
+									grid.start = nodeAtMouse.aStarProperties.grid.start = nodeAtMouse;
+								}
+								else if (dragTarget.type == NodeType.FINISH) {
+									grid.finish = nodeAtMouse.aStarProperties.grid.start = nodeAtMouse;
+								}
+							}
+							else if (nodeAtMouse.type == NodeType.UNBLOCKED) {
+								nodeAtMouse.type = NodeType.BLOCKED;
+								dragTarget = nodeAtMouse;
+							}
+							else if (nodeAtMouse.type == NodeType.BLOCKED) {
+								nodeAtMouse.type = NodeType.UNBLOCKED;
+								dragTarget = nodeAtMouse;
+							}
+							repaint();
+						}
+					}
 				}
-				else if (target.type == NodeType.BLOCKED) {
-					target.type = NodeType.UNBLOCKED;
-				}
-				repaint();
 			};
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+					Node nodeAtMouse = grid.getNode(e.getPoint());
+					if (nodeAtMouse != null && nodeAtMouse.type != NodeType.START && nodeAtMouse.type != NodeType.FINISH) {
+						nodeAtMouse.type = nodeAtMouse.type != NodeType.CHECKPOINT ? NodeType.CHECKPOINT : NodeType.UNBLOCKED;
+						repaint();
+					}
+				}
+			}
 		};
 	}
 
-	
+
 }

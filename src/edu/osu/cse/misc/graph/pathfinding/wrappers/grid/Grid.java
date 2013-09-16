@@ -1,4 +1,4 @@
- package edu.osu.cse.misc.graph.pathfinding.wrappers.grid;
+package edu.osu.cse.misc.graph.pathfinding.wrappers.grid;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -35,23 +35,16 @@ public class Grid {
 				if (!next.equals(this.start) && !next.equals(this.finish)) { 
 					this.nodes[h][w] = new Node(this, w, h);
 				}
-				else {
-					this.start.aStarProperties.start = this.start;
-					this.start.aStarProperties.finish = this.finish;
-					this.finish.aStarProperties.start = this.start;
-					this.finish.aStarProperties.finish = this.finish;
-				}
 			}
 		}
 	}
 
 	public Node getNode(int width, int height) {
-		try {
-			Node n = this.nodes[height][width];
-			return n;
-		} catch (ArrayIndexOutOfBoundsException err) { 
+		if (width < 0 || height < 0)
 			return null;
-		}
+		else if (width >= this.width || height >= this.height)
+			return null;
+		return this.nodes[height][width];
 	}
 
 	public Node getNode(Point p) {
