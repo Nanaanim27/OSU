@@ -1,8 +1,7 @@
-package edu.osu.cse.misc.graph.plotting.methods;
+package edu.osu.cse.misc.graph.vectors;
 
-import edu.osu.cse.misc.graph.plotting.wrappers.vector.Vector;
 
-public abstract class Vectors {
+public class Vectors {
 
 	/**
 	 * Sums two vectors.

@@ -1,8 +1,8 @@
 package edu.osu.cse.misc.graph.plotting.wrappers;
 
 
-import edu.osu.cse.misc.graph.plotting.methods.Vectors;
-import edu.osu.cse.misc.graph.plotting.wrappers.vector.Vector;
+import edu.osu.cse.misc.graph.vectors.Vector;
+import edu.osu.cse.misc.graph.vectors.Vectors;
 
 /**
  * The standard equation for a plane is:

@@ -8,7 +8,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.osu.cse.misc.graph.plotting.impl.plotter.components.equationform.PolynomialEquationForm.PolynomialEquationField;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.ParametricFunction2D;
 
 public class ParametricEquationForm extends AbstractEquationForm<ParametricFunction2D> {
