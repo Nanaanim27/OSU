@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import edu.osu.cse.misc.graph.pathfinding.astar.AStarPath;
-import edu.osu.cse.misc.graph.pathfinding.impl.components.GridPanel;
+import edu.osu.cse.misc.graph.pathfinding.impl.gridsearch.components.GridPanel;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.Path;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;
@@ -71,6 +71,10 @@ public class DijkstraPath extends Path {
 			visited.add(current);
 			while (this.finish.dijkstraProperties(this).permanentValue < 0) {
 				Node lowest = getLowestTempValue(this.visited);
+				if (lowest == null) {
+					System.err.println("We ran out of open Nodes.");
+					return null;
+				}
 				lowest.dijkstraProperties(this).permanentValue = lowest.dijkstraProperties(this).temporaryValue;
 				current = lowest;
 				for (Node neighbor : current.getNeighbors(useDiagonal)) {

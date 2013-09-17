@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-import edu.osu.cse.misc.graph.pathfinding.impl.components.GridPanel;
+import edu.osu.cse.misc.graph.pathfinding.impl.gridsearch.components.GridPanel;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.Path;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;

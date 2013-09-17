@@ -42,7 +42,7 @@ public class Grid {
 	public Node getNode(int width, int height) {
 		if (width < 0 || height < 0)
 			return null;
-		else if (width >= this.width || height >= this.height)
+		if (width >= this.width || height >= this.height)
 			return null;
 		return this.nodes[height][width];
 	}
