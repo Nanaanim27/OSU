@@ -41,7 +41,7 @@ public class Controller extends JPanel {
 					public void run() {
 						clear();
 						if (aStar.isSelected()) {
-							AStarPath path = new AStarPath(gridPanel);
+							AStarPath path = new AStarPath(gridPanel.grid);
 							for (Node node : gridPanel.grid.getNodes()) {
 								if (node.type == NodeType.CHECKPOINT) {
 									path.addCheckpoint(node);
@@ -56,7 +56,7 @@ public class Controller extends JPanel {
 						}
 						else if (dijkstra.isSelected()) {
 							try {
-								DijkstraPath path = new DijkstraPath(gridPanel);
+								DijkstraPath path = new DijkstraPath(gridPanel.grid);
 								for (Node n : gridPanel.grid.getNodes()) {
 									DijkstraProperties.registerProperties(n, gridPanel.grid, path);
 									n.dijkstraProperties(path).reset();
@@ -77,6 +77,17 @@ public class Controller extends JPanel {
 			}
 		});
 	}};
+	
+	/*private Node[] includeEndpoints(Node[] noEndpoints) {
+		Node[] included = new Node[noEndpoints.length + 2];
+		included[0] = this.gridPanel.grid.start;
+		included[included.length-1] = this.gridPanel.grid.finish;
+		
+		for (int i = 1; i < included.length-1; i++) {
+			included[i] = noEndpoints[i-1];
+		}
+		return included;
+	}*/
 
 	private JButton resetGrid = new JButton("Reset grid") {{
 		addActionListener(new ActionListener() {

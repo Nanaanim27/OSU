@@ -2,7 +2,6 @@ package edu.osu.cse.misc.game.snake.wrappers.field;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -18,7 +17,7 @@ public class GameField {
 	public final int width, height;
 	private final Block[][] blocks;
 	public final Snake game;
-	private Block initialHead;
+	public Block initialHead, food;
 	private Random random = new Random();
 	
 	public GameField(Snake game, int width, int height) {
@@ -26,19 +25,20 @@ public class GameField {
 		this.width = width;
 		this.height = height;
 		this.blocks = new Block[height][width];
-		
+
 		int startFoodX = random.nextInt(width-2) + 1;
 		int startFoodY = random.nextInt(height-2) + 1;
 		if (startFoodX == width/2 && startFoodY == height/2) {
 			startFoodX++;
 			startFoodY--;
 		}
-		
+
 		for (int h = 0; h < height; h++) {
 			for (int w = 0; w < width; w++) {
 				this.blocks[h][w] = new Block(this, w, h);
 				if (h == startFoodY && w == startFoodX) {
 					this.getBlock(w, h).type = BlockType.FOOD;
+					this.food = this.getBlock(w, h);
 				}
 				else if (h == 0 || w == 0 || h == height - 1 || w == width -1) {
 					this.getBlock(w, h).type = BlockType.SNAKE;
@@ -50,18 +50,26 @@ public class GameField {
 			}
 		}
 	}
-	
+
 	public void addFood() {
 		LinkedList<Block> allBlocks = getBlocks();
-		allBlocks.removeAll(Arrays.asList(game.snakeLine.chain));
-		allBlocks.get(random.nextInt(allBlocks.size())).type = BlockType.FOOD;
+		for (int i = 0; i < allBlocks.size();) {
+			Block block = allBlocks.get(i);
+			if (block.type == BlockType.SNAKE)
+				allBlocks.remove(i);
+			else
+				i++;
+		}
+		Block nextFood = allBlocks.get(random.nextInt(allBlocks.size()));
+		nextFood.type = BlockType.FOOD;
+		this.food = nextFood;
 		this.game.repaint();
 	}
-	
+
 	public Block getInitialHead() {
 		return this.initialHead;
 	}
-	
+
 	public Block getBlock(int x, int y) {
 		if (x < 0 || y < 0) {
 			return null;
@@ -71,7 +79,7 @@ public class GameField {
 		}
 		return this.blocks[y][x];
 	}
-	
+
 	/**
 	 * Gathers all of the Blocks in the grid, excluding the walls, into one list
 	 * 
@@ -93,8 +101,19 @@ public class GameField {
 			for (int height = 0; height < this.blocks.length; height++) {
 				next = this.getBlock(width, height);
 				if (next != null) {
-					g.setColor(next.type.getColor());
+					g.setColor(Color.black);
 					g.fillRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
+					g.setColor(next.type.getColor());
+					if (next == game.snakeLine.chain.getFirst()) {
+						g.setColor(Color.white);
+					}
+					else if (next == game.snakeLine.chain.getLast()) {
+						g.setColor(Color.decode("#888888"));
+					}
+					if (next.type == BlockType.FOOD || game.snakeLine.chain.contains(next))
+						g.fillRect((next.x * Block.SIZE) + 1, (next.y * Block.SIZE) + 1, Block.SIZE - 2, Block.SIZE - 2);
+					else
+						g.fillRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
 					g.setColor(Color.black);
 					g.drawRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
 				}

@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import edu.osu.cse.misc.graph.pathfinding.impl.gridsearch.components.GridPanel;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.Path;
+import edu.osu.cse.misc.graph.pathfinding.wrappers.grid.Grid;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;
 
@@ -16,20 +17,18 @@ public class AStarPath extends Path {
 	private LinkedHashSet<Node> closed = new LinkedHashSet<>();
 	private LinkedHashSet<Node> checkpoints = new LinkedHashSet<>();
 	private Node start, finish;
-	private GridPanel gridPanel;
+	private Grid grid;
 
-	private Node[] nodes;
-
-	public AStarPath(GridPanel gridPanel) {
-		this.start = gridPanel.grid.start;
-		this.finish = gridPanel.grid.finish;
-		this.gridPanel = gridPanel;
+	public AStarPath(Grid grid) {
+		this.start = grid.start;
+		this.finish = grid.finish;
+		this.grid = grid;
 	}
 	
-	public AStarPath(Node start, Node finish, GridPanel gridPanel) {
-		this.start = gridPanel.grid.start = start;
-		this.finish = gridPanel.grid.finish = finish;
-		this.gridPanel = gridPanel;
+	public AStarPath(Node start, Node finish, Grid grid) {
+		this.start = grid.start = start;
+		this.finish = grid.finish = finish;
+		this.grid = grid;
 	}
 
 	public void addCheckpoint(Node node) {
@@ -67,7 +66,7 @@ public class AStarPath extends Path {
 			while (this.checkpoints.size() > 0) {
 				AStarPath nearestCheckpoint = null; //A Path from the previous start to the next checkpoint
 				for (Node checkpoint : this.checkpoints) {
-					AStarPath pathToCheckpoint = new AStarPath(nextStart, checkpoint, this.gridPanel);
+					AStarPath pathToCheckpoint = new AStarPath(nextStart, checkpoint, this.grid);
 					if (nearestCheckpoint == null || pathToCheckpoint.toNodeArray(useDiagonals).length < nearestCheckpoint.toNodeArray(useDiagonals).length) {
 						nearestCheckpoint = pathToCheckpoint;
 					}
@@ -76,7 +75,7 @@ public class AStarPath extends Path {
 				allNodes.addAll(Arrays.asList(nearestCheckpoint.toNodeArray(useDiagonals)));
 				this.checkpoints.remove(nearestCheckpoint.finish);
 			}
-			allNodes.addAll(Arrays.asList(new AStarPath(nextStart, originalFinish, this.gridPanel).toNodeArray(useDiagonals)));
+			allNodes.addAll(Arrays.asList(new AStarPath(nextStart, originalFinish, this.grid).toNodeArray(useDiagonals)));
 			return allNodes.toArray(new Node[allNodes.size()]);
 		}
 		else {
@@ -113,7 +112,13 @@ public class AStarPath extends Path {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Navigates backwards from the finish Node and adds each parent to a list of Nodes.
+	 * <br />The resulting array will be sorted from start to finish.
+	 * 
+	 * @return An array of Nodes representing the path of this Path.
+	 */
 	private Node[] getPath() {
 		if (this.getFinish().aStarProperties.parent == null) {
 			System.err.println("End has no parent. Path is not generated yet.");
@@ -123,7 +128,7 @@ public class AStarPath extends Path {
 		Node current = this.getFinish();
 		do {
 			if (current.type != NodeType.START && current.type != NodeType.FINISH && current.type != NodeType.CHECKPOINT) {
-				nodes.add(current);
+				nodes.addFirst(current);
 			}
 			current = current.aStarProperties.parent;
 		} while (current != this.getStart());

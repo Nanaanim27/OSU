@@ -42,8 +42,10 @@ public class BlockChain {
 				this.chain.addFirst(next);
 				if (next.type != BlockType.FOOD)
 					this.chain.removeLast().type = BlockType.EMPTY;
-				else
+				else {
+					this.game.setScore(this.chain.size()-1);
 					this.game.field.addFood();
+				}
 				next.type = BlockType.SNAKE;
 			}
 			else {
@@ -55,7 +57,6 @@ public class BlockChain {
 	}
 
 	public void setDirection(Direction newDirection) {
-		System.out.println("Updating direction to: " + newDirection);
 		this.chain.getFirst().direction = newDirection;
 	}
 	

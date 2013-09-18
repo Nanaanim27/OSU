@@ -11,6 +11,7 @@ public class Block {
 	public BlockType type;
 	public Direction direction;
 	public Block parent;
+	public boolean isPath = false;
 
 	public Block(GameField field, int x, int y) {
 		this.x = x;
@@ -18,7 +19,7 @@ public class Block {
 		this.type = BlockType.EMPTY;
 		this.direction = Direction.NONE;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "(" + x + ", " + y + ")";

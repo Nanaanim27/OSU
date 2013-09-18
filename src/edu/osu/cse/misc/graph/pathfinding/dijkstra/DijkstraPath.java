@@ -4,9 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-import edu.osu.cse.misc.graph.pathfinding.astar.AStarPath;
-import edu.osu.cse.misc.graph.pathfinding.impl.gridsearch.components.GridPanel;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.Path;
+import edu.osu.cse.misc.graph.pathfinding.wrappers.grid.Grid;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;
 
@@ -15,20 +14,18 @@ public class DijkstraPath extends Path {
 	private LinkedHashSet<Node> visited = new LinkedHashSet<>();
 	private LinkedHashSet<Node> checkpoints = new LinkedHashSet<>();
 	private Node start, finish;
-	private GridPanel gridPanel;
-	private Node[] nodes;
+	private Grid grid;
 
-	public DijkstraPath(GridPanel gridPanel) {
-		this.gridPanel = gridPanel;
-		this.start = gridPanel.grid.start;
-		this.finish = gridPanel.grid.finish;
+	public DijkstraPath(Grid grid) {
+		this.grid = grid;
+		this.start = grid.start;
+		this.finish = grid.finish;
 	}
 
-	public DijkstraPath(Node start, Node finish, GridPanel gridPanel) {
-		System.out.println("gridPanel: " + gridPanel);
-		this.gridPanel = gridPanel;
-		this.start = gridPanel.grid.start = start;
-		this.finish = gridPanel.grid.finish = finish;
+	public DijkstraPath(Node start, Node finish, Grid grid) {
+		this.grid = grid;
+		this.start = grid.start = start;
+		this.finish = grid.finish = finish;
 	}
 
 	public void addCheckpoint(Node checkpoint) {
@@ -38,7 +35,6 @@ public class DijkstraPath extends Path {
 	@Override
 	public Node[] toNodeArray(boolean useDiagonal) {
 		if (nodes != null) {
-			System.out.println("Re-using stored nodes");
 			return nodes;
 		}
 
@@ -51,8 +47,8 @@ public class DijkstraPath extends Path {
 			while (this.checkpoints.size() > 0) {
 				DijkstraPath nearestCheckpoint = null; //A Path from the previous start to the next checkpoint
 				for (Node checkpoint : this.checkpoints) {
-					DijkstraPath pathToCheckpoint = new DijkstraPath(nextStart, checkpoint, this.gridPanel);
-					DijkstraProperties.registerProperties(this.gridPanel.grid, pathToCheckpoint);
+					DijkstraPath pathToCheckpoint = new DijkstraPath(nextStart, checkpoint, this.grid);
+					DijkstraProperties.registerProperties(this.grid, pathToCheckpoint);
 					if (nearestCheckpoint == null || pathToCheckpoint.toNodeArray(useDiagonal).length < nearestCheckpoint.toNodeArray(useDiagonal).length) {
 						nearestCheckpoint = pathToCheckpoint;
 					}
@@ -61,7 +57,9 @@ public class DijkstraPath extends Path {
 				allNodes.addAll(Arrays.asList(nearestCheckpoint.toNodeArray(useDiagonal)));
 				this.checkpoints.remove(nearestCheckpoint.finish);
 			}
-			allNodes.addAll(Arrays.asList(new AStarPath(nextStart, originalFinish, this.gridPanel).toNodeArray(useDiagonal)));
+			DijkstraPath temp = new DijkstraPath(nextStart, originalFinish, this.grid);
+			DijkstraProperties.registerProperties(this.grid, temp);
+			allNodes.addAll(Arrays.asList(temp.toNodeArray(useDiagonal)));
 			return allNodes.toArray(new Node[allNodes.size()]);
 		}
 		else {
@@ -92,7 +90,7 @@ public class DijkstraPath extends Path {
 				}
 			}
 		}
-		return (nodes = traceBack(useDiagonal));
+		return (nodes = getPath(useDiagonal));
 	}
 
 	private Node getLowestTempValue(LinkedHashSet<Node> nodes) {
@@ -107,7 +105,13 @@ public class DijkstraPath extends Path {
 		return lowestNode;
 	}
 
-	private Node[] traceBack(boolean useDiagonals) {
+	/**
+	 * Navigates backwards from the finish Node and adds each parent to a list of Nodes.
+	 * <br />The resulting array will be sorted from start to finish.
+	 * 
+	 * @return An array of Nodes representing the path of this Path.
+	 */
+	private Node[] getPath(boolean useDiagonals) {
 		LinkedList<Node> nodes = new LinkedList<>();
 		Node current = this.finish;
 		do {
@@ -117,7 +121,7 @@ public class DijkstraPath extends Path {
 					if (remainder == neighbor.dijkstraProperties(this).permanentValue) {
 						current = neighbor;
 						if (neighbor != this.start)
-							nodes.add(current);
+							nodes.addFirst(current);
 					}
 				}
 			}

@@ -1,12 +1,24 @@
 package edu.osu.cse.misc.game.snake.wrappers;
 
+import java.awt.event.KeyEvent;
+
 public enum Direction {
 
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST,
-	NONE;
+	NORTH(KeyEvent.VK_UP),
+	SOUTH(KeyEvent.VK_DOWN),
+	EAST(KeyEvent.VK_RIGHT),
+	WEST(KeyEvent.VK_LEFT),
+	NONE(-1);
+	
+	private int automationKeyCode;
+	
+	Direction(int automationKeyCode) {
+		this.automationKeyCode = automationKeyCode;
+	}
+	
+	public int getAutomationKeyCode() {
+		return this.automationKeyCode;
+	}
 	
 	public static Direction getOppositeDirection(Direction d) {
 		switch(d) {

@@ -1,21 +1,28 @@
 package edu.osu.cse.misc.game.snake;
 
-import java.applet.Applet;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.beans.Transient;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import edu.osu.cse.misc.game.snake.wrappers.Direction;
 import edu.osu.cse.misc.game.snake.wrappers.block.Block;
 import edu.osu.cse.misc.game.snake.wrappers.block.BlockChain;
 import edu.osu.cse.misc.game.snake.wrappers.field.GameField;
 
-public class Snake extends Applet implements KeyListener {
+public class Snake extends JPanel implements KeyListener {
+
+	private JFrame mainFrame;
 
 	/** Time in ms between each game tick */
 	private int tickSpeed = 75;
@@ -24,37 +31,62 @@ public class Snake extends Applet implements KeyListener {
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	private ScheduledFuture<?> currentScheduledTask;
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		this.field.draw(g);
+	private Dimension renderDimension;
+	private BufferedImage renderImage;
+	private Graphics renderGraphics;
+
+	public Snake(int width, int height) {
+		this.field = new GameField(this, width, height);
+		this.snakeLine = new BlockChain(this, this.field.getInitialHead());
+
+		this.mainFrame = new JFrame();
+		this.setScore(0);
+		this.mainFrame.add(this);
+		this.mainFrame.pack();
+		this.mainFrame.setVisible(true);
+		this.mainFrame.setResizable(false);
+		this.mainFrame.setLocationRelativeTo(null);
+		this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.addKeyListener(this);
+		this.requestFocus();
+	}
+	
+	public void start() {
+		this.currentScheduledTask = createScheduledTask();
 	}
 
 	public void tick() {
-		try {
-			snakeLine.update();
-			repaint();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		snakeLine.update();
+		repaint();
 	}
 
-	@Override
-	public void init() {
-		int width = 30, height = 30;
-		this.field = new GameField(this, width, height);
-
-		this.snakeLine = new BlockChain(this, this.field.getInitialHead());
-		this.addKeyListener(this);
-		this.setSize(new Dimension((this.field.width * Block.SIZE) + 1, (this.field.height * Block.SIZE) + 1));
-		this.setVisible(true);
-		this.requestFocus();
-		this.currentScheduledTask = createScheduledTask();
+	public void setScore(int score) {
+		this.mainFrame.setTitle("Snake | Channeled | Score: " + score);
 	}
 
 	public void end(int finalScore) {
 		System.out.println("Game Over. Final score: " + finalScore);
 		System.exit(0);
+	}
+
+	@Override
+	@Transient
+	public Dimension getPreferredSize() {
+		return new Dimension((this.field.width * Block.SIZE) + 1, (this.field.height * Block.SIZE) + 1);
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		if (renderDimension == null || renderImage == null || renderGraphics == null) {
+			renderDimension = this.getSize();
+			renderImage = new BufferedImage(renderDimension.width, renderDimension.height, BufferedImage.TYPE_INT_ARGB);
+			renderGraphics = renderImage.getGraphics();
+		}
+		renderGraphics.setColor(Color.black);
+		renderGraphics.fillRect(0, 0, renderDimension.width, renderDimension.height);
+
+		this.field.draw(renderGraphics);
+		g.drawImage(renderImage, 0, 0, this);
 	}
 
 	@Override
@@ -82,7 +114,7 @@ public class Snake extends Applet implements KeyListener {
 			}
 		}, 0L, this.tickSpeed, TimeUnit.MILLISECONDS);
 	}
-
+	
 	private Direction getDirection(KeyEvent e) {
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_UP:
@@ -104,5 +136,9 @@ public class Snake extends Applet implements KeyListener {
 			default:
 				return Direction.NONE;
 		}
+	}
+
+	public static void main(String[] args) {
+		new Snake(30, 30).start();
 	}
 }
