@@ -19,7 +19,7 @@ public class GameField {
 	public final Snake game;
 	public Block initialHead, food;
 	private Random random = new Random();
-	
+
 	public GameField(Snake game, int width, int height) {
 		this.game = game;
 		this.width = width;
@@ -52,18 +52,22 @@ public class GameField {
 	}
 
 	public void addFood() {
-		LinkedList<Block> allBlocks = getBlocks();
-		for (int i = 0; i < allBlocks.size();) {
-			Block block = allBlocks.get(i);
-			if (block.type == BlockType.SNAKE)
-				allBlocks.remove(i);
-			else
-				i++;
+		try {
+			LinkedList<Block> allBlocks = getBlocks();
+			for (int i = 0; i < allBlocks.size();) {
+				Block block = allBlocks.get(i);
+				if (block.type == BlockType.SNAKE)
+					allBlocks.remove(i);
+				else
+					i++;
+			}
+			Block nextFood = allBlocks.get(random.nextInt(allBlocks.size()));
+			nextFood.type = BlockType.FOOD;
+			this.food = nextFood;
+			this.game.repaint();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		Block nextFood = allBlocks.get(random.nextInt(allBlocks.size()));
-		nextFood.type = BlockType.FOOD;
-		this.food = nextFood;
-		this.game.repaint();
 	}
 
 	public Block getInitialHead() {
@@ -94,7 +98,7 @@ public class GameField {
 		}
 		return blocks;
 	}
-	
+
 	public void draw(Graphics g) {
 		Block next;
 		for (int width = 0; width < this.blocks[0].length; width++) {
@@ -116,6 +120,11 @@ public class GameField {
 						g.fillRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
 					g.setColor(Color.black);
 					g.drawRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
+
+					if (next.isPath && !game.snakeLine.chain.contains(next)) {
+						g.setColor(Color.white);
+						g.fillRect((next.x*Block.SIZE) + Block.SIZE/2, (next.y*Block.SIZE) + Block.SIZE/2, 1, 1);
+					}
 				}
 				else {
 					System.out.println("Null Block at: " + width + ", " + height);
