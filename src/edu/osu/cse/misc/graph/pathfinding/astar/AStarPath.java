@@ -1,14 +1,13 @@
 package edu.osu.cse.misc.graph.pathfinding.astar;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-import edu.osu.cse.misc.graph.pathfinding.impl.gridsearch.components.GridPanel;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.Path;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.grid.Grid;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
+import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeQuery;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;
 
 public class AStarPath extends Path {
@@ -16,19 +15,13 @@ public class AStarPath extends Path {
 	private LinkedHashSet<Node> open = new LinkedHashSet<>();
 	private LinkedHashSet<Node> closed = new LinkedHashSet<>();
 	private LinkedHashSet<Node> checkpoints = new LinkedHashSet<>();
-	private Node start, finish;
-	private Grid grid;
+
+	public AStarPath(Node start, Node finish, Grid grid) {
+		super(start, finish, grid);
+	}
 
 	public AStarPath(Grid grid) {
-		this.start = grid.start;
-		this.finish = grid.finish;
-		this.grid = grid;
-	}
-	
-	public AStarPath(Node start, Node finish, Grid grid) {
-		this.start = grid.start = start;
-		this.finish = grid.finish = finish;
-		this.grid = grid;
+		super(grid);
 	}
 
 	public void addCheckpoint(Node node) {
@@ -54,9 +47,9 @@ public class AStarPath extends Path {
 	}
 
 	@Override
-	public Node[] toNodeArray(boolean useDiagonals) {
-		if (nodes != null) {
-			return nodes;
+	public NodeQuery toNodeQuery(boolean useDiagonals) {
+		if (this.nodes != null) {
+			return this.nodes;
 		}
 		if (this.checkpoints.size() > 0) {
 			LinkedList<Node> allNodes = new LinkedList<>();
@@ -67,43 +60,41 @@ public class AStarPath extends Path {
 				AStarPath nearestCheckpoint = null; //A Path from the previous start to the next checkpoint
 				for (Node checkpoint : this.checkpoints) {
 					AStarPath pathToCheckpoint = new AStarPath(nextStart, checkpoint, this.grid);
-					if (nearestCheckpoint == null || pathToCheckpoint.toNodeArray(useDiagonals).length < nearestCheckpoint.toNodeArray(useDiagonals).length) {
+					if (nearestCheckpoint == null || pathToCheckpoint.toNodeQuery(useDiagonals).size() < nearestCheckpoint.toNodeQuery(useDiagonals).size()) {
 						nearestCheckpoint = pathToCheckpoint;
 					}
 				}
 				nextStart = nearestCheckpoint.finish;
-				allNodes.addAll(Arrays.asList(nearestCheckpoint.toNodeArray(useDiagonals)));
+				allNodes.addAll(nearestCheckpoint.toNodeQuery(useDiagonals));
 				this.checkpoints.remove(nearestCheckpoint.finish);
 			}
-			allNodes.addAll(Arrays.asList(new AStarPath(nextStart, originalFinish, this.grid).toNodeArray(useDiagonals)));
-			return allNodes.toArray(new Node[allNodes.size()]);
+			allNodes.addAll(new AStarPath(nextStart, originalFinish, this.grid).toNodeQuery(useDiagonals));
+			return new NodeQuery(new Node[allNodes.size()]);
 		}
 		else {
 			Node current = this.getStart();
 			current.aStarProperties.setHeuristic();
-			current.aStarProperties.open(open, closed);
+			current.aStarProperties.open(this.open, this.closed);
 			while (!this.open.isEmpty()) {
 				current = findLowestTotalCost(this.open);
 				if (current.equals(this.finish)) {
-					return (nodes = this.getPath());
+					return (this.nodes = this.getPath());
 				}
-				current.aStarProperties.close(open, closed);
-				Node[] neighbors = current.getNeighbors(useDiagonals);
+				current.aStarProperties.close(this.open, this.closed);
+				NodeQuery neighbors = current.getNeighbors(useDiagonals).filter(NodeType.BLOCKED);
 				for (Node neighbor : neighbors) {
-					if (neighbor.type != NodeType.BLOCKED) {
-						if (!this.closed.contains(neighbor)) {
-							if (!this.open.contains(neighbor)) {
-								neighbor.aStarProperties.open(open, closed);
+					if (!this.closed.contains(neighbor)) {
+						if (!this.open.contains(neighbor)) {
+							neighbor.aStarProperties.open(this.open, this.closed);
+							neighbor.aStarProperties.parent = current;
+							neighbor.aStarProperties.setValues();
+						}
+						else {
+							Node theoretical = new Node(neighbor.grid, neighbor.x, neighbor.y); //Imaginary node parented to the current to calculate its movement cost.
+							theoretical.aStarProperties.parent = current;
+							theoretical.aStarProperties.setMovementCost();
+							if (theoretical.aStarProperties.movementCost < neighbor.aStarProperties.movementCost) {
 								neighbor.aStarProperties.parent = current;
-								neighbor.aStarProperties.setValues();
-							}
-							else {
-								Node theoretical = new Node(neighbor.grid, neighbor.x, neighbor.y); //Imaginary node parented to the current to calculate its movement cost.
-								theoretical.aStarProperties.parent = current;
-								theoretical.aStarProperties.setMovementCost();
-								if (theoretical.aStarProperties.movementCost < neighbor.aStarProperties.movementCost) {
-									neighbor.aStarProperties.parent = current;
-								}
 							}
 						}
 					}
@@ -112,17 +103,17 @@ public class AStarPath extends Path {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Navigates backwards from the finish Node and adds each parent to a list of Nodes.
 	 * <br />The resulting array will be sorted from start to finish.
 	 * 
-	 * @return An array of Nodes representing the path of this Path.
+	 * @return An array of Nodes representing this Path.
 	 */
-	private Node[] getPath() {
+	private NodeQuery getPath() {
 		if (this.getFinish().aStarProperties.parent == null) {
 			System.err.println("End has no parent. Path is not generated yet.");
-			return new Node[] {  };
+			return new NodeQuery(new Node[] {  });
 		}
 		LinkedList<Node> nodes = new LinkedList<>();
 		Node current = this.getFinish();
@@ -132,7 +123,7 @@ public class AStarPath extends Path {
 			}
 			current = current.aStarProperties.parent;
 		} while (current != this.getStart());
-		return nodes.toArray(new Node[nodes.size()]);
+		return new NodeQuery(nodes.toArray(new Node[nodes.size()]));
 	}
 
 	private Node findLowestTotalCost(Collection<Node> nodes) {

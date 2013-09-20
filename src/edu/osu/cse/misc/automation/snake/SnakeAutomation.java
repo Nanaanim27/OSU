@@ -29,16 +29,16 @@ public class SnakeAutomation extends Snake {
 				long start = System.currentTimeMillis();
 				this.grid = convertToGrid(this.field);
 				this.pathToFood = new AStarPath(this.toNode(this.snakeLine.chain.getFirst()), this.toNode(this.field.food), this.grid);
-				pathAvailable = this.pathToFood.toNodeArray(false) != null;
+				pathAvailable = this.pathToFood.toNodeQuery(false) != null;
 				if (pathAvailable) {
-					for (Node n : this.pathToFood.toNodeArray(false)) {
+					for (Node n : this.pathToFood.toNodeQuery(false)) {
 						toBlock(n).isPath = true;
 					}
 				}
 				else {
 					System.err.println("Can't find path to food. Trying to find path to tail of snake");
 					this.pathToFood = new AStarPath(this.toNode(this.snakeLine.chain.getFirst()), this.toNode(this.snakeLine.chain.getLast()), this.grid);
-					this.pathAvailable = this.pathToFood.toNodeArray(false) != null;
+					this.pathAvailable = this.pathToFood.toNodeQuery(false) != null;
 					if (!pathAvailable) {
 						System.err.println("We ran out of paths to easily compute. Game over.");
 					}
@@ -50,7 +50,7 @@ public class SnakeAutomation extends Snake {
 				Block current = this.snakeLine.chain.getFirst();
 				Block next = toBlock(this.pathToFood.step(false));
 				if (next.type == BlockType.FOOD) {
-					for (Node n : this.pathToFood.toNodeArray(false)) {
+					for (Node n : this.pathToFood.toNodeQuery(false)) {
 						toBlock(n).isPath = false;
 					}
 					this.pathToFood = null;

@@ -11,9 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import edu.osu.cse.misc.graph.pathfinding.astar.AStarPath;
+import edu.osu.cse.misc.graph.pathfinding.depthfirst.DepthFirstPath;
 import edu.osu.cse.misc.graph.pathfinding.dijkstra.DijkstraPath;
 import edu.osu.cse.misc.graph.pathfinding.dijkstra.DijkstraProperties;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
+import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeQuery;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;
 import edu.osu.cse.misc.work.Worker;
 
@@ -25,12 +27,16 @@ public class Controller extends JPanel {
 		setFocusPainted(false);
 	}};
 	private JRadioButton dijkstra = new JRadioButton("Dijkstra") {{
-		setFocusable(false);
+		setFocusPainted(false);
+	}};
+	private JRadioButton depthFirst = new JRadioButton("Depth First") {{
+		setFocusPainted(false);
 	}};
 
 	private ButtonGroup group = new ButtonGroup() {{
-		add(aStar);
-		add(dijkstra);
+		add(Controller.this.aStar);
+		add(Controller.this.dijkstra);
+		add(Controller.this.depthFirst);
 	}};
 
 	private JButton findPath = new JButton("Find Path") {{
@@ -40,49 +46,55 @@ public class Controller extends JPanel {
 				Worker.executeRunnable(new Runnable() {
 					public void run() {
 						clear();
-						if (aStar.isSelected()) {
-							AStarPath path = new AStarPath(gridPanel.grid);
-							for (Node node : gridPanel.grid.getNodes()) {
+						if (Controller.this.aStar.isSelected()) {
+							AStarPath path = new AStarPath(Controller.this.gridPanel.grid);
+							for (Node node : Controller.this.gridPanel.grid.getNodes()) {
 								if (node.type == NodeType.CHECKPOINT) {
 									path.addCheckpoint(node);
 								}
 							}
-							Node[] nodes = path.toNodeArray(useDiagonals.isSelected());
-							if (nodes != null && nodes.length > 0) {
-								System.out.println("Nodes in computed path: " + nodes.length);
-								gridPanel.drawPath = nodes;
-								gridPanel.repaint();
+							NodeQuery nodes = path.toNodeQuery(Controller.this.useDiagonals.isSelected());
+							if (nodes != null && nodes.size() > 0) {
+								System.out.println("Nodes in computed path: " + nodes.size());
+								Controller.this.gridPanel.drawPath = nodes;
+								Controller.this.gridPanel.repaint();
 							}
 						}
-						else if (dijkstra.isSelected()) {
-							try {
-								DijkstraPath path = new DijkstraPath(gridPanel.grid);
-								for (Node n : gridPanel.grid.getNodes()) {
-									DijkstraProperties.registerProperties(n, gridPanel.grid, path);
-									n.dijkstraProperties(path).reset();
-									if (n.type == NodeType.CHECKPOINT) {
-										path.addCheckpoint(n);
-									}
+						else if (Controller.this.dijkstra.isSelected()) {
+							DijkstraPath path = new DijkstraPath(Controller.this.gridPanel.grid);
+							for (Node n : Controller.this.gridPanel.grid.getNodes()) {
+								DijkstraProperties.registerProperties(n, Controller.this.gridPanel.grid, path);
+								n.dijkstraProperties(path).reset();
+								if (n.type == NodeType.CHECKPOINT) {
+									path.addCheckpoint(n);
 								}
-								Node[] nodes = path.toNodeArray(useDiagonals.isSelected());
-								if (nodes != null && nodes.length > 0) {
-									System.out.println("Nodes in computed path: " + nodes.length);
-									gridPanel.drawPath = nodes;
-									gridPanel.repaint();
-								}
-							} catch (Exception err) {err.printStackTrace();}
+							}
+							NodeQuery nodes = path.toNodeQuery(Controller.this.useDiagonals.isSelected());
+							if (nodes != null && nodes.size() > 0) {
+								System.out.println("Nodes in computed path: " + nodes.size());
+								Controller.this.gridPanel.drawPath = nodes;
+								Controller.this.gridPanel.repaint();
+							}
+						}
+						else if (Controller.this.depthFirst.isSelected()) {
+							DepthFirstPath path = new DepthFirstPath(Controller.this.gridPanel.grid);
+							NodeQuery nodes = path.toNodeQuery(Controller.this.useDiagonals.isSelected());
+							if (nodes != null && nodes.size() > 0) {
+								Controller.this.gridPanel.drawPath = nodes;
+								Controller.this.gridPanel.repaint();
+							}
 						}
 					}
 				});
 			}
 		});
 	}};
-	
+
 	/*private Node[] includeEndpoints(Node[] noEndpoints) {
 		Node[] included = new Node[noEndpoints.length + 2];
 		included[0] = this.gridPanel.grid.start;
 		included[included.length-1] = this.gridPanel.grid.finish;
-		
+
 		for (int i = 1; i < included.length-1; i++) {
 			included[i] = noEndpoints[i-1];
 		}
@@ -96,15 +108,15 @@ public class Controller extends JPanel {
 				Worker.executeRunnable(new Runnable() {
 					public void run() {
 						clear();
-						Node[] nodes = gridPanel.grid.getNodes();
+						Node[] nodes = Controller.this.gridPanel.grid.getNodes();
 						for (int i = 0; i < nodes.length; i++) {
 							if (i == 0) {
 								nodes[i].type = NodeType.START;
-								gridPanel.grid.start = nodes[i];
+								Controller.this.gridPanel.grid.start = nodes[i];
 							}
 							else if (i == nodes.length-1) {
 								nodes[i].type = NodeType.FINISH;
-								gridPanel.grid.finish = nodes[i];
+								Controller.this.gridPanel.grid.finish = nodes[i];
 							}
 							else {
 								nodes[i].type = NodeType.UNBLOCKED;
@@ -131,21 +143,21 @@ public class Controller extends JPanel {
 	}};
 
 	private void clear() {
-		if (gridPanel.drawPath != null) {
-			for (Node n : gridPanel.drawPath) {
+		if (this.gridPanel.drawPath != null) {
+			for (Node n : this.gridPanel.drawPath) {
 				n.type = NodeType.UNBLOCKED;
 			}
 		}
-		for (Node n : gridPanel.grid.getNodes()) {
+		for (Node n : this.gridPanel.grid.getNodes()) {
 			if (n.type == NodeType.START) {
-				gridPanel.grid.start = n;
+				this.gridPanel.grid.start = n;
 			}
 			else if (n.type == NodeType.FINISH) {
-				gridPanel.grid.finish = n;
+				this.gridPanel.grid.finish = n;
 			}
 		}
-		gridPanel.drawPath = null;
-		gridPanel.repaint();
+		this.gridPanel.drawPath = null;
+		this.gridPanel.repaint();
 	}
 
 	private JCheckBox useDiagonals = new JCheckBox("Use Diagonals") {{
@@ -156,12 +168,13 @@ public class Controller extends JPanel {
 		this.gridPanel = gridPanel;
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		this.add(aStar);
-		this.add(dijkstra);
-		this.add(useDiagonals);
-		this.add(findPath);
-		this.add(resetGrid);
-		this.add(clear);
+		this.add(this.aStar);
+		this.add(this.dijkstra);
+		this.add(this.depthFirst);
+		this.add(this.useDiagonals);
+		this.add(this.findPath);
+		this.add(this.resetGrid);
+		this.add(this.clear);
 	}
 
 

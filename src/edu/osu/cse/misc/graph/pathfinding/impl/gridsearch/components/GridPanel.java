@@ -12,12 +12,13 @@ import javax.swing.SwingUtilities;
 
 import edu.osu.cse.misc.graph.pathfinding.wrappers.grid.Grid;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
+import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeQuery;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;
 
 public class GridPanel extends JPanel {
 
 	public Grid grid;
-	public Node[] drawPath;
+	public NodeQuery drawPath;
 
 	public GridPanel(Grid grid) {
 		this.grid = grid;
@@ -31,7 +32,7 @@ public class GridPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics gfx) {
 		super.paintComponent(gfx);
-		grid.draw((Graphics2D) gfx);
+		this.grid.draw((Graphics2D) gfx);
 		if (this.drawPath != null) {
 			for (Node node : this.drawPath) {
 				node.type = NodeType.PATH;
@@ -49,17 +50,17 @@ public class GridPanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e)) {
-					covered.clear();
-					dragTarget = grid.getNode(e.getPoint());
-					if (dragTarget != null) {
-						if (dragTarget.type == NodeType.UNBLOCKED) {
-							dragTarget.type = NodeType.BLOCKED;
+					this.covered.clear();
+					this.dragTarget = grid.getNode(e.getPoint());
+					if (this.dragTarget != null) {
+						if (this.dragTarget.type == NodeType.UNBLOCKED) {
+							this.dragTarget.type = NodeType.BLOCKED;
 						}
-						else if (dragTarget.type == NodeType.BLOCKED) {
-							dragTarget.type = NodeType.UNBLOCKED;
+						else if (this.dragTarget.type == NodeType.BLOCKED) {
+							this.dragTarget.type = NodeType.UNBLOCKED;
 						}
-						if (dragTarget != null) {
-							drawPath = null;
+						if (this.dragTarget != null) {
+							GridPanel.this.drawPath = null;
 							for (Node n : grid.getNodes()) {
 								if (n.type == NodeType.PATH)
 									n.type = NodeType.UNBLOCKED;
@@ -73,31 +74,31 @@ public class GridPanel extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e)) {
-					if (dragTarget != null) {
+					if (this.dragTarget != null) {
 						Node nodeAtMouse = grid.getNode(e.getPoint());
-						if (!covered.contains(nodeAtMouse)) {
-							if (nodeAtMouse != null && nodeAtMouse != dragTarget) {
-								if ((dragTarget.type == NodeType.START || dragTarget.type == NodeType.FINISH) && (nodeAtMouse.type != NodeType.FINISH && nodeAtMouse.type != NodeType.START)) {
-									nodeAtMouse.type = dragTarget.type;
-									dragTarget.type = NodeType.UNBLOCKED;
-									dragTarget = nodeAtMouse;
-									if (dragTarget.type == NodeType.START) {
+						if (!this.covered.contains(nodeAtMouse)) {
+							if (nodeAtMouse != null && nodeAtMouse != this.dragTarget) {
+								if ((this.dragTarget.type == NodeType.START || this.dragTarget.type == NodeType.FINISH) && (nodeAtMouse.type != NodeType.FINISH && nodeAtMouse.type != NodeType.START)) {
+									nodeAtMouse.type = this.dragTarget.type;
+									this.dragTarget.type = NodeType.UNBLOCKED;
+									this.dragTarget = nodeAtMouse;
+									if (this.dragTarget.type == NodeType.START) {
 										grid.start = nodeAtMouse.aStarProperties.grid.start = nodeAtMouse;
 									}
-									else if (dragTarget.type == NodeType.FINISH) {
+									else if (this.dragTarget.type == NodeType.FINISH) {
 										grid.finish = nodeAtMouse.aStarProperties.grid.start = nodeAtMouse;
 									}
 								}
 								else if (nodeAtMouse.type == NodeType.UNBLOCKED) {
 									nodeAtMouse.type = NodeType.BLOCKED;
-									dragTarget = nodeAtMouse;
+									this.dragTarget = nodeAtMouse;
 								}
 								else if (nodeAtMouse.type == NodeType.BLOCKED) {
 									nodeAtMouse.type = NodeType.UNBLOCKED;
-									dragTarget = nodeAtMouse;
+									this.dragTarget = nodeAtMouse;
 								}
 								repaint();
-								covered.add(nodeAtMouse);
+								this.covered.add(nodeAtMouse);
 							}
 						}
 					}

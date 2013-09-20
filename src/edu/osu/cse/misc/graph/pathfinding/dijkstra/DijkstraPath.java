@@ -1,31 +1,25 @@
 package edu.osu.cse.misc.graph.pathfinding.dijkstra;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import edu.osu.cse.misc.graph.pathfinding.wrappers.Path;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.grid.Grid;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
+import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeQuery;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.NodeType;
 
 public class DijkstraPath extends Path {
 
 	private LinkedHashSet<Node> visited = new LinkedHashSet<>();
 	private LinkedHashSet<Node> checkpoints = new LinkedHashSet<>();
-	private Node start, finish;
-	private Grid grid;
-
-	public DijkstraPath(Grid grid) {
-		this.grid = grid;
-		this.start = grid.start;
-		this.finish = grid.finish;
-	}
 
 	public DijkstraPath(Node start, Node finish, Grid grid) {
-		this.grid = grid;
-		this.start = grid.start = start;
-		this.finish = grid.finish = finish;
+		super(start, finish, grid);
+	}
+
+	public DijkstraPath(Grid grid) {
+		super(grid);
 	}
 
 	public void addCheckpoint(Node checkpoint) {
@@ -33,9 +27,9 @@ public class DijkstraPath extends Path {
 	}
 
 	@Override
-	public Node[] toNodeArray(boolean useDiagonal) {
-		if (nodes != null) {
-			return nodes;
+	public NodeQuery toNodeQuery(boolean useDiagonal) {
+		if (this.nodes != null) {
+			return this.nodes;
 		}
 
 		if (this.checkpoints.size() > 0) {
@@ -49,24 +43,24 @@ public class DijkstraPath extends Path {
 				for (Node checkpoint : this.checkpoints) {
 					DijkstraPath pathToCheckpoint = new DijkstraPath(nextStart, checkpoint, this.grid);
 					DijkstraProperties.registerProperties(this.grid, pathToCheckpoint);
-					if (nearestCheckpoint == null || pathToCheckpoint.toNodeArray(useDiagonal).length < nearestCheckpoint.toNodeArray(useDiagonal).length) {
+					if (nearestCheckpoint == null || pathToCheckpoint.toNodeQuery(useDiagonal).size() < nearestCheckpoint.toNodeQuery(useDiagonal).size()) {
 						nearestCheckpoint = pathToCheckpoint;
 					}
 				}
 				nextStart = nearestCheckpoint.finish;
-				allNodes.addAll(Arrays.asList(nearestCheckpoint.toNodeArray(useDiagonal)));
+				allNodes.addAll(nearestCheckpoint.toNodeQuery(useDiagonal));
 				this.checkpoints.remove(nearestCheckpoint.finish);
 			}
 			DijkstraPath temp = new DijkstraPath(nextStart, originalFinish, this.grid);
 			DijkstraProperties.registerProperties(this.grid, temp);
-			allNodes.addAll(Arrays.asList(temp.toNodeArray(useDiagonal)));
-			return allNodes.toArray(new Node[allNodes.size()]);
+			allNodes.addAll(temp.toNodeQuery(useDiagonal));
+			return new NodeQuery(allNodes.toArray(new Node[allNodes.size()]));
 		}
 		else {
 			System.out.println("Finding path");
 			Node current = this.start;
 			current.dijkstraProperties(this).temporaryValue = 0;
-			visited.add(current);
+			this.visited.add(current);
 			while (this.finish.dijkstraProperties(this).permanentValue < 0) {
 				Node lowest = getLowestTempValue(this.visited);
 				if (lowest == null) {
@@ -75,22 +69,20 @@ public class DijkstraPath extends Path {
 				}
 				lowest.dijkstraProperties(this).permanentValue = lowest.dijkstraProperties(this).temporaryValue;
 				current = lowest;
-				for (Node neighbor : current.getNeighbors(useDiagonal)) {
-					if (neighbor.type != NodeType.BLOCKED) {
-						if (!visited.contains(neighbor)) {
-							if (neighbor.dijkstraProperties(this).permanentValue < 0) {
-								int movementCostToNeighbor = current.dijkstraProperties(this).getMovementCostTo(neighbor);
-								if (neighbor.dijkstraProperties(this).temporaryValue < 0 || movementCostToNeighbor < neighbor.dijkstraProperties(this).temporaryValue) {
-									neighbor.dijkstraProperties(this).temporaryValue = movementCostToNeighbor;
-								}
-								visited.add(neighbor);
+				for (Node neighbor : current.getNeighbors(useDiagonal).filter(NodeType.BLOCKED)) {
+					if (!this.visited.contains(neighbor)) {
+						if (neighbor.dijkstraProperties(this).permanentValue < 0) {
+							int movementCostToNeighbor = current.dijkstraProperties(this).getMovementCostTo(neighbor);
+							if (neighbor.dijkstraProperties(this).temporaryValue < 0 || movementCostToNeighbor < neighbor.dijkstraProperties(this).temporaryValue) {
+								neighbor.dijkstraProperties(this).temporaryValue = movementCostToNeighbor;
 							}
+							this.visited.add(neighbor);
 						}
 					}
 				}
 			}
 		}
-		return (nodes = getPath(useDiagonal));
+		return (this.nodes = getPath(useDiagonal));
 	}
 
 	private Node getLowestTempValue(LinkedHashSet<Node> nodes) {
@@ -111,7 +103,7 @@ public class DijkstraPath extends Path {
 	 * 
 	 * @return An array of Nodes representing the path of this Path.
 	 */
-	private Node[] getPath(boolean useDiagonals) {
+	private NodeQuery getPath(boolean useDiagonals) {
 		LinkedList<Node> nodes = new LinkedList<>();
 		Node current = this.finish;
 		do {
@@ -126,7 +118,7 @@ public class DijkstraPath extends Path {
 				}
 			}
 		} while(current != this.start);
-		return nodes.toArray(new Node[nodes.size()]);
+		return new NodeQuery(nodes.toArray(new Node[nodes.size()]));
 	}
 
 
