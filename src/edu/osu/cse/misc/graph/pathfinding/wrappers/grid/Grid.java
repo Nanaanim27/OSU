@@ -54,10 +54,10 @@ public class Grid {
 	}
 
 	public Node[] getNodes() {
-		Node[] singleArrNodes = new Node[width*height];
+		Node[] singleArrNodes = new Node[this.width*this.height];
 		int index = 0;
-		for (int w = 0; w < width; w++) {
-			for (int h = 0; h < height; h++) {
+		for (int w = 0; w < this.width; w++) {
+			for (int h = 0; h < this.height; h++) {
 				singleArrNodes[index++] = this.nodes[h][w];
 			}
 		}

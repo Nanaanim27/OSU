@@ -26,8 +26,8 @@ public class GameField {
 		this.height = height;
 		this.blocks = new Block[height][width];
 
-		int startFoodX = random.nextInt(width-2) + 1;
-		int startFoodY = random.nextInt(height-2) + 1;
+		int startFoodX = this.random.nextInt(width-2) + 1;
+		int startFoodY = this.random.nextInt(height-2) + 1;
 		if (startFoodX == width/2 && startFoodY == height/2) {
 			startFoodX++;
 			startFoodY--;
@@ -61,7 +61,7 @@ public class GameField {
 				else
 					i++;
 			}
-			Block nextFood = allBlocks.get(random.nextInt(allBlocks.size()));
+			Block nextFood = allBlocks.get(this.random.nextInt(allBlocks.size()));
 			nextFood.type = BlockType.FOOD;
 			this.food = nextFood;
 			this.game.repaint();
@@ -108,20 +108,20 @@ public class GameField {
 					g.setColor(Color.black);
 					g.fillRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
 					g.setColor(next.type.getColor());
-					if (next == game.snakeLine.chain.getFirst()) {
+					if (next == this.game.snakeLine.chain.getFirst()) {
 						g.setColor(Color.white);
 					}
-					else if (next == game.snakeLine.chain.getLast()) {
+					else if (next == this.game.snakeLine.chain.getLast()) {
 						g.setColor(Color.decode("#888888"));
 					}
-					if (next.type == BlockType.FOOD || game.snakeLine.chain.contains(next))
+					if (next.type == BlockType.FOOD || this.game.snakeLine.chain.contains(next))
 						g.fillRect((next.x * Block.SIZE) + 1, (next.y * Block.SIZE) + 1, Block.SIZE - 2, Block.SIZE - 2);
 					else
 						g.fillRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
 					g.setColor(Color.black);
 					g.drawRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
 
-					if (next.isPath && !game.snakeLine.chain.contains(next)) {
+					if (next.isPath && !this.game.snakeLine.chain.contains(next)) {
 						g.setColor(Color.white);
 						g.fillRect((next.x*Block.SIZE) + Block.SIZE/2, (next.y*Block.SIZE) + Block.SIZE/2, 1, 1);
 					}

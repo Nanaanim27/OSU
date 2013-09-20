@@ -1,7 +1,9 @@
 package edu.osu.cse.misc.graph.pathfinding.wrappers.node;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.TreeSet;
 
 public class NodeQuery extends LinkedList<Node> implements Iterable<Node> {
 
@@ -21,4 +23,14 @@ public class NodeQuery extends LinkedList<Node> implements Iterable<Node> {
 		}
 		return this;
 	}
+	
+	public NodeQuery sort(Comparator<Node> comparator) {
+		TreeSet<Node> sortedSet = new TreeSet<>(comparator);
+		sortedSet.addAll(this);
+		this.clear();
+		this.addAll(sortedSet);
+		return this;
+	};
+	
+	
 }

@@ -18,11 +18,11 @@ public class Point3D {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(x);
+		temp = Double.doubleToLongBits(this.x);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
+		temp = Double.doubleToLongBits(this.y);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(z);
+		temp = Double.doubleToLongBits(this.z);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}

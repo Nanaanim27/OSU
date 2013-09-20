@@ -63,7 +63,7 @@ public abstract class AbstractFunction2D {
 		} catch (Exception e) {
 			//isValid is triggered false up higher in the event of an exception
 		}
-		return isValid;
+		return this.isValid;
 	}
 
 	public boolean isValid() {

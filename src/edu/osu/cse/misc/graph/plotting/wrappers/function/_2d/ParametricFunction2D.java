@@ -29,7 +29,7 @@ public class ParametricFunction2D extends AbstractFunction2D {
 	
 	@Override
 	public boolean ensureValidity() {
-		return xT.ensureValidity() && yT.ensureValidity();
+		return this.xT.ensureValidity() && this.yT.ensureValidity();
 	}
 
 	@Override

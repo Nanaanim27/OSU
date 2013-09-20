@@ -19,7 +19,7 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 		formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
 		formContainer.add(this.getVariableDescriptionLabel());
 
-		yT = new ParametricEquationField() {
+		this.yT = new ParametricEquationField() {
 
 			@Override
 			protected JLabel getLeftSideLabel() {
@@ -31,10 +31,10 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 				return new KeyAdapter() {
 					@Override
 					public void keyTyped(KeyEvent e) {
-						if (xT == null || !ParametricEquationForm.this.isLinked())
+						if (ParametricEquationForm.this.xT == null || !ParametricEquationForm.this.isLinked())
 							return;
-						String xTSubmission = xT.getRightSideField().getText();
-						String yTSubmission = yT.getRightSideField().getText();
+						String xTSubmission = ParametricEquationForm.this.xT.getRightSideField().getText();
+						String yTSubmission = ParametricEquationForm.this.yT.getRightSideField().getText();
 						if (!xTSubmission.trim().equals("") && !yTSubmission.trim().equals("")) {
 							if (e.getKeyChar() == '\n') {
 								ParametricFunction2D eq = new ParametricFunction2D(
@@ -42,8 +42,8 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 										yTSubmission);
 								if (eq.ensureValidity()) {
 									ParametricEquationForm.this.getGraphPanelLink().addFunction(eq);
-									yT.getRightSideField().setText("");
-									xT.getRightSideField().setText("");
+									ParametricEquationForm.this.yT.getRightSideField().setText("");
+									ParametricEquationForm.this.xT.getRightSideField().setText("");
 									getPlotterLink().overview.addFunction("x(t)=" + xTSubmission + "; " + "y(t)=" + yTSubmission);
 								}
 							}
@@ -52,7 +52,7 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 				};
 			}
 		};
-		xT = new ParametricEquationField() {
+		this.xT = new ParametricEquationField() {
 
 			@Override
 			protected JLabel getLeftSideLabel() {
@@ -64,20 +64,20 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 				return new KeyAdapter() {
 					@Override
 					public void keyTyped(KeyEvent e) {
-						if (yT == null)
+						if (ParametricEquationForm.this.yT == null)
 							return;
 						if (e.getKeyChar() == '\n' || e.getKeyChar() == '\t') {
-							yT.getRightSideField().requestFocus();
-							yT.getRightSideField().setSelectionStart(0);
-							yT.getRightSideField().setSelectionEnd(yT.getRightSideField().getText().length());
+							ParametricEquationForm.this.yT.getRightSideField().requestFocus();
+							ParametricEquationForm.this.yT.getRightSideField().setSelectionStart(0);
+							ParametricEquationForm.this.yT.getRightSideField().setSelectionEnd(ParametricEquationForm.this.yT.getRightSideField().getText().length());
 						}
 					}
 				};
 			}
 		};
 
-		formContainer.add(xT);
-		formContainer.add(yT);
+		formContainer.add(this.xT);
+		formContainer.add(this.yT);
 		this.add(formContainer);
 	}
 

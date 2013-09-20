@@ -56,12 +56,12 @@ public class Snake extends JPanel implements KeyListener {
 	}
 
 	public void tick() {
-		snakeLine.update();
+		this.snakeLine.update();
 		repaint();
 	}
 
 	public void setScore(int score) {
-		this.mainFrame.setTitle("Snake | Channeled | Score: " + score);
+		this.mainFrame.setTitle("Snake | Score: " + score);
 	}
 
 	public void end(int finalScore) {
@@ -77,16 +77,16 @@ public class Snake extends JPanel implements KeyListener {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		if (renderDimension == null || renderImage == null || renderGraphics == null) {
-			renderDimension = this.getSize();
-			renderImage = new BufferedImage(renderDimension.width, renderDimension.height, BufferedImage.TYPE_INT_ARGB);
-			renderGraphics = renderImage.getGraphics();
+		if (this.renderDimension == null || this.renderImage == null || this.renderGraphics == null) {
+			this.renderDimension = this.getSize();
+			this.renderImage = new BufferedImage(this.renderDimension.width, this.renderDimension.height, BufferedImage.TYPE_INT_ARGB);
+			this.renderGraphics = this.renderImage.getGraphics();
 		}
-		renderGraphics.setColor(Color.black);
-		renderGraphics.fillRect(0, 0, renderDimension.width, renderDimension.height);
+		this.renderGraphics.setColor(Color.black);
+		this.renderGraphics.fillRect(0, 0, this.renderDimension.width, this.renderDimension.height);
 
-		this.field.draw(renderGraphics);
-		g.drawImage(renderImage, 0, 0, this);
+		this.field.draw(this.renderGraphics);
+		g.drawImage(this.renderImage, 0, 0, this);
 	}
 
 	@Override

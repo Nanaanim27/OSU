@@ -11,6 +11,8 @@ import edu.osu.cse.misc.graph.vectors.Vectors;
  * An orthogonal direction vector of this plane is <a, b, c>
  * A point that lies on the plane is (x, y, z)
  * 
+ * Unfinished.
+ * 
  */
 public class Plane {
 

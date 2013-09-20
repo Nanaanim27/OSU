@@ -45,7 +45,7 @@ public class EquationPlotter extends JFrame {
 		gbc.gridy= 0;
 		
 		buildTabbedPane();
-		container.add(operationsPane, gbc);
+		container.add(this.operationsPane, gbc);
 		gbc.gridx++;
 		gbc.weightx = 1D;
 		gbc.weighty = 1D;
@@ -55,9 +55,9 @@ public class EquationPlotter extends JFrame {
 	}
 	
 	private void buildTabbedPane() {
-		operationsPane.addTab("Overview", (overview = new Overview(this)));
-		operationsPane.add("Add", (addFunction = new AddFunction(this)));
-		operationsPane.setBorder(BorderFactory.createLineBorder(Color.blue));
+		this.operationsPane.addTab("Overview", (this.overview = new Overview(this)));
+		this.operationsPane.add("Add", (this.addFunction = new AddFunction(this)));
+		this.operationsPane.setBorder(BorderFactory.createLineBorder(Color.blue));
 	}
 	
 	

@@ -24,13 +24,13 @@ public class SnakeAutomation extends Snake {
 
 	@Override
 	public void tick() {
-		if (pathAvailable) {
+		if (this.pathAvailable) {
 			if (this.pathToFood == null) { //We need to generate a path to the food
 				long start = System.currentTimeMillis();
 				this.grid = convertToGrid(this.field);
 				this.pathToFood = new AStarPath(this.toNode(this.snakeLine.chain.getFirst()), this.toNode(this.field.food), this.grid);
-				pathAvailable = this.pathToFood.toNodeQuery(false) != null;
-				if (pathAvailable) {
+				this.pathAvailable = this.pathToFood.toNodeQuery(false) != null;
+				if (this.pathAvailable) {
 					for (Node n : this.pathToFood.toNodeQuery(false)) {
 						toBlock(n).isPath = true;
 					}
@@ -39,7 +39,7 @@ public class SnakeAutomation extends Snake {
 					System.err.println("Can't find path to food. Trying to find path to tail of snake");
 					this.pathToFood = new AStarPath(this.toNode(this.snakeLine.chain.getFirst()), this.toNode(this.snakeLine.chain.getLast()), this.grid);
 					this.pathAvailable = this.pathToFood.toNodeQuery(false) != null;
-					if (!pathAvailable) {
+					if (!this.pathAvailable) {
 						System.err.println("We ran out of paths to easily compute. Game over.");
 					}
 				}

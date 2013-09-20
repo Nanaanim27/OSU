@@ -73,7 +73,7 @@ public class Node {
 
 	public void draw(Graphics2D g, Color colorOverride) {
 		g.setColor(colorOverride);
-		g.fillRect(x * Node.SIZE, y * Node.SIZE, Node.SIZE, Node.SIZE);
+		g.fillRect(this.x * Node.SIZE, this.y * Node.SIZE, Node.SIZE, Node.SIZE);
 	}
 
 
@@ -84,8 +84,8 @@ public class Node {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
+		result = prime * result + this.x;
+		result = prime * result + this.y;
 		return result;
 	}
 
@@ -104,7 +104,7 @@ public class Node {
 
 	@Override
 	public String toString() {
-		return "(" + x + ", " + y + ")";
+		return "(" + this.x + ", " + this.y + ")";
 	}
 
 

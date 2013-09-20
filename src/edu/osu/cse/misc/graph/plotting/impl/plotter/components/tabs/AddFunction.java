@@ -58,9 +58,9 @@ public class AddFunction extends JPanel {
 	}};
 	
 	private ButtonGroup buttons = new ButtonGroup() {{
-		add(polynomial);
-		add(parametric);
-		add(polar);
+		add(AddFunction.this.polynomial);
+		add(AddFunction.this.parametric);
+		add(AddFunction.this.polar);
 	}};
 
 	/**
@@ -70,15 +70,15 @@ public class AddFunction extends JPanel {
 		this.plotInstance = instance;
 		this.setLayout(new GridBagLayout());
 
-		gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.NONE;
-		gbc.anchor = GridBagConstraints.NORTHWEST;
+		this.gbc = new GridBagConstraints();
+		this.gbc.fill = GridBagConstraints.NONE;
+		this.gbc.anchor = GridBagConstraints.NORTHWEST;
 
-		gbc.weighty = 0D;
-		gbc.weightx = 1D;
-		gbc.gridy = 0;
-		gbc.gridx = 0;
-		this.add(buildButtonContainer(), gbc);
+		this.gbc.weighty = 0D;
+		this.gbc.weightx = 1D;
+		this.gbc.gridy = 0;
+		this.gbc.gridx = 0;
+		this.add(buildButtonContainer(), this.gbc);
 		
 		this.setForm(Equation.POLYNOMIAL.getForm());
 	}
@@ -93,13 +93,13 @@ public class AddFunction extends JPanel {
 		gbc2.weightx = 0D;
 		gbc2.weighty = 0D;
 		gbc2.gridy = 0;
-		buttonContainer.add(polynomial, gbc2);
+		buttonContainer.add(this.polynomial, gbc2);
 		
 		gbc2.gridy++;
-		buttonContainer.add(parametric, gbc2);
+		buttonContainer.add(this.parametric, gbc2);
 		
 		gbc2.gridy++;
-		buttonContainer.add(polar, gbc2);
+		buttonContainer.add(this.polar, gbc2);
 
 		return buttonContainer;
 	}
@@ -109,16 +109,16 @@ public class AddFunction extends JPanel {
 			this.remove(this.functionForm);
 		}
 		
-		gbc.gridy = 1;
-		gbc.gridx = 0;
-		gbc.gridy++;
-		gbc.weighty = 1D;
-		gbc.weightx = 1D;
+		this.gbc.gridy = 1;
+		this.gbc.gridx = 0;
+		this.gbc.gridy++;
+		this.gbc.weighty = 1D;
+		this.gbc.weightx = 1D;
 		this.functionForm = form;
 		if (!form.isLinked()) {
-			form.linkTo(this.plotInstance.getGraphPanel(), plotInstance);
+			form.linkTo(this.plotInstance.getGraphPanel(), this.plotInstance);
 		}
-		this.add(form, gbc);
+		this.add(form, this.gbc);
 		
 		this.repaint();
 		this.revalidate();

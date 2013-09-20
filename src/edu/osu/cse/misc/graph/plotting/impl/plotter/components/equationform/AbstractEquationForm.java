@@ -37,8 +37,8 @@ public abstract class AbstractEquationForm<K extends AbstractFunction2D> extends
 	}
 	
 	public void submitFunction(K function) {
-		if (!functions.contains(function)) {
-			functions.add(function);
+		if (!this.functions.contains(function)) {
+			this.functions.add(function);
 		}
 	}
 	
@@ -50,10 +50,10 @@ public abstract class AbstractEquationForm<K extends AbstractFunction2D> extends
 		
 		protected JTextField getRightSideField() {
 			if (this.rightSideField == null) {
-				rightSideField = new JTextField(15);
-				rightSideField.addKeyListener(this.getOnKeyEvent());
+				this.rightSideField = new JTextField(15);
+				this.rightSideField.addKeyListener(this.getOnKeyEvent());
 			}
-			return rightSideField;
+			return this.rightSideField;
 		}
 	}
 }

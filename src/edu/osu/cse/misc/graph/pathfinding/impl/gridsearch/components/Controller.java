@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import edu.osu.cse.misc.graph.pathfinding.astar.AStarPath;
-import edu.osu.cse.misc.graph.pathfinding.depthfirst.DepthFirstPath;
 import edu.osu.cse.misc.graph.pathfinding.dijkstra.DijkstraPath;
 import edu.osu.cse.misc.graph.pathfinding.dijkstra.DijkstraProperties;
 import edu.osu.cse.misc.graph.pathfinding.wrappers.node.Node;
@@ -29,14 +28,10 @@ public class Controller extends JPanel {
 	private JRadioButton dijkstra = new JRadioButton("Dijkstra") {{
 		setFocusPainted(false);
 	}};
-	private JRadioButton depthFirst = new JRadioButton("Depth First") {{
-		setFocusPainted(false);
-	}};
-
+	
 	private ButtonGroup group = new ButtonGroup() {{
 		add(Controller.this.aStar);
 		add(Controller.this.dijkstra);
-		add(Controller.this.depthFirst);
 	}};
 
 	private JButton findPath = new JButton("Find Path") {{
@@ -76,30 +71,11 @@ public class Controller extends JPanel {
 								Controller.this.gridPanel.repaint();
 							}
 						}
-						else if (Controller.this.depthFirst.isSelected()) {
-							DepthFirstPath path = new DepthFirstPath(Controller.this.gridPanel.grid);
-							NodeQuery nodes = path.toNodeQuery(Controller.this.useDiagonals.isSelected());
-							if (nodes != null && nodes.size() > 0) {
-								Controller.this.gridPanel.drawPath = nodes;
-								Controller.this.gridPanel.repaint();
-							}
-						}
 					}
 				});
 			}
 		});
 	}};
-
-	/*private Node[] includeEndpoints(Node[] noEndpoints) {
-		Node[] included = new Node[noEndpoints.length + 2];
-		included[0] = this.gridPanel.grid.start;
-		included[included.length-1] = this.gridPanel.grid.finish;
-
-		for (int i = 1; i < included.length-1; i++) {
-			included[i] = noEndpoints[i-1];
-		}
-		return included;
-	}*/
 
 	private JButton resetGrid = new JButton("Reset grid") {{
 		addActionListener(new ActionListener() {
@@ -170,7 +146,6 @@ public class Controller extends JPanel {
 
 		this.add(this.aStar);
 		this.add(this.dijkstra);
-		this.add(this.depthFirst);
 		this.add(this.useDiagonals);
 		this.add(this.findPath);
 		this.add(this.resetGrid);

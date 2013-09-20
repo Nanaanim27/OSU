@@ -23,19 +23,19 @@ public class Overview extends JPanel {
 				JList<String> list = (JList<String>) e.getSource();
 				if (e.getClickCount() == 2) {
 					int index = list.getSelectedIndex();
-					model.remove(index);
-					plotInstance.getGraphPanel().removeFunction(index);
+					Overview.this.model.remove(index);
+					Overview.this.plotInstance.getGraphPanel().removeFunction(index);
 				}
 			};
 		});
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		setModel(model);
+		setModel(Overview.this.model);
 	}};
 	
 	public Overview(EquationPlotter instance) {
 		this.plotInstance = instance;
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.add(list);
+		this.add(this.list);
 		this.add(new JLabel("<html><pre>" +
 				"\nAcception functions are as such:" +
 				"\nabs: absolute value" +
@@ -61,13 +61,13 @@ public class Overview extends JPanel {
 	}
 	
 	public void addFunction(String function) {
-		model.addElement(function);
+		this.model.addElement(function);
 	}
 	
 	public void removeFunction(String function) {
-		for (int i = 0; i < model.size(); i++) {
-			if (model.get(i).equals(function)) {
-				model.remove(i);
+		for (int i = 0; i < this.model.size(); i++) {
+			if (this.model.get(i).equals(function)) {
+				this.model.remove(i);
 				return;
 			}
 		}
