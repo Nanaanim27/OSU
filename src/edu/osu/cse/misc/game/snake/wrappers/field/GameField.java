@@ -53,7 +53,7 @@ public class GameField {
 
 	public void addFood() {
 		try {
-			LinkedList<Block> allBlocks = getBlocks();
+			LinkedList<Block> allBlocks = this.getBlocks();
 			for (int i = 0; i < allBlocks.size();) {
 				Block block = allBlocks.get(i);
 				if (block.type == BlockType.SNAKE)
@@ -64,6 +64,7 @@ public class GameField {
 			Block nextFood = allBlocks.get(this.random.nextInt(allBlocks.size()));
 			nextFood.type = BlockType.FOOD;
 			this.food = nextFood;
+			System.out.println("Next food: " + nextFood);
 			this.game.repaint();
 		} catch (Exception e) {
 			e.printStackTrace();

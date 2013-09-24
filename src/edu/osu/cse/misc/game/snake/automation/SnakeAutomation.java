@@ -1,4 +1,4 @@
-package edu.osu.cse.misc.automation.snake;
+package edu.osu.cse.misc.game.snake.automation;
 
 import edu.osu.cse.misc.game.snake.Snake;
 import edu.osu.cse.misc.game.snake.wrappers.Direction;
