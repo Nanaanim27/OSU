@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
-public class NodeQuery extends LinkedList<Node> implements Iterable<Node> {
+public class NodeQuery extends LinkedList<Node> {
 
 	public NodeQuery(Node[] nodes) {
 		this.addAll(Arrays.asList(nodes));

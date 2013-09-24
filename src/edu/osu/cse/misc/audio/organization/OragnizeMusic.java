@@ -2,6 +2,7 @@ package edu.osu.cse.misc.audio.organization;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Scanner;
 
 /**
  * A simple utility that organizes a music folder into directories specific to the author of a song.
@@ -48,12 +49,21 @@ public class OragnizeMusic {
 						try {
 							String artist = elements[0].trim(), songName = elements[1].trim();
 							File artistDirectory = new File(MUSIC_DIR, artist);
-
-							if (artistDirectory.exists() || artistDirectory.mkdir())
-								musicDirFile.renameTo(new File(artistDirectory, songName));
+							
+							if (artistDirectory.exists() || artistDirectory.mkdir()) {
+								File renameTarget = new File(artistDirectory, songName);
+								if (renameTarget.exists()) {
+									if (confirm(fileName + " already exists.\nDelete the duplicate in MUSIC_DIR? (y/n): ", "y")) {
+										musicDirFile.delete();
+									}
+								}
+								else {
+									musicDirFile.renameTo(renameTarget);
+								}
+							}
 
 						} catch (ArrayIndexOutOfBoundsException badFile) {
-							System.out.println(badFile.getMessage());
+							badFile.printStackTrace();
 							continue;
 						}
 					}
@@ -78,6 +88,13 @@ public class OragnizeMusic {
 		}
 		else {
 			System.err.println("Music Directory does not exist: " + MUSIC_DIR);
+		}
+	}
+	
+	private static boolean confirm(String message, String trueStatement) {
+		System.out.print(message);
+		try (Scanner in = new Scanner(System.in)) {
+			return in.nextLine().equals(trueStatement);
 		}
 	}
 
