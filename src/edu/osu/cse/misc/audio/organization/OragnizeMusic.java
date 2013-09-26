@@ -37,7 +37,7 @@ public class OragnizeMusic {
 			return pathname.getAbsolutePath().endsWith(".mp3");
 		}
 	};
-
+	
 	public static void main(String[] args) {
 		File musicDir = new File(MUSIC_DIR);
 		if (musicDir.exists()) {
@@ -46,6 +46,9 @@ public class OragnizeMusic {
 					if (!musicDirFile.isDirectory()) {
 						String fileName = musicDirFile.getName();
 						String[] elements = fileName.split("[-–]");
+						if (elements.length != 2) {
+							System.err.println(fileName + " has a strange file name. Double check its move and renaming.");
+						}
 						try {
 							String artist = elements[0].trim(), songName = elements[1].trim();
 							File artistDirectory = new File(MUSIC_DIR, artist);
