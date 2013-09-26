@@ -25,7 +25,7 @@ public class Snake extends JPanel implements KeyListener {
 	private JFrame mainFrame;
 
 	/** Time in ms between each game tick */
-	private int tickSpeed = 65;
+	private int tickSpeed = 2;
 	public GameField field;
 	public BlockChain snakeLine;
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();

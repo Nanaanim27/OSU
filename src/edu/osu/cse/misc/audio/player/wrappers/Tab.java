@@ -1,5 +1,7 @@
 package edu.osu.cse.misc.audio.player.wrappers;
 
+import java.awt.Dimension;
+import java.beans.Transient;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -24,6 +26,8 @@ public class Tab extends JPanel {
 	private String label;
 	private LinkedList<Tab> subTabs;
 	
+	public static final Dimension PREF_SIZE = new Dimension(600, 400);
+	
 	public Tab(String label) {
 		this.label = label;
 	}
@@ -44,6 +48,17 @@ public class Tab extends JPanel {
 	}
 	
 	public String getLabel() {
+		return this.label;
+	}
+	
+	@Override
+	@Transient
+	public Dimension getPreferredSize() {
+		return PREF_SIZE;
+	}
+	
+	@Override
+	public String toString() {
 		return this.label;
 	}
 	

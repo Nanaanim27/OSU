@@ -94,7 +94,7 @@ public class SnakeAutomation extends Snake {
 	}
 
 	public static void main(String[] args) {
-		new SnakeAutomation(30, 30).start();
+		new SnakeAutomation(150, 150).start();
 	}
 
 }
