@@ -2,7 +2,6 @@ package edu.osu.cse.misc.audio.player.wrappers;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
@@ -12,7 +11,7 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 /**
  * A Song points to a file, namely a .mp3 file, which can be played through the MusicPlayer
  */
-public class Song implements Serializable {
+public class Song {
 
 	/** The main file that holds the audio of this Song. */
 	private File file;
@@ -40,27 +39,25 @@ public class Song implements Serializable {
 		return this.length;
 	}
 	
+	/**
+	 * The artist of this Song.
+	 * 
+	 * @return The artist of this Song.
+	 */
 	public String getArtist() {
 		return this.artist;
 	}
 	
+	/**
+	 * The title of this Song.
+	 * 
+	 * @return The title of this Song.
+	 */
 	public String getSongName() {
 		return this.songName;
 	}
 	
-	public static void main(String[] args) {
-		File dir = new File("C:\\Users\\Matt\\Desktop\\Music");
-		for (File f : dir.listFiles()) {
-			if (f.isDirectory()) {
-				for (File ff : f.listFiles()) {
-					if (!ff.isDirectory()) {
-						Song song = new Song(ff);
-					}
-				}
-			}
-		}
-	}
-	
+	/** Stores the mp3 tags of the file represented by this Song. */
 	private void resolveTags() {
 		try {
 			Mp3File mp3 = new Mp3File(this.file.getAbsolutePath());
@@ -74,5 +71,7 @@ public class Song implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 }

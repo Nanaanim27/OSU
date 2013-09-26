@@ -7,12 +7,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import edu.osu.cse.misc.audio.player.components.Tabs;
+import edu.osu.cse.misc.audio.player.components.tabs.Library;
+import edu.osu.cse.misc.audio.player.components.tabs.Playlists;
 import edu.osu.cse.misc.audio.player.wrappers.Tab;
 
 public class MusicPlayer extends JFrame {
 
 	private static final int WIDTH = 800, HEIGHT = 500;
+	
 	private static MusicPlayer instance;
+	
+	public Playlists playlists = new Playlists("Playlists");
+	public Library library = new Library("Library");
 	
 	private GridBagConstraints gbc = new GridBagConstraints();
 	private Tab tabContainer;
@@ -40,8 +46,11 @@ public class MusicPlayer extends JFrame {
 		return instance;
 	}
 	
-	
-	
+	/**
+	 * Updates the container to set the central pane to the respective Tab's content.
+	 * 
+	 * @param selectedTab The tab to set the central pane to.
+	 */
 	public void updateTab(Tab selectedTab) {
 		this.gbc.gridx = 1;
 		this.gbc.gridy = 0;
@@ -62,7 +71,6 @@ public class MusicPlayer extends JFrame {
 		this.pack();
 	}
 	
-
 	private void def(JPanel container) {
 		this.setContentPane((JPanel) this.add(container));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
