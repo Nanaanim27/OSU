@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/components.jar"/>
+	<classpathentry kind="lib" path="lib/exp4j-0.3.10.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Matt/Documents/GitHub/Ohio State University/lib/mp3agic.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
