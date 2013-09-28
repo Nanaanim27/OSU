@@ -10,6 +10,10 @@ public class CJPTest {
 		CollapsableJPanel cjp = new CollapsableJPanel("Playlists");
 		JLabel subLabel = new JLabel("Sub Label");
 		cjp.addContent(subLabel);
+		
+		CollapsableJPanel subMenu = new CollapsableJPanel("Favorite Playlist");
+		cjp.addContent(subMenu);
+		
 		new DefaultFrame(cjp);
 	}
 	
