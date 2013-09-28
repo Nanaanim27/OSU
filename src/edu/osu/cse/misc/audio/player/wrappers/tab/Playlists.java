@@ -2,10 +2,20 @@ package edu.osu.cse.misc.audio.player.wrappers.tab;
 
 import javax.swing.JLabel;
 
-public class Playlists extends JPanelMenu {
+import edu.osu.cse.misc.audio.player.wrappers.Playlist;
+import edu.osu.cse.misc.swing.CollapsableJPanel;
 
+public class Playlists extends CollapsableJPanel {
+
+	public JLabel selectedPlaylist;
+	
 	public Playlists() {
-		
+		super("Playlists");
 	}
+	
+	public void addPlaylist(Playlist pl) {
+		JLabel comp = pl.getLabel(this);
+	}
+	
 	
 }

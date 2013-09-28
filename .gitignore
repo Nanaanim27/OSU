@@ -1,2 +1,4 @@
-.classpath
-.project
+*
+*.class
+!.gitignore
+!src/*

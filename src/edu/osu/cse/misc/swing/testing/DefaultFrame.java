@@ -15,7 +15,7 @@ public class DefaultFrame extends JFrame {
 		JPanel contents = new JPanel(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.NORTHWEST;
+		gbc.anchor = GridBagConstraints.SOUTHWEST;
 		gbc.fill = GridBagConstraints.NONE;
 		
 		container.setBorder(BorderFactory.createLineBorder(Color.blue));
