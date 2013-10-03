@@ -1,5 +1,6 @@
 package edu.osu.cse.misc.swing;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -23,9 +24,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import edu.osu.cse.misc.swing.testing.Debug;
+
 public class CollapsableJPanel extends JPanel {
 
-	private JPanel header = new JPanel(new GridBagLayout());
 	private int indent;
 
 	private GridBagConstraints mainGbc = new GridBagConstraints() {{
@@ -37,10 +39,11 @@ public class CollapsableJPanel extends JPanel {
 		this.gridy = 0;
 	}};
 
+	private JPanel header = new JPanel(new GridBagLayout());
 	private GridBagConstraints headerGbc = new GridBagConstraints() {{
 		this.weightx = 0D;
 		this.weighty = 0D;
-		this.anchor = GridBagConstraints.WEST;
+		this.anchor = GridBagConstraints.NORTHWEST;
 		this.fill = GridBagConstraints.NONE;
 	}};
 
@@ -48,7 +51,7 @@ public class CollapsableJPanel extends JPanel {
 	private GridBagConstraints contentsGbc = new GridBagConstraints() {{
 		this.weightx = 0D;
 		this.weighty = 0D;
-		this.anchor = GridBagConstraints.WEST;
+		this.anchor = GridBagConstraints.NORTHWEST;
 		this.fill = GridBagConstraints.NONE;
 	}};
 
@@ -56,46 +59,44 @@ public class CollapsableJPanel extends JPanel {
 	private boolean isCollapsed = false;
 
 	public CollapsableJPanel(String label) {
-		try {
+		this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-			this.setLayout(new GridBagLayout());
-
-			this.add(this.initHeader(label), this.mainGbc);
-			this.mainGbc.gridy++;
-			this.setCollapsed(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-			indent = -1;
-		}
+		this.add(this.initHeader(label));
+		this.mainGbc.gridy++;
+		this.setCollapsed(false);
 	}
+	
+	private JPanel initHeader(String label) {
+		try {
+			this.headerLabel = new JLabel(label);
+			this.headerLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 2, 0));
+			this.expandIcon = new JLabel(new ImageIcon(ImageIO.read(CollapsableJPanel.class.getResourceAsStream("/edu/osu/cse/misc/swing/resources/Expand.png"))), SwingConstants.LEFT);
+			this.collapseIcon = new JLabel(new ImageIcon(ImageIO.read(CollapsableJPanel.class.getResourceAsStream("/edu/osu/cse/misc/swing/resources/Collapse.png"))), SwingConstants.LEFT);
 
-	private JPanel initHeader(String label) throws IOException {
-		this.headerLabel = new JLabel(label);
-		this.headerLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 2, 0));
-		this.expandIcon = new JLabel(new ImageIcon(ImageIO.read(CollapsableJPanel.class.getResourceAsStream("/edu/osu/cse/misc/swing/Expand.png"))), SwingConstants.LEFT);
-		this.collapseIcon = new JLabel(new ImageIcon(ImageIO.read(CollapsableJPanel.class.getResourceAsStream("/edu/osu/cse/misc/swing/Collapse.png"))), SwingConstants.LEFT);
+			this.headerGbc.gridx = 0; this.headerGbc.gridy = 0;
+			this.expandIcon.setVisible(false);
+			this.header.add(this.expandIcon, this.headerGbc);
+			this.header.add(this.collapseIcon, this.headerGbc);
 
-		this.headerGbc.gridx = 0; this.headerGbc.gridy = 0;
-		this.expandIcon.setVisible(false);
-		this.header.add(this.expandIcon, this.headerGbc);
-		this.header.add(this.collapseIcon, this.headerGbc);
-
-		this.headerGbc.gridx = 1;
-		this.header.add(this.headerLabel, this.headerGbc);
-		this.header.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			this.headerGbc.gridx = 1;
+			this.header.add(this.headerLabel, this.headerGbc);
+			this.header.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 
-		this.header.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				CollapsableJPanel.this.setCollapsed(!CollapsableJPanel.this.isCollapsed);
-			}
-		});
+			this.header.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					CollapsableJPanel.this.setCollapsed(!CollapsableJPanel.this.isCollapsed);
+				}
+			});
 
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		panel.add(Box.createHorizontalStrut(this.indent * 5));
-		panel.add(this.header);
-		return panel;
+			JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+			panel.add(Box.createHorizontalStrut(this.indent * 5));
+			panel.add(this.header);
+			return panel;
+		} catch (IOException nil) {
+			return null;
+		}
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class CollapsableJPanel extends JPanel {
 		if (collapsed && Arrays.asList(this.getComponents()).contains(this.contents))
 			this.remove(this.contents);
 		else if (!collapsed && !Arrays.asList(this.getComponents()).contains(this.contents))
-			this.add(this.contents, this.mainGbc);
+			this.add(this.contents);
 
 		JFrame frameParent = this.getParentOfType(JFrame.class);
 		if (frameParent != null) {
@@ -120,6 +121,7 @@ public class CollapsableJPanel extends JPanel {
 			if (frameParent != null && ((pref.width > cur.width) || (pref.height > cur.height)))
 				frameParent.pack();
 		}
+		this.repaint();
 	}
 
 	private <T extends Container> T getParentOfType(Class<T> type) {
@@ -130,13 +132,12 @@ public class CollapsableJPanel extends JPanel {
 		return (T) c;
 	}
 
-
 	public void addContent(JComponent c) {
+		System.out.println("Adding: " + c);
 		addComponent(new CollapsableComponent(c, 0, this.contents.getComponentCount()));
 	}
 
 	private void addComponent(CollapsableComponent c) {
-		int indent = 0;
 		for (Component comp : this.contents.getComponents()) {
 			System.out.println(comp.getClass().getSimpleName());
 			CollapsableComponent ccomp = CollapsableComponent.pointers.get(comp);
@@ -149,7 +150,6 @@ public class CollapsableJPanel extends JPanel {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panel.add(Box.createHorizontalStrut(this.getX() + 5));
 		panel.add(c.getComponent());
-		this.contentsGbc.gridx = c.GRID_X;
 		this.contentsGbc.gridy = c.GRID_Y;
 		this.contents.add(panel, this.contentsGbc);
 	}
@@ -163,6 +163,8 @@ public class CollapsableJPanel extends JPanel {
 
 		private CollapsableComponent(JComponent parent, int gridx, int gridy) {
 			super();
+			parent.setBorder(Debug.lineBorder(Color.green));
+			System.out.println("New CC");
 			this.GRID_X = gridx;
 			this.GRID_Y = gridy;
 			this.parent = parent;

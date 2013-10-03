@@ -64,7 +64,6 @@ public class GameField {
 			Block nextFood = allBlocks.get(this.random.nextInt(allBlocks.size()));
 			nextFood.type = BlockType.FOOD;
 			this.food = nextFood;
-			System.out.println("Next food: " + nextFood);
 			this.game.repaint();
 		} catch (Exception e) {
 			e.printStackTrace();

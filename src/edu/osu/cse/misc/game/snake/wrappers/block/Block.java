@@ -5,7 +5,7 @@ import edu.osu.cse.misc.game.snake.wrappers.field.GameField;
 
 public class Block {
 
-	public static final int SIZE = 5;
+	public static final int SIZE = 15;
 	
 	public final int x, y;
 	public BlockType type;

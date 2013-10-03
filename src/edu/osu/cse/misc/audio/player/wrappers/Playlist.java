@@ -2,14 +2,14 @@ package edu.osu.cse.misc.audio.player.wrappers;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import javax.swing.JLabel;
 
-import edu.osu.cse.misc.audio.player.MusicPlayer;
 import edu.osu.cse.misc.audio.player.wrappers.tab.Playlists;
 
-public class Playlist {
+public class Playlist implements Serializable {
 
 	private String name;
 	private LinkedList<Song> songs = new LinkedList<>();
@@ -17,7 +17,6 @@ public class Playlist {
 	public Playlist(String name) {
 		this.name = name;
 	}
-	
 	
 	public String getName() {
 		return this.name;
@@ -32,8 +31,9 @@ public class Playlist {
 		label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MusicPlayer.getInstance().updateTab();
+				
 			}
 		});
+		return label;
 	}
 }

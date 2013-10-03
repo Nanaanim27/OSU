@@ -25,7 +25,7 @@ public class Snake extends JPanel implements KeyListener {
 	private JFrame mainFrame;
 
 	/** Time in ms between each game tick */
-	private int tickSpeed = 2;
+	private int tickSpeed = 75;
 	public GameField field;
 	public BlockChain snakeLine;
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -94,7 +94,7 @@ public class Snake extends JPanel implements KeyListener {
 		Direction nextDirection = getDirection(e);
 		Direction currentDirection = Snake.this.snakeLine.getDirection();
 		if (nextDirection != Direction.NONE && nextDirection != currentDirection) {
-			if (this.snakeLine.chain.size() == 1 || nextDirection != Direction.getOppositeDirection(currentDirection)) {
+			if (nextDirection != Direction.getOppositeDirection(currentDirection) || this.snakeLine.chain.size() == 1) {
 				Snake.this.snakeLine.setDirection(getDirection(e));
 				this.currentScheduledTask = createScheduledTask();
 			}
