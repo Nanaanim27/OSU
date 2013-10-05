@@ -1,6 +1,7 @@
 package edu.osu.cse.misc.graph.plotting.wrappers;
 
 
+import edu.osu.cse.misc.graph.plotting._3d.Point3D;
 import edu.osu.cse.misc.graph.vectors.Vector;
 import edu.osu.cse.misc.graph.vectors.Vectors;
 

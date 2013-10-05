@@ -1,4 +1,4 @@
-package edu.osu.cse.misc.graph.plotting.wrappers;
+package edu.osu.cse.misc.graph.plotting._3d;
 
 public class Point3D {
 

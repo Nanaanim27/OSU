@@ -3,7 +3,7 @@ package edu.osu.cse.misc.graph.vectors;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import edu.osu.cse.misc.graph.plotting.wrappers.Point3D;
+import edu.osu.cse.misc.graph.plotting._3d.Point3D;
 import edu.osu.cse.misc.graph.plotting.wrappers.graph.Coordinate2D;
 import edu.osu.cse.misc.graph.plotting.wrappers.graph.GraphPanel2D;
 
