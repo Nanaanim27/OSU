@@ -24,19 +24,19 @@ public class RSSFeed {
 		this.fileName = fileName;
 		this.process();
 	}
-	
+
 	public String getUrl() {
 		return this.url;
 	}
-	
+
 	public String getTitle() {
 		return this.name;
 	}
-	
+
 	public String getFileName() {
 		return this.fileName;
 	}
-	
+
 	private void addLine(String line) {
 		this.totalHtml += line + "\n";
 	}
@@ -197,12 +197,15 @@ public class RSSFeed {
 		int sourceIndex = getChildElement(item, "source");
 
 		if (titleIndex >= 0) {
-			
+
 			title = item.child(titleIndex).child(0).label();
 		}
 
-		if (descriptionIndex >= 0)
-			description = item.child(descriptionIndex).child(0).label();
+		if (descriptionIndex >= 0) {
+			XMLTree child = item.child(descriptionIndex);
+			if (child.numberOfChildren() > 0)
+				description = item.child(descriptionIndex).child(0).label();
+		}
 
 		if (linkIndex >= 0)
 			newsLink = item.child(linkIndex).child(0).label().replaceAll("\"", "");
@@ -261,7 +264,7 @@ public class RSSFeed {
 
 			byte[] contents = this.totalHtml.getBytes();
 			fOut.write(contents);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

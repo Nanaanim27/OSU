@@ -1,11 +1,10 @@
 package edu.osu.cse.misc.game.snake;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.beans.Transient;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,10 +30,6 @@ public class Snake extends JPanel implements KeyListener {
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	private ScheduledFuture<?> currentScheduledTask;
 
-	private Dimension renderDimension;
-	private BufferedImage renderImage;
-	private Graphics renderGraphics;
-
 	public Snake(int width, int height) {
 		this.field = new GameField(this, width, height);
 		this.snakeLine = new BlockChain(this, this.field.getInitialHead());
@@ -48,6 +43,7 @@ public class Snake extends JPanel implements KeyListener {
 		this.mainFrame.setLocationRelativeTo(null);
 		this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addKeyListener(this);
+		this.setDoubleBuffered(true);
 		this.requestFocus();
 	}
 	
@@ -76,17 +72,11 @@ public class Snake extends JPanel implements KeyListener {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		if (this.renderDimension == null || this.renderImage == null || this.renderGraphics == null) {
-			this.renderDimension = this.getSize();
-			this.renderImage = new BufferedImage(this.renderDimension.width, this.renderDimension.height, BufferedImage.TYPE_INT_ARGB);
-			this.renderGraphics = this.renderImage.getGraphics();
-		}
-		this.renderGraphics.setColor(Color.black);
-		this.renderGraphics.fillRect(0, 0, this.renderDimension.width, this.renderDimension.height);
+	public void paintComponent(Graphics g1) {
+		super.paintComponent(g1);
+		Graphics2D g = (Graphics2D) g1;
 
-		this.field.draw(this.renderGraphics);
-		g.drawImage(this.renderImage, 0, 0, this);
+		this.field.draw(g);
 	}
 
 	@Override

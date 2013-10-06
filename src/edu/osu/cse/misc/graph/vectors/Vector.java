@@ -90,12 +90,12 @@ public class Vector {
 	}
 
 	public void draw2D(Graphics2D g, GraphPanel2D graph) {
-		draw2D(g, Vector.ZERO_VECTOR, graph);
+		this.draw2D(g, Vector.ZERO_VECTOR, graph);
 	}
 
 	public void draw2D(Graphics2D g, Vector from, GraphPanel2D graph) {
 		if (this.z != 0D || from.z != 0D) {
-			System.err.println("Unable to draw a vector with three dimensions in a two dimensional coordinate system.");
+			System.err.println("Unable to draw a vector with three dimensions in a two dimensional coordinate system at this time.");
 			return;
 		}
 		Vector net = Vectors.sum(from, this);

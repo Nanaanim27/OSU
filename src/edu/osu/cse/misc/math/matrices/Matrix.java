@@ -13,21 +13,21 @@ public class Matrix<T> implements Iterable<T> {
 
 	private final MatrixDimension dimensions;
 	private final T[][] data;
-	
+
 	public Matrix(MatrixDimension dimensions) {
 		this.dimensions = dimensions;
 		this.data = (T[][]) new Object[this.dimensions.getRowCount()][this.dimensions.getColumnCount()];
 	}
-	
+
 	public Matrix(int rows, int columns) {
 		this(new MatrixDimension(rows, columns));
 	}
-	
+
 	public Matrix(T[][] data) {
 		this(data.length, data[0].length);
 		this.setData(data);
 	}
-	
+
 	/**
 	 * Returns a single row or column Matrix that is limited to the values of the given row or column.
 	 * <br />This method requires that row OR column > 0, but not both.
@@ -43,7 +43,7 @@ public class Matrix<T> implements Iterable<T> {
 			//If rowVector, 1 x columnCount. Else, rowCount x 1
 			Matrix<T> mtx = new Matrix<>(rowVector ? 1 : this.getDimensions().getRowCount(), rowVector ? this.getDimensions().getColumnCount() : 1);
 			T[] values = (T[]) new Object[rowVector ? this.getDimensions().getColumnCount() : this.getDimensions().getRowCount()];
-			
+
 			int index = 0;
 			for (int r = 1; r <= this.getDimensions().getRowCount(); r++) {
 				for (int c = 1; c <= this.getDimensions().getColumnCount(); c++) {
@@ -56,14 +56,14 @@ public class Matrix<T> implements Iterable<T> {
 			for (int i = 0; i < values.length; i++) {
 				data[rowVector ? 0 : i][rowVector ? i : 0] = values[i];
 			}
-			
+
 			mtx.setData(data);
 			return mtx;
 		}
 		System.err.println("Row or Column must be 0. Only one value can be non-zero.");
 		return null;
 	}
-	
+
 	/**
 	 * Fetches the value at the given row and column.
 	 * <br /><tt>row</tt> and <tt>column</tt> hold values [1, length] inclusively and respective to rows and columns.
@@ -76,7 +76,7 @@ public class Matrix<T> implements Iterable<T> {
 		row--; column--;
 		return this.data[row][column];
 	}
-	
+
 	/**
 	 * Fetches the value at the given index as represented by {@link #toList()}
 	 * 
@@ -86,7 +86,7 @@ public class Matrix<T> implements Iterable<T> {
 	public T getValue(int index) {
 		return this.getValue(this.getRow(index), this.getColumn(index));
 	}
-	
+
 	/**
 	 * Sets the value at the given row and column to the provided value.
 	 * 
@@ -101,7 +101,7 @@ public class Matrix<T> implements Iterable<T> {
 		this.data[row][column] = data;
 		return currentData;
 	}
-	
+
 	/**
 	 * Sets the value at the given index to the provided value.
 	 * 
@@ -112,7 +112,7 @@ public class Matrix<T> implements Iterable<T> {
 	public T setValue(int index, T data) {
 		return this.setValue(this.getRow(index), this.getColumn(index), data);
 	}
-	
+
 	private void setData(T[][] data) {
 		for (int row = 1; row <= this.getDimensions().getRowCount(); row++) {
 			for (int column = 1; column <= this.getDimensions().getColumnCount(); column++) {
@@ -120,16 +120,16 @@ public class Matrix<T> implements Iterable<T> {
 			}
 		}
 	}
-	
+
 	private int getRow(int index) {
 		return ((int) Math.ceil(index / (double) this.getDimensions().getColumnCount()));
 	}
-	
+
 	private int getColumn(int index) {
 		int modulo = index % this.getDimensions().getColumnCount();
 		return modulo == 0 ? this.getDimensions().getColumnCount() : modulo;
 	}
-	
+
 	/**
 	 * The dimensions of this Matrix
 	 * 
@@ -138,7 +138,7 @@ public class Matrix<T> implements Iterable<T> {
 	public MatrixDimension getDimensions() {
 		return this.dimensions;
 	}
-	
+
 	/**
 	 * The number of elements in this Matrix.
 	 * 
@@ -148,7 +148,7 @@ public class Matrix<T> implements Iterable<T> {
 		MatrixDimension dims = this.getDimensions();
 		return dims.getRowCount() * dims.getColumnCount();
 	}
-	
+
 	/**
 	 * Transforms this Matrix into a Single Dimensional list. <pre>
 	 * | A1  A2  A3 |
@@ -171,7 +171,7 @@ public class Matrix<T> implements Iterable<T> {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Checks whether this Matrix has square dimensions or not.
 	 * 
@@ -180,7 +180,7 @@ public class Matrix<T> implements Iterable<T> {
 	public boolean isSquare() {
 		return this.getDimensions().getRowCount() == this.getDimensions().getColumnCount();
 	}
-	
+
 	@Override
 	public String toString() {
 		String mtx = "";
@@ -194,7 +194,7 @@ public class Matrix<T> implements Iterable<T> {
 		return mtx;
 	}
 
-	
+
 	@Override
 	public Iterator<T> iterator() {
 		return this.toList().iterator();

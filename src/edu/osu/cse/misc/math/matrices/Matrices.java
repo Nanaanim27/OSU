@@ -145,6 +145,8 @@ public class Matrices {
 	 * @return A new Matrix of the scaled values.
 	 */
 	public static <T extends Number> Matrix<T> multiply(Matrix<T> m1, T scale) {
+		System.out.println("Multiplying the following matrix by " + scale + ":");
+		System.out.println(m1);
 		Matrix<T> mtx = new Matrix<>(m1.getDimensions());
 		for (int i = 1; i <= mtx.getSize(); i++) {
 			T orig = m1.getValue(i);
@@ -152,13 +154,35 @@ public class Matrices {
 				orig = (T) new Double(orig.doubleValue() * scale.doubleValue());
 			}
 			else {
-				orig = (T) new Long(orig.longValue() * scale.longValue());
+				orig = (T) new Long((long) (orig.longValue() * scale.doubleValue()));
 			}
 			mtx.setValue(i, orig);
 		}
 		return mtx;
 	}
+	
+	/**
+	 * Divides the given matrix of Numbers by the given scaler value.
+	 * 
+	 * @param m1 A Matrix of Numbers
+	 * @param scale A Number to scale by.
+	 * @return A new Matrix of the scaled values.
+	 */
+	public static <T extends Number> Matrix<T> divide(Matrix<T> m1, T scale) {
+		return multiply(m1, (T) new Double(1/scale.doubleValue()));
+	}
 
+	/**
+	 * Inverts each value of the given Matrix.
+	 * <br />Mathematically, multiplies each Number element of the Matrix by -1.
+	 * 
+	 * @param m1 A Matrix of Numbers
+	 * @return A new Matrix representing the inverted values.
+	 */
+	public static <T extends Number> Matrix<T> invert(Matrix<T> m1) {
+		return multiply(m1, (T) new Integer(-1));
+	}
+	
 	/**
 	 * Converts a Point3D object into its respective Matrix of size 3x1.
 	 * 
@@ -172,7 +196,7 @@ public class Matrices {
 		mtx.setValue(3, point.z);
 		return mtx;
 	}
-	
+
 	/**
 	 * Converts a Point object into its respective Matrix of size 2x1.
 	 * 
@@ -188,21 +212,15 @@ public class Matrices {
 
 
 	public static void main(String[] args) {
-		Integer[][] data1 = new Integer[][] {
-				{ 1, 2, 3 },
-				{ 4, 5, 6 }
-		};
+		Matrix<Double> m1 = new Matrix<>(new Double[][] {
+				{ 1D, 2D, 3D },
+				{ 4D, 5D, 6D }
+		});
 
-		Integer[][] data2 = new Integer[][] {
-				{ 7, 8 },
-				{ 9, 10 },
-				{ 11, 12 }
-		};
-		Matrix<Integer> m1 = new Matrix<>(data1), m2 = new Matrix<>(data2);
-		
+
 		System.out.println(m1);
 		System.out.println();
-		System.out.println(multiply(m1, 3));
+		System.out.println(invert(m1));
 	}
 
 }
