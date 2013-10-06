@@ -1,5 +1,8 @@
 package edu.osu.cse.misc.math.matrices;
 
+import java.awt.Point;
+
+import edu.osu.cse.misc.graph.plotting._3d.Point3D;
 import edu.osu.cse.misc.math.lang.MatrixArithmeticException;
 
 public class Matrices {
@@ -134,12 +137,57 @@ public class Matrices {
 		}
 	}
 
+	/**
+	 * Multiplies the given matrix of Numbers by the given scaler value.
+	 * 
+	 * @param m1 A Matrix of Numbers
+	 * @param scale A Number to scale by.
+	 * @return A new Matrix of the scaled values.
+	 */
+	public static <T extends Number> Matrix<T> multiply(Matrix<T> m1, T scale) {
+		Matrix<T> mtx = new Matrix<>(m1.getDimensions());
+		for (int i = 1; i <= mtx.getSize(); i++) {
+			T orig = m1.getValue(i);
+			if (orig instanceof Double || orig instanceof Float) {
+				orig = (T) new Double(orig.doubleValue() * scale.doubleValue());
+			}
+			else {
+				orig = (T) new Long(orig.longValue() * scale.longValue());
+			}
+			mtx.setValue(i, orig);
+		}
+		return mtx;
+	}
 
-
+	/**
+	 * Converts a Point3D object into its respective Matrix of size 3x1.
+	 * 
+	 * @param point A Point3D object
+	 * @return A new Matrix of size 3x1 containing the values from the given Point3D.
+	 */
+	public static Matrix<Double> convertFromPoint3D(Point3D point) {
+		Matrix<Double> mtx = new Matrix<>(3, 1);
+		mtx.setValue(1, point.x);
+		mtx.setValue(2, point.y);
+		mtx.setValue(3, point.z);
+		return mtx;
+	}
+	
+	/**
+	 * Converts a Point object into its respective Matrix of size 2x1.
+	 * 
+	 * @param point A Point object
+	 * @return A new Matrix of size 2x1 containing the values from the given Point.
+	 */
+	public static Matrix<Integer> convertFromPoint2D(Point point) {
+		Matrix<Integer> mtx = new Matrix<>(2, 1);
+		mtx.setValue(1, point.x);
+		mtx.setValue(2, point.y);
+		return mtx;
+	}
 
 
 	public static void main(String[] args) {
-
 		Integer[][] data1 = new Integer[][] {
 				{ 1, 2, 3 },
 				{ 4, 5, 6 }
@@ -151,12 +199,10 @@ public class Matrices {
 				{ 11, 12 }
 		};
 		Matrix<Integer> m1 = new Matrix<>(data1), m2 = new Matrix<>(data2);
-
+		
 		System.out.println(m1);
-		System.out.println(m2);
-		System.out.println("\n\n");
-
-		System.out.println(multiply(m1, m2));
+		System.out.println();
+		System.out.println(multiply(m1, 3));
 	}
 
 }

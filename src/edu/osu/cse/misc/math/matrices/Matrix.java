@@ -1,10 +1,15 @@
 package edu.osu.cse.misc.math.matrices;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import edu.osu.cse.misc.graph.plotting._3d.Point3D;
+
 
 /**
  * Represents a 2D array of T values that can be accessed and manipulated.
  */
-public class Matrix<T> {
+public class Matrix<T> implements Iterable<T> {
 
 	private final MatrixDimension dimensions;
 	private final T[][] data;
@@ -73,6 +78,16 @@ public class Matrix<T> {
 	}
 	
 	/**
+	 * Fetches the value at the given index as represented by {@link #toList()}
+	 * 
+	 * @param index An index
+	 * @return The value at the provided index;
+	 */
+	public T getValue(int index) {
+		return this.getValue(this.getRow(index), this.getColumn(index));
+	}
+	
+	/**
 	 * Sets the value at the given row and column to the provided value.
 	 * 
 	 * @param row A row
@@ -87,12 +102,32 @@ public class Matrix<T> {
 		return currentData;
 	}
 	
+	/**
+	 * Sets the value at the given index to the provided value.
+	 * 
+	 * @param index An index
+	 * @param data The value to assign to the given row and column.
+	 * @return The previous value contained at the given index.
+	 */
+	public T setValue(int index, T data) {
+		return this.setValue(this.getRow(index), this.getColumn(index), data);
+	}
+	
 	private void setData(T[][] data) {
 		for (int row = 1; row <= this.getDimensions().getRowCount(); row++) {
 			for (int column = 1; column <= this.getDimensions().getColumnCount(); column++) {
 				this.setValue(row, column, data[row-1][column-1]);
 			}
 		}
+	}
+	
+	private int getRow(int index) {
+		return ((int) Math.ceil(index / (double) this.getDimensions().getColumnCount()));
+	}
+	
+	private int getColumn(int index) {
+		int modulo = index % this.getDimensions().getColumnCount();
+		return modulo == 0 ? this.getDimensions().getColumnCount() : modulo;
 	}
 	
 	/**
@@ -102,6 +137,39 @@ public class Matrix<T> {
 	 */
 	public MatrixDimension getDimensions() {
 		return this.dimensions;
+	}
+	
+	/**
+	 * The number of elements in this Matrix.
+	 * 
+	 * @return The number of elements in this Matrix.
+	 */
+	public int getSize() {
+		MatrixDimension dims = this.getDimensions();
+		return dims.getRowCount() * dims.getColumnCount();
+	}
+	
+	/**
+	 * Transforms this Matrix into a Single Dimensional list. <pre>
+	 * | A1  A2  A3 |
+	 * | A4  A5  A6 |
+	 * | A7  A8  A9 |
+	 * 
+	 * ...converts to
+	 * 
+	 * [ A1, A2, A3, A4, A5, A6, A7, A8, A9 ]
+	 * </pre>
+	 * 
+	 * @return A LinkedList containing the elements of this Matrix.
+	 */
+	public LinkedList<T> toList() {
+		LinkedList<T> list = new LinkedList<>();
+		for (int row = 1; row <= this.getDimensions().getRowCount(); row++) {
+			for (int column = 1; column <= this.getDimensions().getColumnCount(); column++) {
+				list.add(this.getValue(row, column));
+			}	
+		}
+		return list;
 	}
 	
 	/**
@@ -125,4 +193,12 @@ public class Matrix<T> {
 		}
 		return mtx;
 	}
+
+	
+	@Override
+	public Iterator<T> iterator() {
+		return this.toList().iterator();
+	}
+
+
 }

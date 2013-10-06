@@ -1,6 +1,5 @@
 package edu.osu.cse.misc.swing;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -23,8 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import edu.osu.cse.misc.swing.testing.Debug;
 
 public class CollapsableJPanel extends JPanel {
 
@@ -163,7 +160,6 @@ public class CollapsableJPanel extends JPanel {
 
 		private CollapsableComponent(JComponent parent, int gridx, int gridy) {
 			super();
-			parent.setBorder(Debug.lineBorder(Color.green));
 			System.out.println("New CC");
 			this.GRID_X = gridx;
 			this.GRID_Y = gridy;
