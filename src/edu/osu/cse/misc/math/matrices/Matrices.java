@@ -210,6 +210,13 @@ public class Matrices {
 		return mtx;
 	}
 
+	public static Point3D convertToPoint3D(Matrix<Double> m1) {
+		if (m1.getDimensions().getRowCount() != 3 && m1.getDimensions().getColumnCount() != 1) {
+			System.err.println("Invalid matrix dimensions: " + m1.getDimensions());
+			return null;
+		}
+		return new Point3D(m1.getValue(1), m1.getValue(2), m1.getValue(3));
+	}
 
 	public static void main(String[] args) {
 		Matrix<Double> m1 = new Matrix<>(new Double[][] {

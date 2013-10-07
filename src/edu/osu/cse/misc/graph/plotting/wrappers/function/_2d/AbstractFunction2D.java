@@ -11,6 +11,7 @@ public abstract class AbstractFunction2D {
 
 	public abstract Coordinate2D evaluateAt(double value);
 	public abstract String getParameter();
+	
 	protected boolean isValid = true;
 	protected double valueMin = Double.NEGATIVE_INFINITY, valueMax = Double.POSITIVE_INFINITY;
 
