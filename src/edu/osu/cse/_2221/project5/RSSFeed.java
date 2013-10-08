@@ -252,14 +252,17 @@ public class RSSFeed {
 					processItem(item, out);
 				}
 			}
-			outputFooter(out);
-
+			this.outputFooter(out);
+			this.writeToFile();
 		}
 		out.close();
 	}
 
+	/**
+	 * Writes the contents of this RSS Feed to an HTML file
+	 */
 	private void writeToFile() {
-		File feedHtml = new File("./" + this.fileName);
+		File feedHtml = new File(this.fileName);
 		try (FileOutputStream fOut = new FileOutputStream(feedHtml)) {
 
 			byte[] contents = this.totalHtml.getBytes();
@@ -269,5 +272,4 @@ public class RSSFeed {
 			e.printStackTrace();
 		}
 	}
-
 }
