@@ -5,6 +5,9 @@ import java.awt.Point;
 import edu.osu.cse.misc.graph.plotting._3d.Point3D;
 import edu.osu.cse.misc.math.lang.MatrixArithmeticException;
 
+/**
+ * Calculation and conversion methods for numerical-based matrices. 
+ */
 public class Matrices {
 
 	/**
@@ -148,7 +151,7 @@ public class Matrices {
 		System.out.println("Multiplying the following matrix by " + scale + ":");
 		System.out.println(m1);
 		Matrix<T> mtx = new Matrix<>(m1.getDimensions());
-		for (int i = 1; i <= mtx.getSize(); i++) {
+		for (int i = 1; i <= mtx.size(); i++) {
 			T orig = m1.getValue(i);
 			if (orig instanceof Double || orig instanceof Float) {
 				orig = (T) new Double(orig.doubleValue() * scale.doubleValue());
@@ -184,6 +187,31 @@ public class Matrices {
 	}
 	
 	/**
+	 * Creates a square matrix with 1's on the main diagonal and 0's elsewhere.
+	 * <br />
+	 * For example, createIdentityMatrix(4) would result in the following:<pre>
+	 * | 1 0 0 0 |
+	 * | 0 1 0 0 |
+	 * | 0 0 1 0 |
+	 * | 0 0 0 1 |
+	 *</pre>
+	 * @param size The row and column count of the Matrix to be created.
+	 * @return A new <a href="http://en.wikipedia.org/wiki/Identity_matrix">Identity Matrix</a> with the dimension size x sizes
+	 */
+	public static Matrix<Integer> createIdentityMatrix(int size) {
+		Matrix<Integer> mtx = new Matrix<>(size, size);
+		for (int row = 1; row <= mtx.getDimensions().getRowCount(); row++) {
+			for (int column = 1; column <= mtx.getDimensions().getRowCount(); column++) {
+				if (row == column)
+					mtx.setValue(row, column, 1);
+				else
+					mtx.setValue(row, column, 0);
+			}
+		}
+		return mtx;
+	}
+	
+	/**
 	 * Converts a Point3D object into its respective Matrix of size 3x1.
 	 * 
 	 * @param point A Point3D object
@@ -210,6 +238,15 @@ public class Matrices {
 		return mtx;
 	}
 
+	/**
+	 * Converts a 3x1 matrix into a Point3D object. The association is as follows:<pre>
+	 * | x |
+	 * | y | --> new Point3D(x, y, z)
+	 * | z |
+	 * 
+	 * @param m1 A Matrix of Integers
+	 * @return A Point3D object with the proper associated values as described above.
+	 */
 	public static Point3D convertToPoint3D(Matrix<Double> m1) {
 		if (m1.getDimensions().getRowCount() != 3 && m1.getDimensions().getColumnCount() != 1) {
 			System.err.println("Invalid matrix dimensions: " + m1.getDimensions());
@@ -219,15 +256,21 @@ public class Matrices {
 	}
 
 	public static void main(String[] args) {
-		Matrix<Double> m1 = new Matrix<>(new Double[][] {
-				{ 1D, 2D, 3D },
-				{ 4D, 5D, 6D }
-		});
-
-
-		System.out.println(m1);
-		System.out.println();
-		System.out.println(invert(m1));
+		Integer[][] d1 = new Integer[][] {
+				{ 1, 2, 5, 3 },
+				{ 2, 4, 1, 2 },
+				{ 3, 2, 8, 1 },
+				{ 0, 1, 0, 10 }
+		};
+		
+		Integer[][] d2 = new Integer[][] {
+				{ 10, 0 },
+		};
+		
+		Matrix<Integer> m1 = new Matrix<>(d1), m2 = new Matrix<>(d2);
+		
+		System.out.println(m1.contains(m2));
+		
 	}
 
 }
