@@ -31,6 +31,7 @@ public class RSSAggregator {
 			this.title = root.attributeValue("title");
 		}
 		
+		//for each of the RSS Feeds in the main XML, add it to a list that will be used in the toString of this RSSAggregator
 		for (XMLTree feed : this.filterFeeds(root)) {
 			if (feed.hasAttribute("url") && feed.hasAttribute("name") && feed.hasAttribute("file")) {
 				this.feeds.add(new RSSFeed(feed.attributeValue("url"), feed.attributeValue("name"), feed.attributeValue("file")));
