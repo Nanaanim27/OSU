@@ -2,6 +2,10 @@ package edu.osu.cse._2221;
 
 public class TestExample {
 
+	interface a extends Runnable {
+		
+	}
+	
 	public static void main(String[] args) {
 		int[] arr = { 1, 3, 2, 1, 4, 5, 2, 1, 5, 8, 1,
 				11, 13, 20, 43, 2};

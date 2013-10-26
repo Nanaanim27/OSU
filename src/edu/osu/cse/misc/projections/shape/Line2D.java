@@ -22,4 +22,9 @@ public class Line2D {
 		return this.p2;
 	}
 	
+	@Override
+	public String toString() {
+		return this.p1 + " --> " + this.p2;
+	}
+	
 }

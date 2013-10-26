@@ -24,15 +24,21 @@ public class Line3D {
 	
 
 	@Override
+	/**
+	 * Auto-Generated
+	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
-		result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
+		result = prime * result + ((this.p1 == null) ? 0 : this.p1.hashCode());
+		result = prime * result + ((this.p2 == null) ? 0 : this.p2.hashCode());
 		return result;
 	}
 
 	@Override
+	/**
+	 * Auto-Generated
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -41,22 +47,22 @@ public class Line3D {
 		if (getClass() != obj.getClass())
 			return false;
 		Line3D other = (Line3D) obj;
-		if (p1 == null) {
+		if (this.p1 == null) {
 			if (other.p1 != null)
 				return false;
-		} else if (!p1.equals(other.p1))
+		} else if (!this.p1.equals(other.p1))
 			return false;
-		if (p2 == null) {
+		if (this.p2 == null) {
 			if (other.p2 != null)
 				return false;
-		} else if (!p2.equals(other.p2))
+		} else if (!this.p2.equals(other.p2))
 			return false;
 		return true;
 	}
 
-	public static void main(String[] args) {
-		Line3D l = new Line3D(new Point3D(2, 2, 2), new Point3D(4, 1, 2));
-		System.out.println(l.hashCode());
+	@Override
+	public String toString() {
+		return this.p1 + " --> " + this.p2;
 	}
 	
 }

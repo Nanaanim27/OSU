@@ -14,7 +14,7 @@ public class CoordinateSystem3D {
 	
 	private Point3D origin;
 	
-	private double rotation = 0D;
+	private double rotationX = 0D, rotationY = 0D, rotationZ = 0D;
 	
 	public CoordinateSystem3D(Point3D origin) {
 		this.origin = origin;
@@ -32,12 +32,52 @@ public class CoordinateSystem3D {
 		return this.shapes.add(shape);
 	}
 	
-	public void setRotationDegrees(double rads) {
-		this.rotation = rads;
+	/**
+	 * Sets the x-axis rotation of this CoordinateSystem3D to the given angle in radians.
+	 * 
+	 * @param rads A radian value.
+	 */
+	public void setRotationX(double rads) {
+		this.rotationX = rads;
+	}
+
+	/**
+	 * Sets the y-axis rotation of this CoordinateSystem3D to the given angle in radians.
+	 * 
+	 * @param rads A radian value.
+	 */
+	public void setRotationY(double rads) {
+		this.rotationY = rads;
+	}
+
+	/**
+	 * Sets the z-axis rotation of this CoordinateSystem3D to the given angle in radians.
+	 * 
+	 * @param rads A radian value.
+	 */
+	public void setRotationZ(double rads) {
+		this.rotationZ = rads;
 	}
 	
-	public double getRotation() {
-		return this.rotation;
+	/**
+	 * The rotation of the x-axis of this CoordinateSystem3D.
+	 */
+	public double getRotationX() {
+		return this.rotationX;
+	}
+	
+	/**
+	 * The rotation of the y-axis of this CoordinateSystem3D.
+	 */
+	public double getRotationY() {
+		return this.rotationY;
+	}
+	
+	/**
+	 * The rotation of the z-axis of this CoordinateSystem3D.
+	 */
+	public double getRotationZ() {
+		return this.rotationZ;
 	}
 	
 	/**

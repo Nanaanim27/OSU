@@ -1,5 +1,9 @@
 package edu.osu.cse.misc.graph.plotting._3d;
 
+import edu.osu.cse.misc.math.matrices.Matrices;
+import edu.osu.cse.misc.math.matrices.Matrix;
+import edu.osu.cse.misc.math.matrices.euler.EulerMatrices;
+
 public class Point3D {
 
 	public double x, y, z;
@@ -8,6 +12,21 @@ public class Point3D {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	public void rotateAbout(Point3D other, double radsX, double radsY, double radsZ) {
+		Matrix<Double> rotationX = EulerMatrices.eulerXMatrix(radsX);
+		Matrix<Double> rotationY = EulerMatrices.eulerYMatrix(radsY);
+		Matrix<Double> rotationZ = EulerMatrices.eulerZMatrix(radsZ);
+		
+		Matrix<Double> rotation = Matrices.multiply(rotationX, Matrices.multiply(rotationY, rotationZ));
+		Matrix<Double> dMatrix = Matrices.multiply(rotation, Matrices.convertFromPoint3D(this));
+		
+		this.x = dMatrix.getValue(1);
+		this.y = dMatrix.getValue(2);
+		this.z = dMatrix.getValue(3);
+		
+		System.out.println("After rotation: " + this);
 	}
 	
 	/**

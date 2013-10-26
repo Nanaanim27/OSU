@@ -186,12 +186,12 @@ public class Matrix<T extends Number> implements Iterable<T> {
 		if (m1 == null || this.size() < m1.size()) {
 			return false;
 		}
-		
+
 		MatrixDimension thisDims = this.getDimensions(), otherDims = m1.getDimensions();
-		
+
 		int thisRowCount = thisDims.getRowCount(), thisColumnCount = thisDims.getColumnCount();
 		int otherRowCount = otherDims.getRowCount(), otherColumnCount = otherDims.getColumnCount();
-		
+
 		for (int row = 1; row <= thisRowCount; row++) {
 			inner:
 				for (int column = 1; column <= thisColumnCount; column++) {
@@ -267,7 +267,7 @@ public class Matrix<T extends Number> implements Iterable<T> {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		String mtx = "";
@@ -276,7 +276,8 @@ public class Matrix<T extends Number> implements Iterable<T> {
 			for (int c = 1; c <= this.getDimensions().getColumnCount(); c++) {
 				mtx += this.getValue(r, c) + (c != this.getDimensions().getColumnCount() ? "\t" : "");
 			}
-			mtx += "\n";
+			if (r != this.getDimensions().getRowCount())
+				mtx += "\n";
 		}
 		return mtx;
 	}
