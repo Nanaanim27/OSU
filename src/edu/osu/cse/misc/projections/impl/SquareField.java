@@ -10,14 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import edu.osu.cse.misc.graph.plotting._3d.Point3D;
+import edu.osu.cse.misc.projections.camera.Camera;
 import edu.osu.cse.misc.projections.shape.Line2D;
-import edu.osu.cse.misc.projections.shape.Line3D;
-import edu.osu.cse.misc.projections.shape.Shape3D;
+import edu.osu.cse.misc.projections.shape.Shape2D;
 
 public class SquareField {
 
-	private static final Point3D camera = new Point3D(300, 300, 800);
+	private static final Camera camera = new Camera(300, 300, 800);
 	private static final Point3D drawCenter = new Point3D(0, 0, 0);
+	private static Shape2D[] shapes = generateField(30);
 	
 	
 	private static JPanel p;
@@ -35,7 +36,9 @@ public class SquareField {
 			if (this.pressed != null && e.getPoint() != null) {
 				int dx = e.getPoint().x - this.pressed.x;
 				int dy = e.getPoint().y - this.pressed.y;
-				camera.rotateAbout(drawCenter, Math.toRadians(dx), 0, 0);
+				camera.x += dx;
+				camera.setViewingDistance(camera.getViewingDistance() + dy);
+				shapes = generateField(30);
 				this.pressed = e.getPoint();
 				p.repaint();
 			}
@@ -44,7 +47,6 @@ public class SquareField {
 	
 	public static void main(String[] args) {
 		
-		final Shape3D[] shapes = generateField(10);
 		
 		JFrame f = new JFrame("Test Field");
 		p = new JPanel() {
@@ -53,17 +55,11 @@ public class SquareField {
 				super.paintComponent(g);
 				g.translate(300, 300);
 				long start = System.currentTimeMillis();
-				for (Shape3D s : shapes) {
-					Line2D[] lines = s.convertTo2D().getLines();
-					for (int i = 0; i < lines.length; i++) {
-						Line2D line = lines[i];
-						g.drawLine(line.getStart().x, line.getStart().y, line.getEnd().x, line.getEnd().y);
-						if (i == 0) {
-							g.fillOval(line.getEnd().x-2, line.getEnd().y-2, 5, 5);
-						}
+				for (Shape2D s : shapes) {
+					for (Line2D l : s.getLines()) {
+						g.drawLine(l.getStart().x, l.getStart().y, l.getEnd().x, l.getEnd().y);
 					}
 				}
-				System.out.printf("Finished rendering in %d ms.\n", (System.currentTimeMillis()-start));
 			}
 			
 		};
@@ -78,21 +74,30 @@ public class SquareField {
 		f.setVisible(true);
 	}
 
-	private static Shape3D[] generateField(int n) {
-		Shape3D[] shapes = new Shape3D[n];
+	private static Shape2D[] generateField(int n) {
+		Shape2D[] shapes = new Shape2D[n];
 		Point3D left, back, right, front;
+		Point _left, _back, _right, _front;
+		
+		final int GAP = 25;
 		for (int i = 0; i < n; i++) {
-			left = new Point3D(drawCenter.x - (i*20), drawCenter.y, drawCenter.z);
-			back = new Point3D(drawCenter.x, drawCenter.y, drawCenter.z + (i*20));
-			right = new Point3D(drawCenter.x + (i*20), drawCenter.y, drawCenter.z);
-			front = new Point3D(drawCenter.x, drawCenter.y, drawCenter.z - (i*20));
-
-			Line3D l1 = new Line3D(left, back), 
-					l2 = new Line3D(back, right), 
-					l3 = new Line3D(right, front),
-					l4 = new Line3D(front, left);
+			left = new Point3D(drawCenter.x - (i*GAP), drawCenter.y, drawCenter.z);
+			back = new Point3D(drawCenter.x, drawCenter.y, drawCenter.z + (i*GAP));
+			right = new Point3D(drawCenter.x + (i*GAP), drawCenter.y, drawCenter.z);
+			front = new Point3D(drawCenter.x, drawCenter.y, drawCenter.z - (i*GAP));
 			
-			shapes[i] = new Shape3D(camera, l1, l2, l3, l4);
+			_left = camera.project(left);
+			_back = camera.project(back);
+			_right = camera.project(right);
+			_front = camera.project(front);
+			
+			
+			Line2D l1 = new Line2D(_left, _back), 
+					l2 = new Line2D(_back, _right), 
+					l3 = new Line2D(_right, _front),
+					l4 = new Line2D(_front, _left);
+			
+			shapes[i] = new Shape2D(l1, l2, l3, l4);
 			//System.out.println("Shape: \n" + shapes[i] + "\nProjected:\n" + shapes[i].convertTo2D());
 		}
 		return shapes;

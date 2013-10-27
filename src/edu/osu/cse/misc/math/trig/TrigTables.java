@@ -18,25 +18,31 @@ public class TrigTables {
 	}
 	
 	public static double sin(int degrees) {
+		degrees %= 360;
 		return SIN[360 + Math.abs(degrees)];
 	}
 	
 	public static double sin(double radians) {
+		radians %= (Math.PI * 2);
 		return SIN[360 + (int) Math.toDegrees(radians)];
 	}
 	
 	public static double cos(int degrees) {
+		degrees %= 360;
 		return COS[360 + Math.abs(degrees)];
 	}
 	
 	public static double cos(double radians) {
+		radians %= (Math.PI * 2);
 		return COS[360 + (int) Math.toDegrees(radians)];
 	}
 	public static double tan(int degrees) {
+		degrees %= 360;
 		return TAN[360 + Math.abs(degrees)];
 	}
 	
 	public static double tan(double radians) {
+		radians %= (Math.PI * 2);
 		return TAN[360 + (int) Math.toDegrees(radians)];
 	}
 	
