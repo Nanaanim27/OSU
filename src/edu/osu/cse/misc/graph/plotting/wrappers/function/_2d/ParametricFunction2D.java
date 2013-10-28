@@ -1,6 +1,6 @@
 package edu.osu.cse.misc.graph.plotting.wrappers.function._2d;
 
-import edu.osu.cse.misc.graph.plotting.wrappers.graph.Coordinate2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.Coordinate2D;
 
 public class ParametricFunction2D extends AbstractFunction2D {
 

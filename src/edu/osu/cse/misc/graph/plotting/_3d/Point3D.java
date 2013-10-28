@@ -6,21 +6,21 @@ import edu.osu.cse.misc.math.matrices.euler.EulerMatrices;
 
 public class Point3D {
 
-	public double x, y, z;
+	public float x, y, z;
 	
-	public Point3D(double x, double y, double z) {
+	public Point3D(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
-	public void rotateAbout(Point3D other, double radsX, double radsY, double radsZ) {
-		Matrix<Double> rotationX = EulerMatrices.eulerXMatrix(radsX);
-		Matrix<Double> rotationY = EulerMatrices.eulerYMatrix(radsY);
-		Matrix<Double> rotationZ = EulerMatrices.eulerZMatrix(radsZ);
+	public void rotateAbout(Point3D other, float radsX, float radsY, float radsZ) {
+		Matrix<Float> rotationX = EulerMatrices.eulerXMatrix(radsX);
+		Matrix<Float> rotationY = EulerMatrices.eulerYMatrix(radsY);
+		Matrix<Float> rotationZ = EulerMatrices.eulerZMatrix(radsZ);
 		
-		Matrix<Double> rotation = Matrices.multiply(rotationX, Matrices.multiply(rotationY, rotationZ));
-		Matrix<Double> dMatrix = Matrices.multiply(rotation, Matrices.convertFromPoint3D(this));
+		Matrix<Float> rotation = Matrices.multiply(rotationX, Matrices.multiply(rotationY, rotationZ));
+		Matrix<Float> dMatrix = Matrices.multiply(rotation, Matrices.convertFromPoint3D(this));
 		
 		this.x = dMatrix.getValue(1);
 		this.y = dMatrix.getValue(2);
@@ -37,11 +37,11 @@ public class Point3D {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(this.x);
+		temp = Float.floatToIntBits(this.x);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(this.y);
+		temp = Float.floatToIntBits(this.y);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(this.z);
+		temp = Float.floatToIntBits(this.z);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}

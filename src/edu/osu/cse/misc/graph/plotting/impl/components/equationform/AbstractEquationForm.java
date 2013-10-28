@@ -9,7 +9,7 @@ import javax.swing.JTextField;
 
 import edu.osu.cse.misc.graph.plotting.impl.EquationPlotter;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
-import edu.osu.cse.misc.graph.plotting.wrappers.graph.GraphPanel2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.GraphPanel2D;
 
 public abstract class AbstractEquationForm<K extends AbstractFunction2D> extends JPanel {
 	

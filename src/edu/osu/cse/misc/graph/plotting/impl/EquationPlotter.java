@@ -15,7 +15,7 @@ import javax.swing.JTabbedPane;
 
 import edu.osu.cse.misc.graph.plotting.impl.components.tabs.AddFunction;
 import edu.osu.cse.misc.graph.plotting.impl.components.tabs.Overview;
-import edu.osu.cse.misc.graph.plotting.wrappers.graph.GraphPanel2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.GraphPanel2D;
 
 
 public class EquationPlotter extends JFrame {

@@ -1,13 +1,13 @@
-package edu.osu.cse.misc.graph.plotting.wrappers.graph;
+package edu.osu.cse.misc.graph.plotting.wrappers.graph._2d;
 
 /**
  * Represents a point in a two dimensional coordinate system.
  */
 public class Coordinate2D {
 
-	private double x, y;
+	private float x, y;
 
-	public Coordinate2D(double x, double y) {
+	public Coordinate2D(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -15,14 +15,14 @@ public class Coordinate2D {
 	/**
 	 * The x-value of this Coordinate.
 	 */
-	public double getX() {
+	public float getX() {
 		return this.x;
 	}
 
 	/**
 	 * The y-value of this Coordinate 
 	 */
-	public double getY() {
+	public float getY() {
 		return this.y;
 	}
 

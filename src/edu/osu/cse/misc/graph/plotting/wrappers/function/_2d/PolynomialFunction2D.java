@@ -4,7 +4,7 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 import edu.osu.cse.misc.graph.plotting.util.Strings;
-import edu.osu.cse.misc.graph.plotting.wrappers.graph.Coordinate2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.Coordinate2D;
 
 /**
  * A two dimensional function in terms of "x".

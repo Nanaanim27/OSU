@@ -1,4 +1,4 @@
-package edu.osu.cse.misc.graph.plotting.wrappers.graph;
+package edu.osu.cse.misc.graph.plotting.wrappers.graph._2d;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

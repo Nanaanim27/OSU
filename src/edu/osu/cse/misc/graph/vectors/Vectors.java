@@ -33,7 +33,7 @@ public class Vectors {
 	 * @param scale A scaler constant to multiply the provided Vector by.
 	 * @return A new Vector with its magnitude scaled by the given value.
 	 */
-	public static Vector multiply(Vector v1, double scale) {
+	public static Vector multiply(Vector v1, float scale) {
 		return new Vector(v1.x * scale, v1.y * scale, v1.z * scale);
 	}
 	
@@ -44,7 +44,7 @@ public class Vectors {
 	 * @param scale A scalar constant to divide the provided Vector by.
 	 * @return A new Vector with its magnitude scaled by the given value.
 	 */
-	public static Vector divide(Vector v1, double scale) {
+	public static Vector divide(Vector v1, float scale) {
 		return multiply(v1, (1/scale));
 	}
 	
@@ -55,7 +55,7 @@ public class Vectors {
 	 * @param v2 A Vector
 	 * @return A scalar value representing the dot of the two given Vectors.
 	 */
-	public static double dot(Vector v1, Vector v2) {
+	public static float dot(Vector v1, Vector v2) {
 		return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
 	}
 	
@@ -68,9 +68,9 @@ public class Vectors {
 	 * @return A new Vector representing the cross of the two given Vectors.
 	 */
 	public static Vector cross(Vector v1, Vector v2) {
-		double iDeterminant = (v1.y * v2.z) - (v1.z * v2.y);
-		double jDeterminant = (v1.x * v2.z) - (v1.z * v2.x);
-		double kDeterminant = (v1.x * v2.y)- (v1.y * v2.x);
+		float iDeterminant = (v1.y * v2.z) - (v1.z * v2.y);
+		float jDeterminant = (v1.x * v2.z) - (v1.z * v2.x);
+		float kDeterminant = (v1.x * v2.y)- (v1.y * v2.x);
 		return new Vector(iDeterminant, -(jDeterminant), kDeterminant);
 	}
 	

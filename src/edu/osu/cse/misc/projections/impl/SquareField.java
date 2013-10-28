@@ -3,6 +3,8 @@ package edu.osu.cse.misc.projections.impl;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -16,7 +18,7 @@ import edu.osu.cse.misc.projections.shape.Shape2D;
 
 public class SquareField {
 
-	private static final Camera camera = new Camera(300, 300, 800);
+	private static final Camera camera = new Camera(300, 300, 1200);
 	private static final Point3D drawCenter = new Point3D(0, 0, 0);
 	private static Shape2D[] shapes = generateField(30);
 	
@@ -36,12 +38,30 @@ public class SquareField {
 			if (this.pressed != null && e.getPoint() != null) {
 				int dx = e.getPoint().x - this.pressed.x;
 				int dy = e.getPoint().y - this.pressed.y;
-				camera.x += dx;
-				camera.setViewingDistance(camera.getViewingDistance() + dy);
+				
+				camera.rotationPitch += (dx / 50D);
+				camera.rotationYaw += (dy / 50D);
+				
 				shapes = generateField(30);
 				this.pressed = e.getPoint();
 				p.repaint();
 			}
+		};
+	};
+	
+	private static KeyAdapter keyboard = new KeyAdapter() {
+		public void keyPressed(KeyEvent e) {
+			int keyCode = e.getKeyCode();
+			System.out.println(keyCode);
+			if (keyCode == KeyEvent.VK_UP) {
+				camera.z -= 50f;
+			}
+			else if (keyCode == KeyEvent.VK_DOWN) {
+				camera.z += 50f;
+			}
+			if (camera.z < 0f) camera.z = 0f;
+			shapes = generateField(30);
+			p.repaint();
 		};
 	};
 	
@@ -54,7 +74,9 @@ public class SquareField {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				g.translate(300, 300);
-				long start = System.currentTimeMillis();
+				
+				System.out.println("Current rotation: " + (camera.rotationYaw / Math.PI) + "pi");
+				
 				for (Shape2D s : shapes) {
 					for (Line2D l : s.getLines()) {
 						g.drawLine(l.getStart().x, l.getStart().y, l.getEnd().x, l.getEnd().y);
@@ -63,9 +85,11 @@ public class SquareField {
 			}
 			
 		};
-		p.setPreferredSize(new Dimension(600, 600));
+		p.setPreferredSize(new Dimension(900, 900));
+		p.setFocusable(true);
 		p.addMouseListener(mouse);
 		p.addMouseMotionListener(mouse);
+		p.addKeyListener(keyboard);
 		
 		f.add(p);
 		f.pack();

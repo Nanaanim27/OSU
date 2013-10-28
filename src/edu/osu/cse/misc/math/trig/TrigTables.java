@@ -2,46 +2,46 @@ package edu.osu.cse.misc.math.trig;
 
 public class TrigTables {
 
-	private static final double[] SIN, COS, TAN;
+	private static final float[] SIN, COS, TAN;
 	
 	static {
-		SIN = new double[721];
-		COS = new double[721];
-		TAN = new double[721];
+		SIN = new float[721];
+		COS = new float[721];
+		TAN = new float[721];
 		
 		for (int i = -360; i <= 360; i++) {
-			double rad = Math.toRadians(i);
-			SIN[360 + Math.abs(i)] = Math.sin(rad);
-			COS[360 + Math.abs(i)] = Math.cos(rad);
-			TAN[360 + Math.abs(i)] = Math.tan(rad);
+			float rad = (float) Math.toRadians(i);
+			SIN[360 + Math.abs(i)] = (float) Math.sin(rad);
+			COS[360 + Math.abs(i)] = (float) Math.cos(rad);
+			TAN[360 + Math.abs(i)] = (float) Math.tan(rad);
 		}
 	}
 	
-	public static double sin(int degrees) {
+	public static float sin(int degrees) {
 		degrees %= 360;
 		return SIN[360 + Math.abs(degrees)];
 	}
 	
-	public static double sin(double radians) {
+	public static float sin(float radians) {
 		radians %= (Math.PI * 2);
 		return SIN[360 + (int) Math.toDegrees(radians)];
 	}
 	
-	public static double cos(int degrees) {
+	public static float cos(int degrees) {
 		degrees %= 360;
 		return COS[360 + Math.abs(degrees)];
 	}
 	
-	public static double cos(double radians) {
+	public static float cos(float radians) {
 		radians %= (Math.PI * 2);
 		return COS[360 + (int) Math.toDegrees(radians)];
 	}
-	public static double tan(int degrees) {
+	public static float tan(int degrees) {
 		degrees %= 360;
 		return TAN[360 + Math.abs(degrees)];
 	}
 	
-	public static double tan(double radians) {
+	public static float tan(float radians) {
 		radians %= (Math.PI * 2);
 		return TAN[360 + (int) Math.toDegrees(radians)];
 	}

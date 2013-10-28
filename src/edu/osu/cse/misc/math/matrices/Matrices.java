@@ -30,9 +30,9 @@ public class Matrices {
 				for (int column = 1; column <= dim1.getColumnCount(); column++) {
 					Number m1Value = m1.getValue(row, column);
 					Number m2Value = m2.getValue(row, column);
-					if (m1Value instanceof Double || m1Value instanceof Float) {
-						double newValue = m1Value.doubleValue() + m2Value.doubleValue();
-						mtx.setValue(row, column, (T) new Double(newValue));
+					if (m1Value instanceof Float || m1Value instanceof Float) {
+						float newValue = m1Value.floatValue() + m2Value.floatValue();
+						mtx.setValue(row, column, (T) new Float(newValue));
 					}
 					else {
 						long newValue = m1Value.longValue() + m2Value.longValue();
@@ -67,9 +67,9 @@ public class Matrices {
 				for (int column = 1; column <= dim1.getColumnCount(); column++) {
 					Number m1Value = m1.getValue(row, column);
 					Number m2Value = m2.getValue(row, column);
-					if (m1Value instanceof Double || m1Value instanceof Float) {
-						double newValue = m1Value.doubleValue() - m2Value.doubleValue();
-						mtx.setValue(row, column, (T) new Double(newValue));
+					if (m1Value instanceof Float || m1Value instanceof Float) {
+						float newValue = m1Value.floatValue() - m2Value.floatValue();
+						mtx.setValue(row, column, (T) new Float(newValue));
 					}
 					else {
 						long newValue = m1Value.longValue() + m2Value.longValue();
@@ -114,12 +114,12 @@ public class Matrices {
 					for (int i = 1; i <= m1Sub.getDimensions().getColumnCount(); i++) {
 						T leftValue = m1Sub.getValue(1, i);
 						T rightValue = m2Sub.getValue(i, 1);
-						if (leftValue instanceof Double || leftValue instanceof Float) {
+						if (leftValue instanceof Float || leftValue instanceof Float) {
 							if (totalValue == null)
-								totalValue = (T) new Double(0);
-							double orig = totalValue.doubleValue();
-							orig += (leftValue.doubleValue() * rightValue.doubleValue());
-							totalValue = (T) new Double(orig);
+								totalValue = (T) new Float(0);
+							float orig = totalValue.floatValue();
+							orig += (leftValue.floatValue() * rightValue.floatValue());
+							totalValue = (T) new Float(orig);
 						}
 						else {
 							if (totalValue == null)
@@ -153,11 +153,11 @@ public class Matrices {
 		Matrix<T> mtx = new Matrix<>(m1.getDimensions());
 		for (int i = 1; i <= mtx.size(); i++) {
 			T orig = m1.getValue(i);
-			if (orig instanceof Double || orig instanceof Float) {
-				orig = (T) new Double(orig.doubleValue() * scale.doubleValue());
+			if (orig instanceof Float || orig instanceof Float) {
+				orig = (T) new Float(orig.floatValue() * scale.floatValue());
 			}
 			else {
-				orig = (T) new Long((long) (orig.longValue() * scale.doubleValue()));
+				orig = (T) new Long((long) (orig.longValue() * scale.floatValue()));
 			}
 			mtx.setValue(i, orig);
 		}
@@ -172,7 +172,7 @@ public class Matrices {
 	 * @return A new Matrix of the scaled values.
 	 */
 	public static <T extends Number> Matrix<T> divide(Matrix<T> m1, T scale) {
-		return multiply(m1, (T) new Double(1/scale.doubleValue()));
+		return multiply(m1, (T) new Float(1/scale.floatValue()));
 	}
 
 	/**
@@ -217,8 +217,8 @@ public class Matrices {
 	 * @param point A Point3D object
 	 * @return A new Matrix of size 3x1 containing the values from the given Point3D.
 	 */
-	public static Matrix<Double> convertFromPoint3D(Point3D point) {
-		Matrix<Double> mtx = new Matrix<>(3, 1);
+	public static Matrix<Float> convertFromPoint3D(Point3D point) {
+		Matrix<Float> mtx = new Matrix<>(3, 1);
 		mtx.setValue(1, point.x);
 		mtx.setValue(2, point.y);
 		mtx.setValue(3, point.z);
@@ -247,7 +247,7 @@ public class Matrices {
 	 * @param m1 A Matrix of Integers
 	 * @return A Point3D object with the proper associated values as described above.
 	 */
-	public static Point3D convertToPoint3D(Matrix<Double> m1) {
+	public static Point3D convertToPoint3D(Matrix<Float> m1) {
 		if (m1.getDimensions().getRowCount() != 3 && m1.getDimensions().getColumnCount() != 1) {
 			System.err.println("Invalid matrix dimensions: " + m1.getDimensions());
 			return null;

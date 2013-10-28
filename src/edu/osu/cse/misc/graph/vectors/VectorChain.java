@@ -3,7 +3,7 @@ package edu.osu.cse.misc.graph.vectors;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 
-import edu.osu.cse.misc.graph.plotting.wrappers.graph.GraphPanel2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.GraphPanel2D;
 
 /**
  * A VectorChain represents what is commonly taught as a "head-to-tail" visualization of multiple Vectors.
@@ -27,7 +27,7 @@ public class VectorChain {
 	}
 
 	private Vector getResultant(int upTo) {
-		double x = 0, y = 0, z = 0;
+		float x = 0, y = 0, z = 0;
 		for (int i = 0; i < upTo; i++) {
 			Vector v = this.vectors.get(i);
 			x += v.x;

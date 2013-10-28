@@ -5,32 +5,32 @@ import edu.osu.cse.misc.math.trig.TrigTables;
 
 public class EulerMatrices {
 
-	private static final Matrix<Double> eulerXMatrix = new Matrix<>(new Double[][] {
-			{ 1D, 0D, 0D },
-			{ 0D, TrigTables.cos(0D), -TrigTables.sin(0D) },
-			{ 0D, TrigTables.sin(0D), TrigTables.cos(0D) }
+	private static final Matrix<Float> eulerXMatrix = new Matrix<>(new Float[][] {
+			{ 1f, 0f, 0f },
+			{ 0f, TrigTables.cos(0f), -TrigTables.sin(0f) },
+			{ 0f, TrigTables.sin(0f), TrigTables.cos(0f) }
 	});
 
-	private static final Matrix<Double> eulerYMatrix = new Matrix<>(new Double[][] {
-			{ TrigTables.cos(0D), 0D, TrigTables.sin(0D) },
-			{ 0D, 1D, 0D },
-			{ -TrigTables.sin(0D), 0D, TrigTables.cos(0D) }
+	private static final Matrix<Float> eulerYMatrix = new Matrix<>(new Float[][] {
+			{ TrigTables.cos(0f), 0f, TrigTables.sin(0f) },
+			{ 0f, 1f, 0f },
+			{ -TrigTables.sin(0f), 0f, TrigTables.cos(0f) }
 	});
 
-	private static final Matrix<Double> eulerZMatrix = new Matrix<>(new Double[][] {
-			{ TrigTables.cos(0D), -TrigTables.sin(0D), 0D },
-			{ TrigTables.sin(0D), TrigTables.cos(0D), 0D },
-			{ 0D, 0D, 1D }
+	private static final Matrix<Float> eulerZMatrix = new Matrix<>(new Float[][] {
+			{ TrigTables.cos(0f), -TrigTables.sin(0f), 0f },
+			{ TrigTables.sin(0f), TrigTables.cos(0f), 0f },
+			{ 0f, 0f, 1f }
 	});
 	
 	/**
 	 * @return The euler rotation matrix along the x-axis.
 	 */
-	public static Matrix<Double> eulerXMatrix(int degreesX) {
-		eulerXMatrix.setData(new Double[][] {
-				{ 1D, 0D, 0D },
-				{ 0D, -TrigTables.cos(-degreesX), -TrigTables.sin(-degreesX) },
-				{ 0D, TrigTables.sin(-degreesX), TrigTables.cos(-degreesX) }
+	public static Matrix<Float> eulerXMatrix(int degreesX) {
+		eulerXMatrix.setData(new Float[][] {
+				{ 1f, 0f, 0f },
+				{ 0f, -TrigTables.cos(-degreesX), -TrigTables.sin(-degreesX) },
+				{ 0f, TrigTables.sin(-degreesX), TrigTables.cos(-degreesX) }
 		});
 		return eulerXMatrix;
 	}
@@ -38,11 +38,11 @@ public class EulerMatrices {
 	/**
 	 * @return The euler rotation matrix along the y-axis.
 	 */
-	public static Matrix<Double> eulerYMatrix(int degreesY) {
-		eulerYMatrix.setData(new Double[][] {
-				{ TrigTables.cos(-degreesY), 0D, TrigTables.sin(-degreesY) },
-				{ 0D, 1D, 0D },
-				{ -TrigTables.sin(-degreesY), 0D, TrigTables.cos(-degreesY) }
+	public static Matrix<Float> eulerYMatrix(int degreesY) {
+		eulerYMatrix.setData(new Float[][] {
+				{ TrigTables.cos(-degreesY), 0f, TrigTables.sin(-degreesY) },
+				{ 0f, 1f, 0f },
+				{ -TrigTables.sin(-degreesY), 0f, TrigTables.cos(-degreesY) }
 		});
 		return eulerYMatrix;
 	}
@@ -50,24 +50,24 @@ public class EulerMatrices {
 	/**
 	 * @return The euler rotation matrix along the z-axis.
 	 */
-	public static Matrix<Double> eulerZMatrix(int degreesZ) {
-		eulerZMatrix.setData(new Double[][] {
-				{ TrigTables.cos(-degreesZ), -TrigTables.sin(-degreesZ), 0D },
-				{ TrigTables.sin(-degreesZ), TrigTables.cos(-degreesZ), 0D },
-				{ 0D, 0D, 1D }
+	public static Matrix<Float> eulerZMatrix(int degreesZ) {
+		eulerZMatrix.setData(new Float[][] {
+				{ TrigTables.cos(-degreesZ), -TrigTables.sin(-degreesZ), 0f },
+				{ TrigTables.sin(-degreesZ), TrigTables.cos(-degreesZ), 0f },
+				{ 0f, 0f, 1f }
 		});
 		return eulerZMatrix;
 	}
 
-	public static Matrix<Double> eulerXMatrix(double radsX) {
+	public static Matrix<Float> eulerXMatrix(float radsX) {
 		return eulerXMatrix((int) Math.toDegrees(radsX));
 	}
 	
-	public static Matrix<Double> eulerYMatrix(double radsY) {
+	public static Matrix<Float> eulerYMatrix(float radsY) {
 		return eulerYMatrix((int) Math.toDegrees(radsY));
 	}
 	
-	public static Matrix<Double> eulerZMatrix(double radsZ) {
+	public static Matrix<Float> eulerZMatrix(float radsZ) {
 		return eulerZMatrix((int) Math.toDegrees(radsZ));
 	}
 	

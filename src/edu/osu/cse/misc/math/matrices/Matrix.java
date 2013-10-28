@@ -131,7 +131,7 @@ public class Matrix<T extends Number> implements Iterable<T> {
 	 * @returns The row number of the given index.
 	 */
 	private int getRow(int index) {
-		return ((int) Math.ceil(index / (double) this.getDimensions().getColumnCount()));
+		return ((int) Math.ceil(index / (float) this.getDimensions().getColumnCount()));
 	}
 
 	/** The column represented by the given index. For example:<pre>
@@ -260,8 +260,8 @@ public class Matrix<T extends Number> implements Iterable<T> {
 	 */
 	public boolean isBinary() {
 		for (Number value : this) {
-			double dValue = value.doubleValue();
-			if (dValue != 0 && dValue != 1) {
+			float fValue = value.floatValue();
+			if (fValue != 0f && fValue != 1f) {
 				return false;
 			}
 		}

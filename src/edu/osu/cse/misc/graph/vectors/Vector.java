@@ -4,25 +4,25 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import edu.osu.cse.misc.graph.plotting._3d.Point3D;
-import edu.osu.cse.misc.graph.plotting.wrappers.graph.Coordinate2D;
-import edu.osu.cse.misc.graph.plotting.wrappers.graph.GraphPanel2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.Coordinate2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.GraphPanel2D;
 
 /**
  * Represents a magnitude and direction in Three-Dimensional space.
  */
 public class Vector {
 
-	public static final Vector ZERO_VECTOR = new Vector(0D, 0D, 0D);
+	public static final Vector ZERO_VECTOR = new Vector(0f, 0f, 0f);
 
-	public double x, y, z;
+	public float x, y, z;
 
-	public Vector(double x, double y, double z) {
+	public Vector(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 
-	public Vector(double x, double y) {
+	public Vector(float x, float y) {
 		this(x, y, 0);
 	}
 
@@ -31,8 +31,8 @@ public class Vector {
 	 * 
 	 * @return The resulting magnitude of this Vector.
 	 */
-	public double getMagnitude() {
-		return Math.sqrt((this.x*this.x) + (this.y*this.y) + (this.z*this.z));
+	public float getMagnitude() {
+		return (float) Math.sqrt((this.x*this.x) + (this.y*this.y) + (this.z*this.z));
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class Vector {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(this.x);
+		temp = Float.floatToIntBits(this.x);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(this.y);
+		temp = Float.floatToIntBits(this.y);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(this.z);
+		temp = Float.floatToIntBits(this.z);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -119,9 +119,9 @@ public class Vector {
 			return false;
 		}
 		Vector other = (Vector) obj;
-		return Double.doubleToLongBits(this.x) == Double.doubleToLongBits(other.x)
-				&& Double.doubleToLongBits(this.y) == Double.doubleToLongBits(other.y)
-				&& Double.doubleToLongBits(this.z) == Double.doubleToLongBits(other.z);
+		return Float.floatToIntBits(this.x) == Float.floatToIntBits(other.x)
+				&& Float.floatToIntBits(this.y) == Float.floatToIntBits(other.y)
+				&& Float.floatToIntBits(this.z) == Float.floatToIntBits(other.z);
 
 	}
 
