@@ -13,9 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import edu.osu.cse.misc.graph.plotting.impl.components.tabs.AddFunction;
+import edu.osu.cse.misc.graph.plotting.impl.components.tabs.AddFunction2D;
 import edu.osu.cse.misc.graph.plotting.impl.components.tabs.Overview;
 import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.GraphPanel2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph._3d.GraphPanel3D;
 
 
 public class EquationPlotter extends JFrame {
@@ -26,13 +27,19 @@ public class EquationPlotter extends JFrame {
 		setPreferredSize(new Dimension(300, this.getPreferredSize().height));
 	}};
 	
-	private GraphPanel2D graphPanel = new GraphPanel2D(-20, 20, -20, 20) {{
-		setXInterval(2D);
-		setYInterval(2D);
+	private GraphPanel2D graphPanel2D = new GraphPanel2D(-20, 20, -20, 20) {{
+		setXInterval(2f);
+		setYInterval(2f);
+	}};
+	
+	private GraphPanel3D graphPanel3D = new GraphPanel3D(-20, 20, -20, 20, -20, 20) {{
+		setXInterval(2f);
+		setYInterval(2f);
+		setZInterval(2f);
 	}};
 	
 	public Overview overview;
-	public AddFunction addFunction;
+	public AddFunction2D addFunction;
 	
 	public EquationPlotter() {
 		JPanel container = new JPanel(new GridBagLayout());
@@ -49,14 +56,14 @@ public class EquationPlotter extends JFrame {
 		gbc.gridx++;
 		gbc.weightx = 1D;
 		gbc.weighty = 1D;
-		this.graphPanel.setBorder(BorderFactory.createLineBorder(Color.red));
-		container.add(this.graphPanel, gbc);
+		this.graphPanel2D.setBorder(BorderFactory.createLineBorder(Color.red));
+		container.add(this.graphPanel2D, gbc);
 		def(container);
 	}
 	
 	private void buildTabbedPane() {
 		this.operationsPane.addTab("Overview", (this.overview = new Overview(this)));
-		this.operationsPane.add("Add", (this.addFunction = new AddFunction(this)));
+		this.operationsPane.add("Add 2D", (this.addFunction = new AddFunction2D(this)));
 		this.operationsPane.setBorder(BorderFactory.createLineBorder(Color.blue));
 	}
 	
@@ -78,7 +85,7 @@ public class EquationPlotter extends JFrame {
 	}
 
 	public GraphPanel2D getGraphPanel() {
-		return this.graphPanel;
+		return this.graphPanel2D;
 	}
 	
 	public static void main(String[] args) {

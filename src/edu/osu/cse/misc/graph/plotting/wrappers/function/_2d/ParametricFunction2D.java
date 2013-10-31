@@ -16,9 +16,9 @@ public class ParametricFunction2D extends AbstractFunction2D {
 	}
 
 	@Override
-	public Coordinate2D evaluateAt(double value) {
-		double x = this.xT.evaluateAt(value).getY();
-		double y = this.yT.evaluateAt(value).getY();
+	public Coordinate2D evaluateAt(float value) {
+		float x = this.xT.evaluateAt(value).getY();
+		float y = this.yT.evaluateAt(value).getY();
 		return new Coordinate2D(x, y);
 	}
 
@@ -33,7 +33,7 @@ public class ParametricFunction2D extends AbstractFunction2D {
 	}
 
 	@Override
-	public ParametricFunction2D restrict(double valueMin, double valueMax) {
+	public ParametricFunction2D restrict(float valueMin, float valueMax) {
 		return (ParametricFunction2D) super.restrict(valueMin, valueMax);
 	}
 

@@ -1,4 +1,4 @@
-package edu.osu.cse.misc.graph.plotting.impl.components.equationform;
+package edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d;
 
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
@@ -10,11 +10,11 @@ import javax.swing.JPanel;
 
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.ParametricFunction2D;
 
-public class ParametricEquationForm extends AbstractEquationForm<ParametricFunction2D> {
+public class ParametricEquationForm2D extends AbstractEquationForm2D<ParametricFunction2D> {
 
 	private ParametricEquationField xT, yT;
 
-	public ParametricEquationForm() {
+	ParametricEquationForm2D() {
 		JPanel formContainer = new JPanel();
 		formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
 		formContainer.add(this.getVariableDescriptionLabel());
@@ -31,19 +31,19 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 				return new KeyAdapter() {
 					@Override
 					public void keyTyped(KeyEvent e) {
-						if (ParametricEquationForm.this.xT == null || !ParametricEquationForm.this.isLinked())
+						if (ParametricEquationForm2D.this.xT == null || !ParametricEquationForm2D.this.isLinked())
 							return;
-						String xTSubmission = ParametricEquationForm.this.xT.getRightSideField().getText();
-						String yTSubmission = ParametricEquationForm.this.yT.getRightSideField().getText();
+						String xTSubmission = ParametricEquationForm2D.this.xT.getRightSideField().getText();
+						String yTSubmission = ParametricEquationForm2D.this.yT.getRightSideField().getText();
 						if (!xTSubmission.trim().equals("") && !yTSubmission.trim().equals("")) {
 							if (e.getKeyChar() == '\n') {
 								ParametricFunction2D eq = new ParametricFunction2D(
 										xTSubmission,
 										yTSubmission);
 								if (eq.ensureValidity()) {
-									ParametricEquationForm.this.getGraphPanelLink().addFunction(eq);
-									ParametricEquationForm.this.yT.getRightSideField().setText("");
-									ParametricEquationForm.this.xT.getRightSideField().setText("");
+									ParametricEquationForm2D.this.getGraphPanelLink().addFunction(eq);
+									ParametricEquationForm2D.this.yT.getRightSideField().setText("");
+									ParametricEquationForm2D.this.xT.getRightSideField().setText("");
 									getPlotterLink().overview.addFunction("x(t)=" + xTSubmission + "; " + "y(t)=" + yTSubmission);
 								}
 							}
@@ -64,12 +64,12 @@ public class ParametricEquationForm extends AbstractEquationForm<ParametricFunct
 				return new KeyAdapter() {
 					@Override
 					public void keyTyped(KeyEvent e) {
-						if (ParametricEquationForm.this.yT == null)
+						if (ParametricEquationForm2D.this.yT == null)
 							return;
 						if (e.getKeyChar() == '\n' || e.getKeyChar() == '\t') {
-							ParametricEquationForm.this.yT.getRightSideField().requestFocus();
-							ParametricEquationForm.this.yT.getRightSideField().setSelectionStart(0);
-							ParametricEquationForm.this.yT.getRightSideField().setSelectionEnd(ParametricEquationForm.this.yT.getRightSideField().getText().length());
+							ParametricEquationForm2D.this.yT.getRightSideField().requestFocus();
+							ParametricEquationForm2D.this.yT.getRightSideField().setSelectionStart(0);
+							ParametricEquationForm2D.this.yT.getRightSideField().setSelectionEnd(ParametricEquationForm2D.this.yT.getRightSideField().getText().length());
 						}
 					}
 				};

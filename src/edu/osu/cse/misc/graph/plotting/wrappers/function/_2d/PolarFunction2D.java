@@ -11,18 +11,18 @@ public class PolarFunction2D extends PolynomialFunction2D {
 	}
 
 	@Override
-	public Coordinate2D evaluateAt(double value) {
+	public Coordinate2D evaluateAt(float value) {
 		if (this.type != AngleType.RADIANS) {
-			value = Math.toRadians(value);
+			value = (float) Math.toRadians(value);
 		}
-		double x = super.evaluateAt(value).getY() * Math.cos(value);
-		double y = super.evaluateAt(value).getY() * Math.sin(value);
+		float x = super.evaluateAt(value).getY() * (float) Math.cos(value);
+		float y = super.evaluateAt(value).getY() * (float) Math.sin(value);
 		return new Coordinate2D(x, y);
 	}
 	
 	@Override
-	public Coordinate2D[] evaluateFrom(double valueMin, double valueMax, double accuracy) {
-		return super.evaluateFrom(0D, 360D, accuracy);
+	public Coordinate2D[] evaluateFrom(float valueMin, float valueMax, float accuracy) {
+		return super.evaluateFrom(0f, 360f, accuracy);
 	}
 
 	@Override
@@ -34,13 +34,13 @@ public class PolarFunction2D extends PolynomialFunction2D {
 		this.type = type;
 	}
 
-	public enum AngleType {
+	private enum AngleType {
 		DEGREES,
 		RADIANS
 	}
 	
 	@Override
-	public PolarFunction2D restrict(double valueMin, double valueMax) {
+	public PolarFunction2D restrict(float valueMin, float valueMax) {
 		return (PolarFunction2D) super.restrict(valueMin, valueMax);
 	}
 

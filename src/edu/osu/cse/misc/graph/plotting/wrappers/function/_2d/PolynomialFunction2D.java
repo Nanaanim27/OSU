@@ -19,10 +19,10 @@ public class PolynomialFunction2D extends AbstractFunction2D {
 	}
 
 	@Override
-	public Coordinate2D evaluateAt(double value) {
+	public Coordinate2D evaluateAt(float value) {
 		try {
 			ExpressionBuilder builder = new ExpressionBuilder(this.function).withVariable(this.getParameter(), value);
-			return new Coordinate2D(value, builder.build().calculate());
+			return new Coordinate2D(value, (float) builder.build().calculate());
 		} catch (UnparsableExpressionException | UnknownFunctionException err) {
 			if (err instanceof UnparsableExpressionException) {
 				this.isValid = false;
@@ -49,7 +49,7 @@ public class PolynomialFunction2D extends AbstractFunction2D {
 	}
 	
 	@Override
-	public PolynomialFunction2D restrict(double valueMin, double valueMax) {
+	public PolynomialFunction2D restrict(float valueMin, float valueMax) {
 		return (PolynomialFunction2D) super.restrict(valueMin, valueMax);
 	}
 	

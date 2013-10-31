@@ -1,4 +1,4 @@
-package edu.osu.cse.misc.graph.plotting.impl.components.equationform;
+package edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d;
 
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.PolarFunction2D;
 
-public class PolarEquationForm extends AbstractEquationForm<PolarFunction2D> {
+public class PolarEquationForm2D extends AbstractEquationForm2D<PolarFunction2D> {
 
-	public PolarEquationForm() {
+	PolarEquationForm2D() {
 		JPanel formContainer = new JPanel();
 		formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
 		formContainer.add(this.getVariableDescriptionLabel());

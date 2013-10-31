@@ -1,4 +1,4 @@
-package edu.osu.cse.misc.graph.plotting.impl.components.equationform;
+package edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d;
 
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.PolynomialFunction2D;
 
-public class PolynomialEquationForm extends AbstractEquationForm<PolynomialFunction2D> {
+public class PolynomialEquationForm2D extends AbstractEquationForm2D<PolynomialFunction2D> {
 
-	public PolynomialEquationForm() {
+	PolynomialEquationForm2D() {
 		JPanel formContainer = new JPanel();
 		formContainer.setLayout(new BoxLayout(formContainer, BoxLayout.Y_AXIS));
 		formContainer.add(this.getVariableDescriptionLabel());

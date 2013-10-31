@@ -1,4 +1,4 @@
-package edu.osu.cse.misc.graph.plotting.impl.components.equationform;
+package edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d;
 
 import java.awt.event.KeyAdapter;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import edu.osu.cse.misc.graph.plotting.impl.EquationPlotter;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
 import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.GraphPanel2D;
 
-public abstract class AbstractEquationForm<K extends AbstractFunction2D> extends JPanel {
+public abstract class AbstractEquationForm2D<K extends AbstractFunction2D> extends JPanel {
 	
 	protected ArrayList<K> functions = new ArrayList<>();
 	
@@ -42,6 +42,12 @@ public abstract class AbstractEquationForm<K extends AbstractFunction2D> extends
 		}
 	}
 	
+	/**
+	 * Any equation field that is constructed from this inner class 
+	 * "belongs" to its pespective equation form. (It is constructed via
+	 * and instance of AbstractEquationForm, and has access to that instance
+	 * via AbstractEquationForm.this)
+	 */
 	protected abstract class AbstractEquationField extends JPanel {
 		
 		protected abstract JLabel getLeftSideLabel();

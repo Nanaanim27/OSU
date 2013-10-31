@@ -12,13 +12,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import edu.osu.cse.misc.graph.plotting.impl.EquationPlotter;
-import edu.osu.cse.misc.graph.plotting.impl.components.Equation;
-import edu.osu.cse.misc.graph.plotting.impl.components.equationform.AbstractEquationForm;
+import edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d.AbstractEquationForm2D;
+import edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d.Equation2D;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
 
-public class AddFunction extends JPanel {
+public class AddFunction2D extends JPanel {
 
-	private AbstractEquationForm<? extends AbstractFunction2D> functionForm;
+	private AbstractEquationForm2D<? extends AbstractFunction2D> functionForm;
 	private GridBagConstraints gbc = new GridBagConstraints();
 	private EquationPlotter plotInstance;
 
@@ -29,7 +29,7 @@ public class AddFunction extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (isSelected()) {
-					AddFunction.this.setForm(Equation.POLYNOMIAL.getForm());
+					AddFunction2D.this.setForm(Equation2D.POLYNOMIAL.getForm());
 				}
 			}
 		});
@@ -40,7 +40,7 @@ public class AddFunction extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (isSelected()) {
-					AddFunction.this.setForm(Equation.PARAMETRIC.getForm());
+					AddFunction2D.this.setForm(Equation2D.PARAMETRIC.getForm());
 				}
 			}
 		});
@@ -51,22 +51,22 @@ public class AddFunction extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (isSelected()) {
-					AddFunction.this.setForm(Equation.POLAR.getForm());
+					AddFunction2D.this.setForm(Equation2D.POLAR.getForm());
 				}
 			}
 		});
 	}};
 	
 	private ButtonGroup buttons = new ButtonGroup() {{
-		add(AddFunction.this.polynomial);
-		add(AddFunction.this.parametric);
-		add(AddFunction.this.polar);
+		add(AddFunction2D.this.polynomial);
+		add(AddFunction2D.this.parametric);
+		add(AddFunction2D.this.polar);
 	}};
 
 	/**
 	 * Constructs the AddFunction tab
 	 */
-	public AddFunction(EquationPlotter instance) {
+	public AddFunction2D(EquationPlotter instance) {
 		this.plotInstance = instance;
 		this.setLayout(new GridBagLayout());
 
@@ -80,7 +80,7 @@ public class AddFunction extends JPanel {
 		this.gbc.gridx = 0;
 		this.add(buildButtonContainer(), this.gbc);
 		
-		this.setForm(Equation.POLYNOMIAL.getForm());
+		this.setForm(Equation2D.POLYNOMIAL.getForm());
 	}
 
 	private JPanel buildButtonContainer() {
@@ -104,7 +104,7 @@ public class AddFunction extends JPanel {
 		return buttonContainer;
 	}
 
-	private void setForm(AbstractEquationForm<? extends AbstractFunction2D> form) {
+	private void setForm(AbstractEquationForm2D<? extends AbstractFunction2D> form) {
 		if (this.functionForm != null) {
 			this.remove(this.functionForm);
 		}

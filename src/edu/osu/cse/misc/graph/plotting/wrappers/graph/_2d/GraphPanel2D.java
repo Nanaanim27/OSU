@@ -1,58 +1,31 @@
 package edu.osu.cse.misc.graph.plotting.wrappers.graph._2d;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import javax.swing.JPanel;
-
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.graph.AbstractGraphPanel;
 
-public class GraphPanel2D extends JPanel {
+public class GraphPanel2D extends AbstractGraphPanel {
 
-	private static final Color[] COLORS = {
-		Color.red, Color.blue, Color.green, Color.cyan, Color.magenta,
-		Color.pink, Color.pink, Color.orange
-	};
-
-	private double xMin, xMax;
-	private double yMin, yMax;
-	private double xInterval = 1D, yInterval = 1D;
-
-	private Dimension size;
+	private float xMin, xMax;
+	private float yMin, yMax;
+	private float xInterval = 1f, yInterval = 1f;
 
 	private LinkedList<AbstractFunction2D> functions = new LinkedList<>();
 
-	public GraphPanel2D(double xMin, double xMax, double yMin, double yMax) {
+	public GraphPanel2D(float xMin, float xMax, float yMin, float yMax) {
 		this.xMin = xMin;
 		this.xMax = xMax;
 		this.yMin = yMin;
 		this.yMax = yMax;
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		if (this.size == null) {
-			this.size = new Dimension(500, 500);
-		}
-		return this.size;
-	}
-
 	/**
-	 * The center point relative to the panel holding this Graph
-	 * 
-	 * @return A Point marking the center point.
-	 */
-	public Point getCenterPoint() {
-		return new Point((int) (this.getPreferredSize().width / 2D), (int) (this.getPreferredSize().height / 2D));
-	}
-
-	/**
-	 * @see {{@link #convertToScreen(double, double)}
+	 * @see {@link #convertToScreen(float, float)}
 	 */
 	public Point convertToScreen(Coordinate2D coord) {
 		return convertToScreen(coord.getX(), coord.getY());
@@ -67,27 +40,27 @@ public class GraphPanel2D extends JPanel {
 	 * @param y The y-value of the coordinate
 	 * @return A Point relative to the panel holding this Graph marking the coordinate.
 	 */
-	public Point convertToScreen(double x, double y) {
+	public Point convertToScreen(float x, float y) {
 		y = -y; //coord system y-direction is flipped from swing's
 		Point center = this.getCenterPoint();
 		return new Point((int) (center.x + (x * this.getXInterval())), (int) (center.y + (y * this.getYInterval())));
 	}
 
 	/** The sum of the absolute values of xMin and xMax */
-	public double getXLength() {
+	public float getXLength() {
 		return Math.abs(this.xMin) + Math.abs(this.xMax);
 	}
 
 	/** The sum of the absolute values of yMin and yMax */
-	public double getYLength() {
+	public float getYLength() {
 		return Math.abs(this.yMin) + Math.abs(this.yMax);
 	}
 
-	public void setXInterval(double xInterval) {
+	public void setXInterval(float xInterval) {
 		this.xInterval = xInterval;
 	}
 
-	public void setYInterval(double yInterval) {
+	public void setYInterval(float yInterval) {
 		this.yInterval = yInterval;
 	}
 
@@ -96,7 +69,7 @@ public class GraphPanel2D extends JPanel {
 	 * 
 	 * @return (width/length) respectively based on the aforementioned description.
 	 */
-	public double getXInterval() {
+	public float getXInterval() {
 		return this.getPreferredSize().width / this.getXLength();
 	}
 
@@ -105,7 +78,7 @@ public class GraphPanel2D extends JPanel {
 	 * 
 	 * @return (height/length) respectively based on the aforementioned description.
 	 */
-	public double getYInterval() {
+	public float getYInterval() {
 		return this.getPreferredSize().height / this.getYLength();
 	}
 
@@ -121,7 +94,6 @@ public class GraphPanel2D extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g1) {
-		System.out.println("Painting Graph");
 		super.paintComponent(g1);
 		Graphics2D g = (Graphics2D) g1;
 
@@ -131,10 +103,10 @@ public class GraphPanel2D extends JPanel {
 
 	/** Draws the grid lines for this graph */
 	private void drawGrid(Graphics2D g) {
-		for (double y = 0; y <= this.getPreferredSize().height; y += (this.getYInterval() * this.yInterval)) {
+		for (float y = 0; y <= this.getPreferredSize().height; y += (this.getYInterval() * this.yInterval)) {
 			g.drawLine(0, (int) y, this.getPreferredSize().width, (int) y);
 		}
-		for (double x = 0; x <= this.getPreferredSize().width; x += (this.getXInterval() * this.xInterval)) {
+		for (float x = 0; x <= this.getPreferredSize().width; x += (this.getXInterval() * this.xInterval)) {
 			g.drawLine((int) x, 0, (int) x, this.getPreferredSize().height);
 		}
 		Point center = this.getCenterPoint();
@@ -150,7 +122,7 @@ public class GraphPanel2D extends JPanel {
 			g.setColor(COLORS[i % COLORS.length]);
 			AbstractFunction2D function = this.functions.get(i);
 			if (function.isValid()) {
-				Coordinate2D[] points = function.evaluateFrom(this.xMin, this.xMax, 0.05D);
+				Coordinate2D[] points = function.evaluateFrom(this.xMin, this.xMax, 0.05f);
 				for (int p = 0; p < points.length; p++) {
 					if (p < points.length - 1) {
 						Point cur = this.convertToScreen(points[p]);
