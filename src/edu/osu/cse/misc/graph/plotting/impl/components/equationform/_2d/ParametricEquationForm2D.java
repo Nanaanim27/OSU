@@ -44,7 +44,7 @@ public class ParametricEquationForm2D extends AbstractEquationForm2D<ParametricF
 									ParametricEquationForm2D.this.getGraphPanelLink().addFunction(eq);
 									ParametricEquationForm2D.this.yT.getRightSideField().setText("");
 									ParametricEquationForm2D.this.xT.getRightSideField().setText("");
-									getPlotterLink().overview.addFunction("x(t)=" + xTSubmission + "; " + "y(t)=" + yTSubmission);
+									getPlotterLink().addFunction2D.addFunction("x(t)=" + xTSubmission + "; " + "y(t)=" + yTSubmission);
 								}
 							}
 						}

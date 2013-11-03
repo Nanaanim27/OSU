@@ -5,18 +5,20 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.ListSelectionModel;
 
 import edu.osu.cse.misc.graph.plotting.impl.EquationPlotter;
-import edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d.AbstractEquationForm2D;
-import edu.osu.cse.misc.graph.plotting.impl.components.equationform._2d.Equation2D;
 import edu.osu.cse.misc.graph.plotting.impl.components.equationform._3d.AbstractEquationForm3D;
 import edu.osu.cse.misc.graph.plotting.impl.components.equationform._3d.Equation3D;
-import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._3d.AbstractFunction3D;
 
 public class AddFunction3D extends JPanel {
@@ -54,6 +56,24 @@ public class AddFunction3D extends JPanel {
 		add(AddFunction3D.this.polynomial);
 		add(AddFunction3D.this.parametric);
 	}};
+	
+	
+	private DefaultListModel<String> model = new DefaultListModel<>();
+	private JList<String> list = new JList<String>() {{
+		addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				JList<String> list = (JList<String>) e.getSource();
+				if (e.getClickCount() == 2) {
+					int index = list.getSelectedIndex();
+					AddFunction3D.this.model.remove(index);
+					AddFunction3D.this.plotInstance.getGraphPanel2D().removeFunction(index);
+				}
+			};
+		});
+		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		setModel(AddFunction3D.this.model);
+	}};
+	
 	
 	/**
 	 * Constructs the AddFunction tab
@@ -113,5 +133,18 @@ public class AddFunction3D extends JPanel {
 		this.revalidate();
 		this.plotInstance.operationsPane.revalidate();
 		form.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+	}
+	
+	public void addFunction(String function) {
+		this.model.addElement(function);
+	}
+	
+	public void removeFunction(String function) {
+		for (int i = 0; i < this.model.size(); i++) {
+			if (this.model.get(i).equals(function)) {
+				this.model.remove(i);
+				return;
+			}
+		}
 	}
 }

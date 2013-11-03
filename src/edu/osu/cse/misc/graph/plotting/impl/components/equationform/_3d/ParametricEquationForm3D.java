@@ -92,7 +92,7 @@ public class ParametricEquationForm3D extends AbstractEquationForm3D<ParametricF
 									ParametricEquationForm3D.this.xT.getRightSideField().setText("");
 									ParametricEquationForm3D.this.yT.getRightSideField().setText("");
 									ParametricEquationForm3D.this.zT.getRightSideField().setText("");
-									getPlotterLink().overview.addFunction("x(t)=" + xTSubmission + "; " + "y(t)=" + yTSubmission + "; " + "z(t)=" + zTSubmission);
+									getPlotterLink().addFunction3D.addFunction("x(t)=" + xTSubmission + "; " + "y(t)=" + yTSubmission + "; " + "z(t)=" + zTSubmission);
 								}
 							}
 						}

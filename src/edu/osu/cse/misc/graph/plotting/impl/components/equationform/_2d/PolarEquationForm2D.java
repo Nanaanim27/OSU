@@ -51,7 +51,7 @@ public class PolarEquationForm2D extends AbstractEquationForm2D<PolarFunction2D>
 							if (eq.ensureValidity()) {
 								getGraphPanelLink().addFunction(eq);
 								getRightSideField().setText("");
-								getPlotterLink().overview.addFunction("r=" + submission);
+								getPlotterLink().addFunction2D.addFunction("r=" + submission);
 							}
 						}
 					}

@@ -17,6 +17,14 @@ public class GraphPanel2D extends AbstractGraphPanel {
 
 	private LinkedList<AbstractFunction2D> functions = new LinkedList<>();
 
+	/**
+	 * Constructs a 2D coordinate plane.
+	 * 
+	 * @param xMin Min x value
+	 * @param xMax Max x value
+	 * @param yMin Min y value
+	 * @param yMax Max y value
+	 */
 	public GraphPanel2D(float xMin, float xMax, float yMin, float yMax) {
 		this.xMin = xMin;
 		this.xMax = xMax;

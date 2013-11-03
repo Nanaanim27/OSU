@@ -51,7 +51,7 @@ public class PolynomialEquationForm3D extends AbstractEquationForm3D<PolynomialF
 							if (eq.ensureValidity()) {
 								getGraphPanelLink().addFunction(eq);
 								getRightSideField().setText("");
-								getPlotterLink().overview.addFunction("f(x,y)=" + submission);
+								getPlotterLink().addFunction3D.addFunction("f(x,y)=" + submission);
 							}
 						}
 					}

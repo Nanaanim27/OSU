@@ -20,6 +20,54 @@ public class GraphPanel3D extends AbstractGraphPanel {
 	private float yMin, yMax;
 	private float zMin, zMax;
 	
+	private float xInterval = 1f, yInterval = 1f, zInterval = 1f;
+	
+	/**
+	 * Constructs a 3D coordinate system with the given axis values.
+	 * 
+	 * @param xMin Min x value
+	 * @param xMax Max x value
+	 * @param yMin Min y value
+	 * @param yMax Max y value
+	 * @param zMin Min z value
+	 * @param zMax Max z value
+	 */
+	public GraphPanel3D(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax) {
+		this.xMin = xMin;
+		this.xMax = xMax;
+		this.yMin = yMin;
+		this.yMax = yMax;
+		this.zMin = zMin;
+		this.zMax = zMax;
+	}
+	
+	/**
+	 * Sets the x interval to the given value.
+	 * 
+	 * @param xInterval A floating point value.
+	 */
+	public void setXInterval(float xInterval) {
+		this.xInterval = xInterval;
+	}
+	
+	/**
+	 * Sets the y interval to the given value.
+	 * 
+	 * @param yInterval A floating point value.
+	 */
+	public void setYInterval(float yInterval) {
+		this.yInterval = yInterval;
+	}
+	
+	/**
+	 * Sets the z interval to the given value.
+	 * 
+	 * @param zInterval A floating point value.
+	 */
+	public void setZInterval(float zInterval) {
+		this.zInterval = zInterval;
+	}
+	
 	/**
 	 * @see {@link #convertToScreen(float, float, float)}
 	 */
@@ -75,6 +123,15 @@ public class GraphPanel3D extends AbstractGraphPanel {
 		g.drawLine(_xAxisMin.x, _xAxisMin.y, _xAxisMax.x, _xAxisMax.y);
 		g.drawLine(_yAxisMin.x, _yAxisMin.y, _yAxisMax.x, _yAxisMax.y);
 		g.drawLine(_zAxisMin.x, _zAxisMin.y, _zAxisMax.x, _zAxisMax.y);
+	}
+	
+	/**
+	 * The camera viewing this 3D coordinate system.
+	 * 
+	 * @return A Camera object that views this 3D coordinate system.
+	 */
+	public Camera getCamera() {
+		return this.camera;
 	}
 	
 	/**

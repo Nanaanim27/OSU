@@ -51,7 +51,7 @@ public class PolynomialEquationForm2D extends AbstractEquationForm2D<PolynomialF
 							if (eq.ensureValidity()) {
 								getGraphPanelLink().addFunction(eq);
 								getRightSideField().setText("");
-								getPlotterLink().overview.addFunction("f(x)=" + submission);
+								getPlotterLink().addFunction2D.addFunction("f(x)=" + submission);
 							}
 						}
 					}
