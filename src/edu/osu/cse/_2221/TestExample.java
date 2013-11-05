@@ -1,25 +1,33 @@
 package edu.osu.cse._2221;
 
-public class TestExample {
+import components.queue.Queue;
+import components.queue.Queue2;
+import components.stack.Stack;
+import components.stack.Stack2;
 
-	interface a extends Runnable {
-		
-	}
+public class TestExample {
 	
 	public static void main(String[] args) {
-		int[] arr = { 1, 3, 2, 1, 4, 5, 2, 1, 5, 8, 1,
-				11, 13, 20, 43, 2};
-		System.out.println(countBigger(arr, 15));
+		Queue<String> q = new Queue2<>();
+		q.enqueue("String 1");
+		q.enqueue("String 2");
+		q.enqueue("String 3");
+		flip(q);
+		System.out.println(q);
 	}
 	
-	private static int countBigger(int[] a, int n) {
-		int count = 0;
-		for (int i : a) {
-			if (i > n) {
-				count++;
-			}
+	private static void flip(Queue<String> q) {
+		Stack<String> s = new Stack2<>();
+		for (String str : q) {
+			s.push(str);
+			System.out.println("Pushed " + str);
 		}
-		return count;
+		q.clear();
+		int len = s.length();
+		while (q.length() != len) {
+			q.enqueue(s.pop());
+		}
 	}
+	
 	
 }
