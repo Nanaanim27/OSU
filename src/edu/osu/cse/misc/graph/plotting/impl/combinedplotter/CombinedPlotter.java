@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import edu.osu.cse.misc.graph.plotting.impl.combinedplotter.tabs.Plot2D;
+
 public class CombinedPlotter {
 
 	private JFrame frame = new JFrame("Combined Plotter");
@@ -12,9 +14,16 @@ public class CombinedPlotter {
 	
 	private CombinedPlotter() {
 		
+		this.container.add(new Plot2D(-20, 20, -20, 20));
+		
+		this.frame.add(this.container);
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frame.pack();
+		this.frame.setLocationRelativeTo(null);
+		this.frame.setVisible(true);
 	}
 	
 	public static void main(String[] args) {
-		
+		new CombinedPlotter();
 	}
 }
