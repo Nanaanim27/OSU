@@ -11,7 +11,6 @@ import java.util.LinkedList;
 
 import edu.osu.cse.misc.graph.plotting.impl.combinedplotter.util.Plot2DUtils;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
-import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.PolynomialFunction2D;
 import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.Coordinate2D;
 
 public class Plot2D extends Canvas {
@@ -21,9 +20,7 @@ public class Plot2D extends Canvas {
 	
 	public final float xInterval, yInterval;
 	
-	private LinkedList<AbstractFunction2D> functions = new LinkedList<AbstractFunction2D>() {{
-		add(new PolynomialFunction2D("sin(x)"));
-	}};
+	private LinkedList<AbstractFunction2D> functions = new LinkedList<AbstractFunction2D>();
 	
 	public Plot2D(float xMin, float xMax, float yMin, float yMax, float xInterval, float yInterval) {
 		this.xMin = xMin;
