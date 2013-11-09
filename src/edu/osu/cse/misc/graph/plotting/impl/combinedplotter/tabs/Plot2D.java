@@ -11,6 +11,7 @@ import java.util.LinkedList;
 
 import edu.osu.cse.misc.graph.plotting.impl.combinedplotter.util.Plot2DUtils;
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
+import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.PolynomialFunction2D;
 import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.Coordinate2D;
 
 public class Plot2D extends Canvas {
@@ -35,15 +36,14 @@ public class Plot2D extends Canvas {
 		this.xMaxReal = Plot2DUtils.getRealValue(xMax, xInterval);
 		this.yMinReal = Plot2DUtils.getRealValue(yMin, yInterval);
 		this.yMaxReal = Plot2DUtils.getRealValue(yMax, yInterval);
+		
+		this.addFunction(new PolynomialFunction2D("x^3"));
 	}
 	
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
 		Graphics2D g = (Graphics2D) g1;
-
-		Point oneone = Plot2DUtils.getScreenPoint(new Coordinate2D(1f, 1f), this);
-		g.fillOval(oneone.x-2, oneone.y-2, 4, 4);
 		
 		drawGrid(g);
 		drawFunctions(g);
@@ -91,6 +91,22 @@ public class Plot2D extends Canvas {
 	//The coordinate-length of the y-axis
 	public float getYAxisLength() {
 		return this.yMax - this.yMin;
+	}
+	
+	public boolean addFunction(AbstractFunction2D function) {
+		if (this.functions.add(function)) {
+			this.repaint();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean removeFunction(AbstractFunction2D function) {
+		if (this.functions.remove(function)) {
+			this.repaint();
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

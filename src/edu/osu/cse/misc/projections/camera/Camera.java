@@ -9,12 +9,14 @@ import edu.osu.cse.misc.math.matrices.euler.EulerMatrices;
 
 public class Camera extends Point3D {
 
+	private static final float TWOPI = (float) Math.PI * 2f;
+	
 	private float nearDistance = 400;
 	
 	public float rotationYaw = 0f, rotationPitch = 0f, rotationRoll = 0f;
 	
 	public Camera() {
-		this(0f, 0f, 0f);
+		this(0f, 0f, 1f);
 	}
 	
 	public Camera(float x, float y, float z) {
@@ -32,17 +34,20 @@ public class Camera extends Point3D {
 	}
 	
 	private void adjustRotations() {
-		this.rotationYaw = Math.abs(this.rotationYaw %= (Math.PI * 2));
-		this.rotationPitch %= (Math.PI * 2);
-		this.rotationRoll %= (Math.PI * 2);
+		if (this.rotationYaw < 0f)
+			this.rotationYaw = TWOPI;
+		if (this.rotationPitch < 0f)
+			this.rotationPitch = TWOPI;
+		if (this.rotationRoll < 0f)
+			this.rotationRoll = TWOPI;
 	}
 	
 	public Point project(Point3D p) {
-		
+		this.adjustRotations();
 		Matrix<Float> pointMatrix = new Matrix<Float>(new Float[][] { {p.x}, {p.y}, {p.z} });
 		
-		Matrix<Float> rotation = Matrices.multiply(EulerMatrices.eulerXMatrix(this.rotationYaw), 
-				Matrices.multiply(EulerMatrices.eulerYMatrix(this.rotationPitch), EulerMatrices.eulerZMatrix(this.rotationRoll)));
+		Matrix<Float> xyRotation = Matrices.multiply(EulerMatrices.eulerXMatrix(this.rotationYaw), EulerMatrices.eulerYMatrix(this.rotationPitch));
+		Matrix<Float> rotation = Matrices.multiply(xyRotation, EulerMatrices.eulerZMatrix(this.rotationRoll));
 		
 		Point3D rotated = Matrices.convertToPoint3D(Matrices.multiply(rotation, pointMatrix));
 		float x = rotated.x - this.x;

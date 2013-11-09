@@ -4,7 +4,6 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 import edu.osu.cse.misc.graph.plotting.util.Strings;
-import edu.osu.cse.misc.graph.plotting.wrappers.graph._2d.Coordinate2D;
 import edu.osu.cse.misc.graph.plotting.wrappers.graph._3d.Coordinate3D;
 
 public class PolynomialFunction3D extends AbstractFunction3D {

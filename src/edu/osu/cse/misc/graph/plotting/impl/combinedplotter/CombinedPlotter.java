@@ -14,7 +14,8 @@ public class CombinedPlotter {
 	
 	private CombinedPlotter() {
 		
-		this.container.add(new Plot3D(-10, 10, -10, 10, -10, 10, 1f, 1f, 1f));
+		//this.container.add(new Plot2D(-10, 10, -10, 10, 1, 1));
+		this.container.add(new Plot3D(-1f, 1f, -1f, 1f, -1f, 1f, 1f, 1f, 1f));
 		
 		this.frame.add(this.container);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
