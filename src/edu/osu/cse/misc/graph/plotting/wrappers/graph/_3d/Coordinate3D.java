@@ -1,5 +1,7 @@
 package edu.osu.cse.misc.graph.plotting.wrappers.graph._3d;
 
+import edu.osu.cse.misc.graph.plotting._3d.Point3D;
+
 /**
  * Represents a point in a three dimensional coordinate system
  */
@@ -23,6 +25,10 @@ public class Coordinate3D {
 	
 	public float getZ() {
 		return this.z;
+	}
+	
+	public Point3D toPoint3D() {
+		return new Point3D(this.x, this.y, this.z);
 	}
 	
 	@Override

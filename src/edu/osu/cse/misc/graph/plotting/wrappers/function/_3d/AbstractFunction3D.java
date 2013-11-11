@@ -32,12 +32,13 @@ public abstract class AbstractFunction3D {
 	 */
 	public Coordinate3D[] evaluateFrom(float value1Min, float value1Max, float value2Min, float value2Max, float accuracy) {
 		LinkedList<Coordinate3D> coords = new LinkedList<>();
-		for (float f1 = value1Min, f2 = value2Min; f1 <= value1Max && f2 <= value2Max; f1 += accuracy, f2 += accuracy) {
-			Coordinate3D coord = this.evaluateAt(f1, f2);
-			if (coord.getX() <= this.value1Max && coord.getX() >= this.value1Min && coord.getY() <= this.value2Max && coord.getY() >= this.value2Min) {
-				coords.add(coord);
+		long start = System.currentTimeMillis();
+		for (float x = value1Min; x <= value1Max; x += accuracy) {
+			for (float y = value2Min; y <= value2Max; y += accuracy) {
+				coords.add(this.evaluateAt(x, y));
 			}
 		}
+		System.out.println("We just computed " + coords.size() + " 3D points, and it took " + (System.currentTimeMillis() - start) + "ms...");
 		return coords.toArray(new Coordinate3D[coords.size()]);
 	}
 	
