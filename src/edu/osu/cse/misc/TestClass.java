@@ -8,7 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class AntiAFK {
+public class TestClass {
 
 	private static Robot robot;
 	private static Random random = new Random();
@@ -21,7 +21,7 @@ public class AntiAFK {
 			} catch (InterruptedException n) {}
 
 			if (robot != null) {
-				int key = random.nextInt(2) == 1 ? KeyEvent.VK_D : KeyEvent.VK_A;
+				int key = random.nextInt(2) == 1 ? KeyEvent.VK_D : KeyEvent.VK_A; //nextInt(2) == [0, 2)
 				robot.keyPress(key);
 				int hold = random.nextInt(300) + 100;
 				try {
@@ -44,8 +44,9 @@ public class AntiAFK {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		//Every 10 minutes, execute the task.
 		timer.scheduleAtFixedRate(task, new Date(System.currentTimeMillis()), 600000L);
 	}
+	
 }
