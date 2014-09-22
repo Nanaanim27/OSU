@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.util.LinkedList;
 
 import edu.osu.cse.misc.graph.plotting.wrappers.function._2d.AbstractFunction2D;
@@ -105,6 +106,16 @@ public class GraphPanel2D extends AbstractGraphPanel {
 		super.paintComponent(g1);
 		Graphics2D g = (Graphics2D) g1;
 
+		g.setRenderingHint(
+		        RenderingHints.KEY_ANTIALIASING,
+		        RenderingHints.VALUE_ANTIALIAS_ON);
+		    g.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		    g.setRenderingHint(
+		        RenderingHints.KEY_FRACTIONALMETRICS,
+		        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		
 		drawGrid(g);
 		drawFunctions(g);
 	}
@@ -167,7 +178,7 @@ public class GraphPanel2D extends AbstractGraphPanel {
 		this.functions.remove(function);
 		this.repaint();
 	}
-	
+
 	public void removeFunction(int index) {
 		this.functions.remove(index);
 		this.repaint();

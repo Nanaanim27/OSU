@@ -5,8 +5,6 @@ import java.awt.Point;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 
-import javax.swing.JOptionPane;
-
 public class AutoClicker {
 
 	public static void main(String[] args) throws Exception {
@@ -52,7 +50,7 @@ public class AutoClicker {
 			this.mask = mask;
 		}
 
-		public int getMask() {
+		private int getMask() {
 			return this.mask;
 		}
 	}

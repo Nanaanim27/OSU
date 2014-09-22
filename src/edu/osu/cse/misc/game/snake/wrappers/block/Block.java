@@ -11,7 +11,7 @@ public class Block {
 	public BlockType type;
 	public Direction direction;
 	public Block parent;
-	public boolean isPath = false;
+	public boolean isAutomaticPath = false;
 
 	public Block(GameField field, int x, int y) {
 		this.x = x;

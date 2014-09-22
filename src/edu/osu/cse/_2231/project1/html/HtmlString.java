@@ -15,6 +15,8 @@ import components.stack.Stack1L;
  * A string that holds different HTML properties.
  * {@link #toString()} will generate the proper HTML 
  * text to display this String as it is described via its chained methods. 
+ * 
+ * @author Matt Weiss
  */
 public class HtmlString extends HtmlComponent {
 

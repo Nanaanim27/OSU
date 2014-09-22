@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.beans.Transient;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -24,14 +23,14 @@ public class Snake extends JPanel implements KeyListener {
 	private JFrame mainFrame;
 
 	/** Time in ms between each game tick */
-	private int tickSpeed = 75;
+	private static final int tickSpeed = 30;
 	public GameField field;
 	public BlockChain snakeLine;
 	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 	private ScheduledFuture<?> currentScheduledTask;
 
-	public Snake(int width, int height) {
-		this.field = new GameField(this, width, height);
+	public Snake(int size) {
+		this.field = new GameField(this, size, size);
 		this.snakeLine = new BlockChain(this, this.field.getInitialHead());
 
 		this.mainFrame = new JFrame();
@@ -66,7 +65,6 @@ public class Snake extends JPanel implements KeyListener {
 	}
 
 	@Override
-	@Transient
 	public Dimension getPreferredSize() {
 		return new Dimension((this.field.width * Block.SIZE) + 1, (this.field.height * Block.SIZE) + 1);
 	}
@@ -129,6 +127,6 @@ public class Snake extends JPanel implements KeyListener {
 	}
 
 	public static void main(String[] args) {
-		new Snake(30, 30).start();
+		new Snake(30).start();
 	}
 }

@@ -121,7 +121,7 @@ public class GameField {
 					g.setColor(Color.black);
 					g.drawRect(next.x * Block.SIZE, next.y * Block.SIZE, Block.SIZE, Block.SIZE);
 
-					if (next.isPath && !this.game.snakeLine.chain.contains(next)) {
+					if (next.isAutomaticPath && !this.game.snakeLine.chain.contains(next)) {
 						g.setColor(Color.white);
 						g.fillRect((next.x*Block.SIZE) + Block.SIZE/2, (next.y*Block.SIZE) + Block.SIZE/2, 1, 1);
 					}

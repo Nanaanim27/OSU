@@ -32,7 +32,7 @@ public class Vector {
 	 * @return The resulting magnitude of this Vector.
 	 */
 	public float getMagnitude() {
-		return (float) Math.sqrt((this.x*this.x) + (this.y*this.y) + (this.z*this.z));
+		return (float) Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
 	}
 
 	/**

@@ -3,7 +3,9 @@ package edu.osu.cse._2231.project1.html;
 import java.util.Collection;
 import java.util.Iterator;
 
-
+/**
+ * @author Matt Weiss
+ */
 public class HtmlTable extends HtmlComponent {
 
 	private final int borderThickness;

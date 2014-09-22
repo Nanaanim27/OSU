@@ -10,6 +10,8 @@ import components.map.Map1L;
  * convert to HTML as <*phone number="555-555-5555"></pre>
  * 
  * <br /><br />*=Let JavaDoc display the html representation without parsing it in the IDE.
+ * 
+ * @author Matt Weiss
  */
 public class HtmlTag extends Map1L<String, String> {
 

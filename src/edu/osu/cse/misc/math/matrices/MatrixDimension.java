@@ -86,7 +86,7 @@ public class MatrixDimension {
 				int columns = Integer.parseInt(dimensions[1]);
 				return new MatrixDimension(rows, columns);
 			} catch (NumberFormatException e) {
-				throw new InvalidMatrixDimensionFormatException("Invalid matrix dimensions for the given String: " + dim + ". Expected format is AxB");
+				throw new InvalidMatrixDimensionFormatException("Invalid matrix dimensions for the given String: " + dim + ". Expected format is \"AxB\"");
 			}
 		} catch (InvalidMatrixDimensionFormatException e) {
 			e.printStackTrace();

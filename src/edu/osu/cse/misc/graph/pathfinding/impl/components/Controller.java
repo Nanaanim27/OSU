@@ -40,7 +40,7 @@ public class Controller extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Worker.executeRunnable(new Runnable() {
 					public void run() {
-						clear();
+						Controller.this.clear();
 						if (Controller.this.aStar.isSelected()) {
 							AStarPath path = new AStarPath(Controller.this.gridPanel.grid);
 							for (Node node : Controller.this.gridPanel.grid.getNodes()) {
@@ -83,7 +83,7 @@ public class Controller extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Worker.executeRunnable(new Runnable() {
 					public void run() {
-						clear();
+						Controller.this.clear();
 						Node[] nodes = Controller.this.gridPanel.grid.getNodes();
 						for (int i = 0; i < nodes.length; i++) {
 							if (i == 0) {
@@ -111,7 +111,7 @@ public class Controller extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Worker.executeRunnable(new Runnable() {
 					public void run() {
-						clear();
+						Controller.this.clear();
 					}
 				});
 			}

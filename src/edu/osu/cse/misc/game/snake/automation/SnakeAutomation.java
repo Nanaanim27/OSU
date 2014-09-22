@@ -17,8 +17,8 @@ public class SnakeAutomation extends Snake {
 	private volatile boolean pathAvailable = true;
 	private AStarPath pathToFood = null;	
 
-	public SnakeAutomation(int width, int height) {
-		super(width, height);
+	public SnakeAutomation(int size) {
+		super(size);
 		System.out.println("Starting point: " + this.field.initialHead);
 	}
 
@@ -32,7 +32,7 @@ public class SnakeAutomation extends Snake {
 				this.pathAvailable = this.pathToFood.toNodeQuery(false) != null;
 				if (this.pathAvailable) {
 					for (Node n : this.pathToFood.toNodeQuery(false)) {
-						toBlock(n).isPath = true;
+						toBlock(n).isAutomaticPath = true;
 					}
 				}
 				else {
@@ -51,7 +51,7 @@ public class SnakeAutomation extends Snake {
 				Block next = toBlock(this.pathToFood.step(false));
 				if (next.type == BlockType.FOOD) {
 					for (Node n : this.pathToFood.toNodeQuery(false)) {
-						toBlock(n).isPath = false;
+						toBlock(n).isAutomaticPath = false;
 					}
 					this.pathToFood = null;
 				}
@@ -94,7 +94,7 @@ public class SnakeAutomation extends Snake {
 	}
 
 	public static void main(String[] args) {
-		new SnakeAutomation(150, 150).start();
+		new SnakeAutomation(50).start();
 	}
 
 }

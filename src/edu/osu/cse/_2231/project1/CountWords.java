@@ -1,9 +1,5 @@
 package edu.osu.cse._2231.project1;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-
 import components.simplereader.SimpleReader;
 import components.simplereader.SimpleReader1L;
 import components.simplewriter.SimpleWriter;
@@ -11,6 +7,9 @@ import components.simplewriter.SimpleWriter1L;
 
 import edu.osu.cse._2231.project1.html.HtmlTable;
 
+/**
+ * @author Matt Weiss
+ */
 public class CountWords {
 
 	
@@ -21,12 +20,12 @@ public class CountWords {
 			out.print("Enter the name of an input file: ");
 			String inputFile = in.nextLine();
 
-			out.print("Enter the name  of the out file: ");
+			out.print("Enter the name of the out file: ");
 			String outputFile = in.nextLine();
 
 			try (SimpleReader fileIn = new SimpleReader1L(inputFile)) {
 				String line;
-				CountMap<String, Integer> wordCounts = new CountMap<>();
+				CountMap wordCounts = new CountMap();
 				while (!fileIn.atEOS()) {
 					line = fileIn.nextLine();
 					String[] words = line.split("[^A-Za-z0-9]+");
@@ -52,12 +51,6 @@ public class CountWords {
 					fileOut.println(table.toString());
 					fileOut.println("</body>");
 					fileOut.println("</html>");
-					File f = new File(outputFile);
-					if (f.exists()) {
-						Desktop.getDesktop().open(f);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
 			}
 		}

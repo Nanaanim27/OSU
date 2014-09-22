@@ -36,7 +36,7 @@ public class SquareField {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			if (this.pressed != null && e.getPoint() != null) {
-				int dx = e.getPoint().x - this.pressed.x;
+				int dx = -(e.getPoint().x - this.pressed.x);
 				int dy = e.getPoint().y - this.pressed.y;
 				
 				camera.rotationPitch += (dx / 50D);
@@ -75,7 +75,7 @@ public class SquareField {
 				super.paintComponent(g);
 				g.translate(300, 300);
 				
-				System.out.println("Current rotation: " + (camera.rotationYaw / Math.PI) + "pi");
+				System.out.println("Current rotation: " + (camera.rotationYaw / Math.PI) + " pi.");
 				
 				for (Shape2D s : shapes) {
 					for (Line2D l : s.getLines()) {
@@ -122,7 +122,6 @@ public class SquareField {
 					l4 = new Line2D(_front, _left);
 			
 			shapes[i] = new Shape2D(l1, l2, l3, l4);
-			//System.out.println("Shape: \n" + shapes[i] + "\nProjected:\n" + shapes[i].convertTo2D());
 		}
 		return shapes;
 	}

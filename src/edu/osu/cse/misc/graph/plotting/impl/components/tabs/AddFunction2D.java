@@ -32,8 +32,8 @@ public class AddFunction2D extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				JList<String> list = (JList<String>) e.getSource();
+				int index = list.getSelectedIndex();
 				if (e.getClickCount() == 2) {
-					int index = list.getSelectedIndex();
 					AddFunction2D.this.model.remove(index);
 					AddFunction2D.this.plotInstance.getGraphPanel2D().removeFunction(index);
 				}
@@ -51,6 +51,7 @@ public class AddFunction2D extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (isSelected()) {
 					AddFunction2D.this.setForm(Equation2D.POLYNOMIAL.getForm());
+					AddFunction2D.this.plotInstance.pack();
 				}
 			}
 		});
@@ -62,6 +63,7 @@ public class AddFunction2D extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (isSelected()) {
 					AddFunction2D.this.setForm(Equation2D.PARAMETRIC.getForm());
+					AddFunction2D.this.plotInstance.pack();
 				}
 			}
 		});
@@ -73,6 +75,7 @@ public class AddFunction2D extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (isSelected()) {
 					AddFunction2D.this.setForm(Equation2D.POLAR.getForm());
+					AddFunction2D.this.plotInstance.pack();
 				}
 			}
 		});
@@ -142,7 +145,7 @@ public class AddFunction2D extends JPanel {
 		}
 		this.add(form, this.gbc);
 		this.gbc.gridy++;
-		//this.add(this.list, this.gbc);
+		this.add(this.list, this.gbc);
 		this.add(this.plotInstance.getGraphPanel2D(), this.gbc);
 		this.repaint();
 		this.revalidate();
