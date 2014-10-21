@@ -1,139 +1,308 @@
 package edu.osu.cse._2331.hw6;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
-/**
- * 
- * @author Matt Weiss
- * @email weiss.357@osu.edu
- *
- */
 public class Prim {
 
-	private static final String INPUT_FILE_NAME = "input.txt";
-	private static final String OUTPUT_FILE_NAME = "output.txt";
+	static String OUT = "OUT", IN = "IN";
+	static boolean DEBUG = false;
 
-	private static class Node {
+	public static void main(String[] args) {
+		//System.setOut(new DOut());
 
-		public final int id;
-		public final Edge[] edges;
-		public boolean visited = false;
-		
-		public Node(final int id, final int numEdges) {
-			this.id = id;
-			this.edges = new Edge[numEdges];
+		final String INPUT_FILE = "input.txt", OUTPUT_FILE = "output.txt";
+
+
+		String[] input = read(INPUT_FILE);
+
+		System.out.println("--- INPUT ---");
+		for (String s : input)
+			System.out.println(s);
+		System.out.println("--- INPUT ---");
+		System.out.println();
+
+		String nodesAndEdges = input[0];
+
+		Node[] nodes = new Node[Integer.parseInt(String.valueOf(nodesAndEdges.charAt(0)))];
+		initNodes(input, nodes);
+
+		final Queue<Edge> inToOutEdges = new PriorityQueue<Edge>() {
+			@Override
+			public boolean offer(Edge e) {
+				if (!contains(e))
+					return super.offer(e);
+				return false;
+			}
+		};
+		Queue<Node> in = new PriorityQueue<Node>(nodes.length, new Comparator<Node>() {
+			@Override
+			public int compare(Node n1, Node n2) {
+				return n1.id - n2.id;
+			}
+		});
+
+		in.add(nodes[0]);
+		nodes[0].group = IN;
+		for (Edge e : nodes[0].allEdges)
+			inToOutEdges.offer(e);
+
+
+		while (in.size() != nodes.length) {
+
+			System.out.println();
+			System.out.println("in: " + in);
+			System.out.println("potential edges: " + inToOutEdges);
+
+			Edge min = null;
+			while (!inToOutEdges.isEmpty()) {
+				min = inToOutEdges.poll();
+				if (!in.contains(min.n1) || !in.contains(min.n2))
+					break;
+			}
+			if (min == null)
+				break;
+			min.used = true;
+			if (min != null)
+				System.out.println("min edge: " + min + " (" + min.insId + ")");
+
+			Node comingIn = in.contains(min.n1) ? min.n2 : min.n1;
+			in.add(comingIn);
+			min.n2.resultEdges.offer(min);
+			min.n1.resultEdges.offer(min);
+
+			for (Edge e : comingIn.allEdges)
+				if (!e.used)
+					inToOutEdges.offer(e);
 		}
 
+		System.out.println();
+		System.out.println("--- RESULT ---");
+		
+		String result = "";
+		
+		int edgeCount = 0;
+		int nodeCount = in.size();
+		while (!in.isEmpty()) {
+			Node n = in.poll();
+			System.out.print("Node " + n + ": ");
+			while (!n.resultEdges.isEmpty()) {
+				Edge e = n.resultEdges.poll();
+				if (e.n2 == n) {
+					Node temp = e.n1;
+					e.n1 = e.n2;
+					e.n2 = temp;
+				}
+				edgeCount++;
+				result += (e.n2 + " " + e.weight + " ");
+			}
+			result += "\n";
+		}
+		System.out.println(result.trim());
+		System.out.println("--- RESULT ---");
+
+
+		generateOutputFile(OUTPUT_FILE, result, nodeCount, edgeCount/2);
+
+		System.err.println("Done.");
 	}
 
-	private static class Edge {
+	static String[] read(String inputFile) {
+		BufferedReader readIn = null;
+		try {
+			readIn = new BufferedReader(new InputStreamReader(new FileInputStream(new File(inputFile))));
+			String[] firstLine = readIn.readLine().split(" ");
+			if (firstLine.length == 2) {
+				String[] result = new String[Integer.parseInt(firstLine[0]) + 1]; //firstLine[0] is # nodes, thus number of lines of content
+				result[0] = firstLine[0] + " " + firstLine[1];
 
-		public final Node n1, n2;
-		public final int weight;
+				//Should iterate proper amount of times given a properly formatted input. Any exception gets caught and simply results in the error return, { }
+				for (int i = 1; i < result.length; i++) {
+					result[i] = readIn.readLine();
+				}
+				return result;
+			}
 
-		public Edge(final Node n1, final Node n2, final int weight) {
+		} catch (Exception any) {
+			//Will return an empty array
+		} finally {
+			if (readIn != null)
+				try { readIn.close(); } catch (IOException e) {}
+		}
+
+		return new String[] {};
+	}
+
+	static void initNodes(String[] input, Node[] nodes) {
+		for (int i = 1; i < input.length; i++) {
+			nodes[i-1] = new Node(i-1);
+			nodes[i-1].group = OUT;
+		}
+
+		String[] lineData;
+		int lineLength;
+		for (int i = 1; i < input.length; i++) {
+
+			lineData = input[i].split(" ");
+			lineLength = lineData.length;
+
+			if (lineLength % 2 == 0) {
+				for (int j = 0; j < lineLength;) {
+					int nodeNum = Integer.parseInt(lineData[j++]);
+					int edgeWeight = Integer.parseInt(lineData[j++]);
+
+					Node from = nodes[i-1];
+					Node to = nodes[nodeNum-1];
+					Edge e = Edge.edge(from, to, edgeWeight);
+
+					from.allEdges.add(e);
+					to.allEdges.add(e);
+				}
+			}
+		}
+	}
+
+	static void generateOutputFile(String outputFile, String result, int nodeCount, int edgeCount) {
+		File f = new File(outputFile);
+		PrintWriter writeOut = null;
+		try {
+			writeOut = new PrintWriter(f);
+			writeOut.println(nodeCount + " " + edgeCount);
+			writeOut.println(result.trim());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (writeOut != null)
+				writeOut.close();
+		}
+	}
+
+
+
+
+	static class Edge implements Comparable<Edge> {
+
+		static List<Edge> edges = new ArrayList<>();
+
+		static int id = 0;
+
+		int insId;
+		Node n1, n2;
+		int weight;
+		boolean used = false;
+
+		Edge(Node n1, Node n2, int weight) {
 			this.n1 = n1;
 			this.n2 = n2;
 			this.weight = weight;
+			this.insId = id++;
+
+			edges.add(this);
 		}
 
-	}
+		@Override
+		public String toString() {
+			return String.valueOf(this.weight);
+		}
 
-	public static void main(String[] args) {
-		final String[] fileContents = readFileIn().split("\n");
-		String[] temp;
-		if (fileContents.length > 0) {
-			//If we get to this point, we read input.txt successfully.
-			int numNodes = -1, numTotalEdges = -1;
-			temp = fileContents[0].trim().split(" "); //First line
-			if (temp.length == 2) {
-				try {
-					numNodes = Integer.parseInt(temp[0]);
-					numTotalEdges = Integer.parseInt(temp[1]);
-				} catch (NumberFormatException e) {
-					numNodes = numTotalEdges = -1; //Error of any kind reading the data, return to default values.
-				}
-				if (numNodes > 0 && numTotalEdges > 0) {
-					
-					final Node[] nodes = new Node[fileContents.length - 1];
-					String line;
-					for (int i = 1; i < fileContents.length; i++) {
-						line = fileContents[i];
-						temp = line.split(" ");
-						if (temp.length % 2 == 0) {
-							//This line is properly formatted (node weight node weight ....)
-							
-							final int numEdges = temp.length / 2;
-							nodes[i] = new Node(i, numEdges);
-							for (int j = 0; j < numEdges;) {
-								nodes[i].edges[j] = new Edge(nodes[i], nodes[j++], j++);
-							}
-							
-						}
-						else {
-							System.err.println("Line " + i + " does not contain proper values.");
-							return;
-						}
-					}
-					
-					
-					//Initialize data structures
-					final List<Node> visitedNodes = new ArrayList<Node>(nodes.length) {{
-						add(nodes[0]);
-					}};
-					
-					final Comparator<Edge> comp = new Comparator<Edge>() {
-						@Override
-						public int compare(Edge o1, Edge o2) {
-							return o1.weight - o2.weight;
-						}
-					};
-					
-					final PriorityQueue<Edge> potentialEdges = new PriorityQueue<Edge>(numTotalEdges, comp) {{
-						for (final Edge e : visitedNodes.get(0).edges) {
-							offer(e);
-						}
-					}};
-					
-					final List<Edge> minimalTree = new ArrayList<Edge>(numTotalEdges); //size will be <= numTotalEdges
-					while (visitedNodes.size() != nodes.length) {
-						final Edge minEdge = potentialEdges.poll();
-						
-					}
-					
-					
-				}
+		@Override
+		public boolean equals(Object o) {
+			if (o == this)
+				return true;
+			if (o instanceof Edge) {
+				Edge other = (Edge) o;
+				return other.weight == this.weight && other.n1 == this.n2 && other.n2 == this.n1;
 			}
-
+			return false;
 		}
+
+		@Override
+		public int compareTo(Edge o) {
+			return this.weight - o.weight;
+		}
+
+		static Edge edge(Node n1, Node n2, int weight) {
+			for (Edge e : edges)
+				if ( ((e.n1 == n1 && e.n2 == n2) || (e.n1 == n2 && e.n2 == n1)) && e.weight == weight) {
+					return e;
+				}
+			Edge edge = new Edge(n1, n2, weight);
+			edges.add(edge);
+			return edge;
+		}
+
 	}
 
-	/**
-	 * Reads the input data file into an array of Strings.
-	 * 
-	 * @return The contents of {@code INPUT_FILE_NAME}, or an empty String in the event of an error.
-	 */
-	private static String readFileIn() {
-		String fileData = "";
-		try (final FileInputStream fIn = new FileInputStream(INPUT_FILE_NAME);
-				final BufferedReader readIn = new BufferedReader(new InputStreamReader(fIn))) {
+	static class Node {
 
-			String line;
-			while ((line = readIn.readLine()) != null) {
-				fileData += line.trim() + "\n";
+		int id;
+		Queue<Edge> allEdges = new PriorityQueue<Edge>() {
+			public boolean addAll(Collection<? extends Edge> c) {
+				for (Edge e : c)
+					if (!this.contains(e))
+						return this.offer(e);
+				return false;
+			};
+		};
+		Queue<Edge> resultEdges = new PriorityQueue<Edge>() {
+			public boolean addAll(Collection<? extends Edge> c) {
+				for (Edge e : c)
+					if (!this.contains(e))
+						return this.offer(e);
+				return false;
+			};
+		};
+
+		String group;
+
+		Node(int id) {
+			this.id = id;
+		}
+
+		@Override
+		public String toString() {
+			return String.valueOf(this.id + 1);
+		}
+
+	}
+
+	static class DOut extends PrintStream {
+
+		public DOut() {
+			super(System.out);
+		}
+
+		@Override
+		public void println(String o) {
+			if (Prim.DEBUG) {
+				super.println(o);
 			}
-			fileData = fileData.trim();
-		} catch (final IOException e) {
-			e.printStackTrace();
-			fileData = "";
 		}
-		return fileData;
+
+		@Override
+		public void print(String o) {
+			if (Prim.DEBUG) {
+				super.print(o);
+			}
+		}
+
+		@Override
+		public void println() {
+			if (Prim.DEBUG)
+				super.println();
+		}
 	}
+
 }
